@@ -70,8 +70,8 @@ app.use(cors(corsConfig));
 // GET paths
 app.get('/', (req, res) => {
 	count += 1
-	PGPool.query('SELECT NOW()', (err, res) => {
-		console.log(err, res)
+	PGPool.query('SELECT NOW()', (err, queryRes) => {
+		console.log(err, queryRes)
 	})
 	res.send(`I have been visited ${count} times!`)
 })
@@ -92,10 +92,13 @@ app.get('/calendar/:org?/', (req, res) => {
 	res.send(`I have ${count} events!`)
 })
 
-// app.get('/', (req, res) => {
-// 	count += 1
-// 	res.send(`I have been visited ${count} times!`)
-// })
+app.get('/tables', (req, res) => {
+	PGPool.query(`SELECT * FROM pg_catalog.pg_tables WHERE tablename NOT LIKE 'pg_%' AND tablename NOT LIKE 'sql_%'`, (err, queryRes) => {
+		if (err) console.log(err)
+		res.send(queryRes.rows)
+	})
+	
+})
 
 // app.get('/', (req, res) => {
 // 	count += 1
@@ -109,7 +112,204 @@ app.get('/calendar/:org?/', (req, res) => {
 
 // POST paths
 
+app.post('/auth', (req, res) => {
+	// count += 1
+	console.log(req.body)
+	const { uname, email, pass } = req.body
+	const responseObject = {}
+	let resCode
+	// const login = uname | email
+	switch (true) {
+		case (!uname && !email):
+			responseObject.message = 'Username or Email Address required'
+			resCode = 401
+			break;
+		case (!pass):
+			responseObject.message = 'Password required'
+			resCode = 401
+			break;
+		// case (!uname || !email):
+		// 	responseObject
+		// 	break;
+		// case (!uname || !email):
+		// 	responseObject
+		// 	break;
+		default:
+			//todo
+			const queryObject = {
+				text: 'SELECT name, password FROM USERS WHERE name = $1 OR email = $2',
+				values: ['uname', 'email'],
+			}
+			PGPool.query(queryObject, (err, queryRes) => {
+				if (err) {
+					console.log(err)
+					responseObject.message = 'Query Error'
+					resCode = 400
+				} else {
+					if (queryRes && queryRes.rows && queryRes.rows.length) {
+						res.rows[0]
+	
+						responseObject.message = 'Match Found'
+					} else {
+						responseObject.message = 'No Results'
+					}
+					resCode = 200
+				}
+				res.statusCode = resCode
+				res.send(responseObject)
+			})
+	}
+
+	res.statusCode = resCode
+	res.send(responseObject)
+})
+
+const mustMatch = 'updateMe'
+app.post('/runsql', (req, res) => {
+	// console.log(req.body)
+	const { sql, code } = req.body
+	const queryObject = {
+		text: sql
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
+//todo
+app.post('/adduser', (req, res) => {
+	// console.log(req.body)
+	const { uname, email, pass } = req.body
+	const queryObject = {
+		text: `INSERT INTO USERS ('username', 'password', 'name', 'email', 'role', 'is_active', 'last_updated') VALUES ()`,
+		values: ['uname', 'email', 'pass'],
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
+//todo
+app.post('/addevent', (req, res) => {
+	// console.log(req.body)
+	const { uname, email, pass } = req.body
+	const queryObject = {
+		text: `INSERT INTO USERS () VALUES ()`,
+		values: ['uname', 'email', 'pass'],
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
+//todo
+app.post('/addprovider', (req, res) => {
+	// console.log(req.body)
+	const { uname, email, pass } = req.body
+	const queryObject = {
+		text: `INSERT INTO PROVIDERS ('name', 'phone', 'description', 'hours', 'days_of_operation', 'last_verified', 'is_active', 'last_updated') VALUES ()`,
+		values: ['uname', 'email', 'pass'],
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
+//todo
+app.post('/addinventory', (req, res) => {
+	// console.log(req.body)
+	const { uname, email, pass } = req.body
+	const queryObject = {
+		text: `INSERT INTO PROVIDERS ('name', 'phone', 'description', 'hours', 'days_of_operation', 'last_verified', 'is_active', 'last_updated') VALUES ()`,
+		values: ['uname', 'email', 'pass'],
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
+//todo
+app.post('/addreferral', (req, res) => {
+	// console.log(req.body)
+	const { uname, email, pass } = req.body
+	const queryObject = {
+		text: `INSERT INTO PROVIDERS ('name', 'phone', 'description', 'hours', 'days_of_operation', 'last_verified', 'is_active', 'last_updated') VALUES ()`,
+		values: ['uname', 'email', 'pass'],
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
+//todo
+app.post('/add/:addType', (req, res) => {
+	// console.log(req.body)
+	let tmp = req.params.addType
+	const { uname, email, pass } = req.body
+	const queryObject = {
+		text: `INSERT INTO PROVIDERS ('name', 'phone', 'description', 'hours', 'days_of_operation', 'last_verified', 'is_active', 'last_updated') VALUES ()`,
+		values: ['uname', 'email', 'pass'],
+	}
+	if (code === mustMatch) {
+		PGPool.query(queryObject, (err, queryRes) => {
+			console.log(err, queryRes)
+			res.statusCode = 200
+			res.send('Insert Successful')
+		})
+	} else {
+		res.statusCode = 401
+		res.send('Not Authorized')
+	}
+})
+
 // Functions
+
+function makeTimestamp() {
+	return Date.now()
+}
+
 
 // Start server
 let port = process.env.PROD_PORT || 51516;
