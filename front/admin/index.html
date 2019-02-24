@@ -8,6 +8,29 @@
 </head>
 <body>
 	<h1>Admin Page</h1>
+		<div>
+			<h4>Add New Provider</h4>
+		<form name="new-provider" action="./landing.html" onsubmit="return myalert()">
+		Provider Name: <input type=text name="provider-name"><br/>
+		Phone: <input type="tel" name="provider-phone"><br/>
+		Hours: <input type="text" name="provider-hours"><br/>
+		Days of opperation:</br>
+		<input type="checkbox" name="provider-days-of-operation" value="M">Monday</br>
+		<input type="checkbox" name="provider-days-of-operation" value="T">Tuesday</br>
+		<input type="checkbox" name="provider-days-of-operation" value="W">Wednesday</br>
+		<input type="checkbox" name="provider-days-of-operation" value="T">Thursday</br>
+		<input type="checkbox" name="provider-days-of-operation" value="F">Friday</br>
+		<input type="checkbox" name="provider-days-of-operation" value="S">Saturday</br>
+		<input type="checkbox" name="provider-days-of-operation" value="U">Sunday</br>
+		<br/>
+		Date of last verification: <input type="text" name="provider-last-verification"></br>
+		Profile is active:</br>
+		<input type="radio" name="provider-is-active" value:"Y">Yes
+		<input type="radio" name="provider-is-active" value:"N">No</br>
+		<input type=submit value=Submit />
+	</div>
+	</form>
 	<p>Welcome to Find Your Agency</p>
+
 </body>
 </html>
