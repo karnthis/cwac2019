@@ -22,7 +22,7 @@
 }
 .form {
 	grid-column: 1;
-	height: 110px;
+	/* height: 110px; */
 	background: orange;
 
 }
@@ -43,6 +43,12 @@
 .addClass {
 	display: none;
 }
-.tbd {
+.addToWaitlist {
+	display: none;
+}
+.eligibiltyCheck {
+	display: none;
+}
+.addresses {
 	display: none;
 }
