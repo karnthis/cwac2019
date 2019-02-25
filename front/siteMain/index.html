@@ -6,8 +6,51 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>CWAC 2019: Main</title>
 </head>
+<script>
+	function myalert(){
+	let x = document.forms["requirements"]["fname"].value;
+  if (x == "") {
+    alert("Name must be filled out");
+    return false;
+	}
+	}
+</script>
 <body>
 	<h1>Main Page</h1>
 	<p>Welcome to Find Your Agency</p>
+	<form>
+	<div>
+		<h4>Referals</h4>
+		My orgainization: <input type="text" name="refer-sender"></br>
+		Date of referal: <input type="date" name="refer-date"></br>
+		<!-- make this a dropdown -->
+		Organization client is being refered to: <input type="text" name="refer-sendee"></br>
+		Is the client eligibale with the above Organization: 
+		<input type="radio" name="refer-client-eligibility" value:"Y">Yes
+		<input type="radio" name="refer-client-eligibility" value:"N">No</br>
+	</div>
+	</form>
+</br>
+	<form>
+		<div>
+			<h4>Update Crib Count</h4>
+			Number of Cribs avaliable: <input type="number" name="number-of-cribs-avalibale"></br>
+			Date: <input type="date" name="cribs-date"></br>
+		</div>
+	</form>
+</br>
+		<!-- Add a form to make a new instance of an existing class or add a drop down to below -->
+	<form>
+		<div>
+			<h4>Add New Class</h4>
+			Class Name: <input type="text" name="class-name"></br>
+			Class Description <input type="text" name="class-description"></br>
+			Date: <input type="date" name="class-date"></br>
+			Time: <input type="time" name="class-time"></br>
+			Location: <input type="text" name="class-location"></br>
+			Maximum Number of Spaces: <input type="number" name="class-max-count"></br>
+			Avaliable Spaces: <input type="number" name="class-current-count"></br>
+		</div>
+	</form>
 </body>
 </html>
