@@ -21,17 +21,17 @@
 	],
 	"author": "Erin Rivas & Carolyn Peters",
 	"contributors": [
-    {
-      "name": "Erin Rivas",
-      "email": "erin@atomicbear.com",
-      "url": "https://github.com/karnthis/"
+		{
+			"name": "Erin Rivas",
+			"email": "erin@atomicbear.com",
+			"url": "https://github.com/karnthis/"
 		},
 		{
-      "name": "Carolyn Peters",
-      "email": "",
-      "url": "https://github.com/cmpeters08"
-    }
-  ],
+			"name": "Carolyn Peters",
+			"email": "",
+			"url": "https://github.com/cmpeters08"
+		}
+	],
 	"license": "MIT",
 	"dependencies": {
 		"bcrypt": "^3.0.4",
