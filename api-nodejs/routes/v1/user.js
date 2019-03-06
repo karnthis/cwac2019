@@ -5,6 +5,7 @@ const { handleRes, cleanArray } = require('../../libs')
 const expRtr = new Router()
 
 const cols = [
+	'user_id',
 	'full_name',
 	'member_of',
 	'email'
