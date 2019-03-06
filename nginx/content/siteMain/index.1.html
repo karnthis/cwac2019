@@ -61,5 +61,18 @@
 		</div>
 		<div class="spacer"></div>
 	</section>
+	<script>
+		window.onload = function() {
+			console.log('loaded')
+			fetch('https://api.findyour.agency/provider')
+				.then(function(response) {
+					console.log('first then')
+					return response.json();
+				})
+				.then(function(myJson) {
+					console.log(JSON.stringify(myJson));
+				});
+		}
+	</script>
 </body>
 </html>

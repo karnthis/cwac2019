@@ -12,11 +12,11 @@ const PGPool = new Pool({
 // Import Log Class
 const { LogSQLObject } = require('./classes')
 
-let toLog = new LogSQLObject([1,2])
+// let toLog = new LogSQLObject([1,2])
 
 // Functions
 function makeTimestamp() {
-	return Date.now()
+	return Math.floor(Date.now()/1000)
 }
 
 function runQuery(PGPool, sql, res) {
@@ -80,9 +80,7 @@ function handleSuccess(res, successObj) {
 	// 	message: msg,
 	// 	error: err,
 	// }
-	res.status(200)
-	// res.send(JSON.stringify(data))
-	res.json(data)
+	res.status(200).json(data)
 }
 
 module.exports = {

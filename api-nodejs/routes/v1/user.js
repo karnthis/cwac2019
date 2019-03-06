@@ -1,44 +1,92 @@
 const Router = require('express-promise-router')
+const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../db')
 const { handleRes, cleanArray } = require('../../libs')
 const expRtr = new Router()
 
-const cols = ['', '']
-const tbl = ''
+const cols = [
+	'full_name',
+	'member_of',
+	'email'
+	]
+const tbl = 'USERS'
 
 expRtr.route('/')
-	.get(async (req, res) => {
-		const { rows } = await DB.query(`SELECT ${cols} FROM USERS`)
-		handleRes(res, {data: rows})
+	//*	done
+	.get([], async (req, res) => {
+		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+		res.status(200).json({data: rows})
 	})
-	.post(async (req, res) => {
-		res.send('Not Supported')
+	//*	done
+	.post([], async (req, res) => {
+		res.status(403).send('Not Supported')
 	})
-	.put(async (req, res) => {
-		res.send('Not Supported')
+	//*	done
+	.put([], async (req, res) => {
+		res.status(403).send('Not Supported')
 	})
 
 expRtr.route('/:orgid/:userid?')
-	.get(async (req, res) => {
+	//*	done
+	.get([], async (req, res) => {
 		const { orgid, userid } = req.params
 		const sql = {
 			cols,
 			tbl,
-			inField: '',
-			wVals: userid || orgid
+			data: (userid) ? {user_id:userid} : {member_of:orgid}
 		}
+		console.log(sql)
 		const { rows } = await DB.doSelect(sql)
-		handleRes(res, {data: rows})
+		res.status(200).json({data: rows})
 	})
-	.post(async (req, res) => {
-		// res.send('posted')
-		const { body } = req
-		const { orgid, userid } = req.params
-		let sql = `SELECT ${cols} FROM USERS WHERE ${userMakeWhere(orgid, userid)}`
-		const { rows } = await DB.query(sql)
-		handleRes(res, {data: rows})
+	//*	done
+	.post([
+		check('org').isInt(),//.toInt(),
+		check('username').isLength({ min: 3 }).trim().escape(),
+		check('password').isLength({ min: 8 }).trim().escape(),
+		check('cpassword').custom((val, {req}) => {
+			if (val !== req.body.password) {
+				throw new Error('Password fields do not match')
+			} else {
+				return true
+			}
+		}).escape(),
+		check('full_name').isLength({ min: 4 }).trim().escape(),
+		check('email').isEmail().normalizeEmail(),
+	], async (req, res) => {
+		const errors = validationResult(req)
+
+		if (errors.isEmpty()) {
+			console.log('pass')
+			const {
+				org,
+				username,
+				password,
+				full_name,
+				email,
+			} = req.body
+			const sql = {
+				tbl,
+				data: {
+					member_of: org,
+					username,
+					password,
+					full_name,
+					email,
+				}
+			}
+			const { rows } = await DB.doInsert(sql)
+			res.status(200).json({ rows: rows })
+			// res.status(200).json({ rows: 'hit' })
+		} else {
+			console.log('error')
+			return res.status(422).json({ errors: errors.array() })
+		}
 	})
-	.put(async (req, res) => {
+	//todo
+	.put([
+		param('userid').isInt()
+	], async (req, res) => {
 		// res.send('put-ed')
 
 		const { body } = req
@@ -49,15 +97,7 @@ expRtr.route('/:orgid/:userid?')
 	})
 
 // FUNCTIONS
-function userMakeWhere(org, user) {
-	if (user != undefined) {
-		user = cleanArray(user.split(`-`))
-		return `user_id IN (${user})`
-	} else {
-		org = cleanArray(org.split(`-`))
-		return `member_of IN (${org})`
-	}
-}
 
 
-module.exports = router
+// EXPORT ROUTES
+module.exports = expRtr

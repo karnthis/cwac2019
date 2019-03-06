@@ -9,8 +9,8 @@ let count = 0
 let isProd = false
 
 // Misc ENV vars
-const { NODE_ENV } = process.env
-if (NODE_ENV == 'prod') isProd = true
+const { NODE_ENV, IS_PROD } = process.env
+if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
 // todo import models?
 const v1Routes = require('./routes/v1')
@@ -31,24 +31,12 @@ if (!isProd) {
 const acceptThese = [
 
 	/https?:\/\/(?:www\.)?findyour\.agency$/gi,
+	/https?:\/\/findyour\.agency$/gi,
 	/https?:\/\/admin\.findyour\.agency$/gi,
 	/https?:\/\/api\.findyour\.agency$/gi,
 ]
 const corsConfig = {
-	origin: function (origin, callback) {
-		console.log(origin)
-		let match = false
-		for (const regEx in acceptThese) {
-			if (acceptThese[regEx].test(origin)) {
-				match = true
-			}
-		}
-		if (match || !isProd) {
-			callback(null, true)
-		} else {
-			callback('Not allowed by CORS')
-		}
-	}
+	origin: isProd ? /findyour\.agency$/ : /.*/
 }
 app.use(cors(corsConfig));
 
@@ -63,179 +51,179 @@ app.get('/', (req, res) => {
 
 v1Routes(app)
 // app.use('/v1', v1Routes)
-app.use('/auth', authRoutes)
+// app.use('/auth', authRoutes)
 app.use('/dev', devRoutes)
 
 // POST paths
 
-app.post('/auth', (req, res) => {
-	// count += 1
-	console.log(req.body)
-	const { uname, email, pass } = req.body
-	const responseObject = {}
-	let resCode
-	// const login = uname | email
-	switch (true) {
-		case (!uname && !email):
-			responseObject.message = 'Username or Email Address required'
-			resCode = 401
-			break;
-		case (!pass):
-			responseObject.message = 'Password required'
-			resCode = 401
-			break;
-		// case (!uname || !email):
-		// 	responseObject
-		// 	break;
-		// case (!uname || !email):
-		// 	responseObject
-		// 	break;
-		default:
-			//todo
-			const queryObject = {
-				text: 'SELECT name, password FROM USERS WHERE name = $1 OR email = $2',
-				values: ['uname', 'email'],
-			}
-			PGPool.query(queryObject, (err, queryRes) => {
-				if (err) {
-					console.log(err)
-					responseObject.message = 'Query Error'
-					resCode = 400
-				} else {
-					if (queryRes && queryRes.rows && queryRes.rows.length) {
-						res.rows[0]
+// app.post('/auth', (req, res) => {
+// 	// count += 1
+// 	console.log(req.body)
+// 	const { uname, email, pass } = req.body
+// 	const responseObject = {}
+// 	let resCode
+// 	// const login = uname | email
+// 	switch (true) {
+// 		case (!uname && !email):
+// 			responseObject.message = 'Username or Email Address required'
+// 			resCode = 401
+// 			break;
+// 		case (!pass):
+// 			responseObject.message = 'Password required'
+// 			resCode = 401
+// 			break;
+// 		// case (!uname || !email):
+// 		// 	responseObject
+// 		// 	break;
+// 		// case (!uname || !email):
+// 		// 	responseObject
+// 		// 	break;
+// 		default:
+// 			//todo
+// 			const queryObject = {
+// 				text: 'SELECT name, password FROM USERS WHERE name = $1 OR email = $2',
+// 				values: ['uname', 'email'],
+// 			}
+// 			PGPool.query(queryObject, (err, queryRes) => {
+// 				if (err) {
+// 					console.log(err)
+// 					responseObject.message = 'Query Error'
+// 					resCode = 400
+// 				} else {
+// 					if (queryRes && queryRes.rows && queryRes.rows.length) {
+// 						res.rows[0]
 	
-						responseObject.message = 'Match Found'
-					} else {
-						responseObject.message = 'No Results'
-					}
-					resCode = 200
-				}
-				res.statusCode = resCode
-				res.send(responseObject)
-			})
-	}
+// 						responseObject.message = 'Match Found'
+// 					} else {
+// 						responseObject.message = 'No Results'
+// 					}
+// 					resCode = 200
+// 				}
+// 				res.statusCode = resCode
+// 				res.send(responseObject)
+// 			})
+// 	}
 
-	res.statusCode = resCode
-	res.send(responseObject)
-})
+// 	res.statusCode = resCode
+// 	res.send(responseObject)
+// })
 
-//todo
-app.post('/adduser', (req, res) => {
-	// console.log(req.body)
-	const { uname, email, pass } = req.body
-	const queryObject = {
-		text: `INSERT INTO USERS ('username', 'password', 'name', 'email', 'role', 'is_active', 'last_updated') VALUES ()`,
-		values: ['uname', 'email', 'pass'],
-	}
-	if (code === mustMatch) {
-		PGPool.query(queryObject, (err, queryRes) => {
-			console.log(err, queryRes)
-			res.statusCode = 200
-			res.send('Insert Successful')
-		})
-	} else {
-		res.statusCode = 401
-		res.send('Not Authorized')
-	}
-})
+// //todo
+// app.post('/adduser', (req, res) => {
+// 	// console.log(req.body)
+// 	const { uname, email, pass } = req.body
+// 	const queryObject = {
+// 		text: `INSERT INTO USERS ('username', 'password', 'name', 'email', 'role', 'is_active', 'last_updated') VALUES ()`,
+// 		values: ['uname', 'email', 'pass'],
+// 	}
+// 	if (code === mustMatch) {
+// 		PGPool.query(queryObject, (err, queryRes) => {
+// 			console.log(err, queryRes)
+// 			res.statusCode = 200
+// 			res.send('Insert Successful')
+// 		})
+// 	} else {
+// 		res.statusCode = 401
+// 		res.send('Not Authorized')
+// 	}
+// })
 
-//todo
-app.post('/addevent', (req, res) => {
-	// console.log(req.body)
-	const { uname, email, pass } = req.body
-	const queryObject = {
-		text: `INSERT INTO USERS () VALUES ()`,
-		values: ['uname', 'email', 'pass'],
-	}
-	if (code === mustMatch) {
-		PGPool.query(queryObject, (err, queryRes) => {
-			console.log(err, queryRes)
-			res.statusCode = 200
-			res.send('Insert Successful')
-		})
-	} else {
-		res.statusCode = 401
-		res.send('Not Authorized')
-	}
-})
+// //todo
+// app.post('/addevent', (req, res) => {
+// 	// console.log(req.body)
+// 	const { uname, email, pass } = req.body
+// 	const queryObject = {
+// 		text: `INSERT INTO USERS () VALUES ()`,
+// 		values: ['uname', 'email', 'pass'],
+// 	}
+// 	if (code === mustMatch) {
+// 		PGPool.query(queryObject, (err, queryRes) => {
+// 			console.log(err, queryRes)
+// 			res.statusCode = 200
+// 			res.send('Insert Successful')
+// 		})
+// 	} else {
+// 		res.statusCode = 401
+// 		res.send('Not Authorized')
+// 	}
+// })
 
-//todo
-app.post('/addprovider', (req, res) => {
-	// console.log(req.body)
-	const { uname, email, pass } = req.body
-	const queryObject = {
-		text: `INSERT INTO PROVIDERS ('name', 'phone', 'description', 'hours', 'days_of_operation', 'last_verified', 'is_active', 'last_updated') VALUES ()`,
-		values: ['uname', 'email', 'pass'],
-	}
-	if (code === mustMatch) {
-		PGPool.query(queryObject, (err, queryRes) => {
-			console.log(err, queryRes)
-			res.statusCode = 200
-			res.send('Insert Successful')
-		})
-	} else {
-		res.statusCode = 401
-		res.send('Not Authorized')
-	}
-})
+// //todo
+// app.post('/addprovider', (req, res) => {
+// 	// console.log(req.body)
+// 	const { uname, email, pass } = req.body
+// 	const queryObject = {
+// 		text: `INSERT INTO PROVIDERS ('name', 'phone', 'description', 'hours', 'days_of_operation', 'last_verified', 'is_active', 'last_updated') VALUES ()`,
+// 		values: ['uname', 'email', 'pass'],
+// 	}
+// 	if (code === mustMatch) {
+// 		PGPool.query(queryObject, (err, queryRes) => {
+// 			console.log(err, queryRes)
+// 			res.statusCode = 200
+// 			res.send('Insert Successful')
+// 		})
+// 	} else {
+// 		res.statusCode = 401
+// 		res.send('Not Authorized')
+// 	}
+// })
 
-//todo
-app.post('/add/:addType', (req, res) => {
-	// console.log(req.body)
-	const { addType } = req.params
-	req.body.is_active = true
-	// req.body
-	// switch (addType) {
-	// 	case 'USERS':
+// //todo
+// app.post('/add/:addType', (req, res) => {
+// 	// console.log(req.body)
+// 	const { addType } = req.params
+// 	req.body.is_active = true
+// 	// req.body
+// 	// switch (addType) {
+// 	// 	case 'USERS':
 
-	// 		break;
-	// 	case 'PROVIDERS':
+// 	// 		break;
+// 	// 	case 'PROVIDERS':
 
-	// 		break;
-	// 	case 'REFERRALS':
+// 	// 		break;
+// 	// 	case 'REFERRALS':
 
-	// 		break;
-	// 	case 'CRIBS':
+// 	// 		break;
+// 	// 	case 'CRIBS':
 
-	// 		break;
-	// 	case 'ADDRESSES':
+// 	// 		break;
+// 	// 	case 'ADDRESSES':
 
-	// 		break;
-	// 	case 'WAITLIST':
+// 	// 		break;
+// 	// 	case 'WAITLIST':
 
-	// 		break;
-	// 	case 'CLASSES':
+// 	// 		break;
+// 	// 	case 'CLASSES':
 
-	// 		break;
-	// 	case 'ELIGIBILITY_REQUIREMENTS':
+// 	// 		break;
+// 	// 	case 'ELIGIBILITY_REQUIREMENTS':
 
-	// 		break;
-	// }
+// 	// 		break;
+// 	// }
 
-	const beStamped = makeTimestamp()
-	const queryObject = {
-		values: []
-	}
-	let colArr4Str = []
-	let valueArr4Str = []
-	let count = 0 
-	for (key in req.body) {
-		count += 1
-		valueArr4Str.push(`\$${count}`)
-		colArr4Str.push(`${key}`)
-		queryObject.values.push(req.body[key])
-	}
-	const colStringPart = colArr4Str.join(`', '`)
-	const valStringPart = valueArr4Str.join(`, `)
-	queryObject.text = `INSERT INTO ${addType} ('${colStringPart}') VALUES (${valStringPart})`;
+// 	const beStamped = makeTimestamp()
+// 	const queryObject = {
+// 		values: []
+// 	}
+// 	let colArr4Str = []
+// 	let valueArr4Str = []
+// 	let count = 0 
+// 	for (key in req.body) {
+// 		count += 1
+// 		valueArr4Str.push(`\$${count}`)
+// 		colArr4Str.push(`${key}`)
+// 		queryObject.values.push(req.body[key])
+// 	}
+// 	const colStringPart = colArr4Str.join(`', '`)
+// 	const valStringPart = valueArr4Str.join(`, `)
+// 	queryObject.text = `INSERT INTO ${addType} ('${colStringPart}') VALUES (${valStringPart})`;
 
-	PGPool.query(queryObject, (err, queryRes) => {
-		console.log(err, queryRes)
-		res.statusCode = 200
-		res.send(`Insert Successful: ${queryRes}`)
-	})
-})
+// 	PGPool.query(queryObject, (err, queryRes) => {
+// 		console.log(err, queryRes)
+// 		res.statusCode = 200
+// 		res.send(`Insert Successful: ${queryRes}`)
+// 	})
+// })
 
 // Dev Routes
 

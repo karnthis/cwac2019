@@ -3,7 +3,8 @@ const {
 	PGPASSWORD,
 	PGHOST,
 	PGPORT,
-	PGDATABASE
+	PGDATABASE,
+	IS_PROD
 } = process.env
 const {
 	Pool
@@ -12,13 +13,26 @@ const {
 	cleanArray
 } = require('../libs')
 
-const PGPool = new Pool({
-	user: PGUSER,
-	host: PGHOST,
-	database: PGDATABASE,
-	password: PGPASSWORD,
-	port: PGPORT,
-})
+let pgConfig
+if (!IS_PROD) {
+	pgConfig = {
+		user: 'postgres',
+		host: 'localhost',
+		database: 'postgres',
+		password: 'postgres',
+		port: '5432',
+	}
+} else {
+	pgConfig = {
+		user: PGUSER,
+		host: PGHOST,
+		database: PGDATABASE,
+		password: PGPASSWORD,
+		port: PGPORT,
+	}
+}
+
+const PGPool = new Pool(pgConfig)
 
 // FUNCTIONS
 const makeWhere = (vals = '', field = 'provider_id') => {
@@ -41,26 +55,31 @@ const makeUpdates = (updateObj = {}) => {
 	return retString.slice(0, -2) //* trim trailing ', '
 }
 
-const makeInserts = (dataArray = []) => {
-	let retString = ''
-	for (const i in dataArray) {
-		retString += `${i} = `
-		if (isNaN(parseInt(x))) {
-			retString += `'${updateObj[i]}'`
-		} else {
-			retString += `${parseInt(updateObj[i])}`
-		}
-		retString += `, `
+function makePlaces(x) {
+	let str = `\$${x}`
+	if (x > 1) str = makePlaces(x-1).concat(', ', str)
+	return str
+}
+
+const makeMarkers = (x) => {
+	const markerCols = Object.keys(x)
+	return {
+		markerCols,
+		markerData: Object.values(x),
+		markerPlaces: makePlaces(markerCols.length),
 	}
-	return retString.slice(0, -2) //* trim trailing ', '
 }
 
 // EXPORTED FUNCTIONS
 const query = (sql) => PGPool.query(sql)
 
 const doSelect = (qryObj) => {
-	const { cols, tbl, inField, wVals } = qryObj
-	const sql = `SELECT ${cols} FROM ${tbl} ${makeWhere(wVals, inField)}`
+	const { tbl, cols, data } = qryObj
+	const { markerCols, markerData, markerPlaces } = makeMarkers(data)
+	const sql = {
+		text: `SELECT ${cols} FROM ${tbl} WHERE ${markerCols} = ${markerPlaces}`,
+		values: markerData
+	}
 	return PGPool.query(sql)
 }
 
@@ -70,18 +89,19 @@ const doUpdate = (qryObj) => {
 	return PGPool.query(sql)
 }
 
-const doInsert = (text, params) => {
-	// PGPool.query(text, params)
-
-	const { cols, tbl, inField, wVals } = qryObj
-	// const sql = `SELECT ${cols} FROM ${tbl} ${makeWhere(wVals, inField)}`
-	makeUpdates(obj)
-	const sql = `INSERT INTO ${tbl} (${cols}) VALUES ${makeWhere(wVals, inField)}`
+const doInsert = (qryObj) => {
+	const { tbl, data } = qryObj
+	const { markerCols, markerData, markerPlaces } = makeMarkers(data)
+	const sql = {
+		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces})`,
+		values: markerData
+	}
 	return PGPool.query(sql)
 }
 
 module.exports = {
 	query,
 	doSelect,
+	doInsert,
 	doUpdate,
 }

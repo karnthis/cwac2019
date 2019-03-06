@@ -58,10 +58,10 @@ services:
     volumes:
       - "dbdata:/var/lib/postgresql/data"
     labels:
-      - traefik.backend=postgres-main
-      - traefik.frontend.rule=Host:postgres.${COREDOMAIN}
-      - traefik.port=5432
-      - traefik.frontend.priority=5
+      - traefik.backend=db-main
+      # - traefik.frontend.rule=Host:postgres.${COREDOMAIN}
+      # - traefik.port=5432
+      # - traefik.frontend.priority=5
 
   api-nodejs:
     image: node:latest
@@ -69,8 +69,8 @@ services:
     restart: always
     command: ["node", "index"]
     environment: 
-      NODE_ENV: dev
-      IS_PROD: "false"
+      NODE_ENV: ${RUN_ENV}
+      IS_PROD: ${IS_PROD}
       PGHOST: 'db-main'
       PGDATABASE: 'postgres'
       PGUSER: 'postgres'
@@ -83,3 +83,8 @@ services:
       - db-main
     volumes:
       - "./api-nodejs:/home/app"
+    labels:
+      - traefik.backend=api-nodejs
+      - traefik.frontend.rule=Host:api.${COREDOMAIN}
+      - traefik.port=51515
+      - traefik.frontend.priority=5
