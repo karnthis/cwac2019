@@ -41,7 +41,7 @@ expRtr.route('/:orgid/:userid?')
 	})
 	//*	done
 	.post([
-		check('org').isInt(),//.toInt(),
+		param('orgid').isInt(),//.toInt(),
 		check('username').isLength({ min: 3 }).trim().escape(),
 		check('password').isLength({ min: 8 }).trim().escape(),
 		check('cpassword').custom((val, {req}) => {
@@ -59,7 +59,6 @@ expRtr.route('/:orgid/:userid?')
 		if (errors.isEmpty()) {
 			console.log('pass')
 			const {
-				org,
 				username,
 				password,
 				full_name,
@@ -68,7 +67,7 @@ expRtr.route('/:orgid/:userid?')
 			const sql = {
 				tbl,
 				data: {
-					member_of: org,
+					member_of: req.params.orgid,
 					username,
 					password,
 					full_name,
