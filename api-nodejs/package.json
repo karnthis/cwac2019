@@ -1,0 +1,50 @@
+{
+	"name": "generatehealth-core",
+	"version": "1.0.0",
+	"description": "API Core for GenerateHealth crib inventory and referral system",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon ./index.js",
+		"start": "node ./index.js",
+		"rebuild": "npm i && node ./index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"keywords": [
+		"Inventory",
+		"Referrals",
+		"GenerateHealth",
+		"Elegibility Tracking"
+	],
+	"author": "Erin Rivas & Carolyn Peters",
+	"contributors": [
+		{
+			"name": "Erin Rivas",
+			"email": "erin@atomicbear.com",
+			"url": "https://github.com/karnthis/"
+		},
+		{
+			"name": "Carolyn Peters",
+			"email": "",
+			"url": "https://github.com/cmpeters08"
+		}
+	],
+	"license": "MIT",
+	"dependencies": {
+		"bcrypt": "^3.0.4",
+		"cors": "^2.8.5",
+		"dotenv": "^6.2.0",
+		"errorhandler": "^1.5.0",
+		"express": "^4.16.4",
+		"express-promise-router": "^3.0.3",
+		"express-validator": "^5.3.1",
+		"passport": "^0.4.0",
+		"pg": "^7.7.1"
+	},
+	"devDependencies": {
+		"nodemon": "^1.18.9"
+	}
+}

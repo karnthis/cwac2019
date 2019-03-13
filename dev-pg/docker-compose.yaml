@@ -1,0 +1,16 @@
+version: "3"
+
+volumes:
+  dev-dbdata:
+  
+services:
+  db-dev:
+    image: postgres:latest
+    container_name: "db-dev"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+    ports:
+      - "5432:5432"
+    volumes:
+      - "dev-dbdata:/var/lib/postgresql/data"

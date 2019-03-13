@@ -1,4 +1,6 @@
+# DIRECTORIES
 node_modules/
-devop/
 notes/
-docker*
+
+# FILES
+.env
