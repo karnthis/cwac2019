@@ -1,174 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="./styles/main.css">
+	<script src="./libs/class.js"></script>
+	<script src="./libs/main.js"></script>
+
 	<title>CWAC 2019: Main</title>
 </head>
+
 <body class="">
 	<section class="grid main">
 		<div class="spacer"></div>
 		<div class="grid content">
-		<div class="top">
-	<h1>Main Page</h1>
-	<p>Welcome to Find Your Agency</p>
-		</div>
-	<div class="form">
-	<form class="findCribs">
-	<h4>Referals</h4>
-	<div class="form-item">
-		My orgainization: <input type="text" name="refer-sender"></br>
-	</div>
-	<div class="form-item">
-		Date of referal: <input type="date" name="refer-date"></br>
-	</div>
-	<div class="form-item">
-		<!-- make this a dropdown -->
-		Organization client is being refered to: <div class="form-item"></div><input type="text" name="refer-sendee"></br>
-		Is the client eligibale with the above Organization: 
-		<input type="radio" name="refer-client-eligibility" value:"Y">Yes
-		<input type="radio" name="refer-client-eligibility" value:"N">No</br>
-	</div>
-	</form>
+			<div class="top">
+				<h1>Main Page</h1>
+				<p>Welcome to Find Your Agency</p>
+			</div>
+			<div class="grid formMenu menu">
+					<span>Select Your Form</span>
+					<button id="checkElig">See All Providers</button>
+					<button id="">TBD</button>
+					<button id="">TBD</button>
+					<button id="">TBD</button>
+				</div>
+			<div class="grid viewMenu menu">
+				<button id="btn1">See All Users</button>
+				<button id="btn2">See All Providers</button>
+				<button id="btn3">See All Eligibility</button>
+				<button id="btn4">See All Inventories</button>
+			</div>
+			<div class="forms">
+				<form class="checkElig form noShow">
+					<div class="form-item">
+						<label for="public_assistance">public_assistance</label>
+						<input id="public_assistance" type="text">
+					</div>
+					<div class="form-item">
+						<label for="mother_17_or_younger">mother_17_or_younger</label>
+						<input id="mother_17_or_younger" type="text">
+					</div>
+					<div class="form-item">
+						<label for="is_client">is_client</label>
+						<input id="is_client" type="text">
+					</div>
+					<div class="form-item">
+						<label for="client_of_other">client_of_other</label>
+						<input id="client_of_other" type="text">
+					</div>
+					<div class="form-item">
+						<label for="trimester">trimester</label>
+						<input id="trimester" type="text">
+					</div>
+					<div class="form-item">
+						<label for="residency_requirement">residency_requirement</label>
+						<input id="residency_requirement" type="text">
+					</div>
+				</form>
+				<form class="updateCribs form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
 
-</br>
-	<form class="updateCribs">
-		<div>
-			<h4>Update Crib Count</h4>
-		<div class="form-item">
-			Number of Cribs avaliable: <input type="number" name="crib_count"></br>
-		</div>
-		</div>
-	</form>
-</br>
-<form class="addresses">
-	<div class="form-item">
-		Name of Location: <input type="text" class="location_name"></br>
-	</div>
-	<div>
-		Location is primary site of operation:
-		<input type="radio" name="primary_site" value:"Y">Yes
-		<input type="radio" name="primary_site" value:"N">No</br>
-	</div>
-	<div class="form-item">
-		Location Type: <input type="text" name="location_type"></br>
-	</div>
-	<div class="form-item">
-		Street:  <input type="text" name="street"></br>
-						 <input type="text" name="line_2"></br>
-		City: 	 <input type="text" name="city"></br>
-		State:	 <input type="text" name="state" maxlength="2"></br>
-		Zipcode: <input type="text" name="zip_code" maxlength="10"></br>
-	</div>
-	<div class="form-item">
-	
-	</div>
-	<div class="form-item">
-	
-	</div>
-	<div class="form-item">
-		
-	</div>
-	<div class="form-item">
-		
-	</div>
-</form>
-		<!-- Add a form to make a new instance of an existing class or add a drop down to below -->
-	<form class="addClass">
-			<h4>Add New Class</h4>
-		<div class="form-item">
-			Class Name: <input type="text" name="class_name"></br>
-		</div>
-		<div class="form-item">
-			Class Description <input type="text" name="class-_description"></br>
-		</div>
-		<div class="form-item">
-			Date: <input type="date" name="date_of_class"></br>
-		</div>
-		<div class="form-item">
-			Time: <input type="time" name="time_of_class"></br>
-		</div>
-		<div class="form-item">
-			Location: <input type="text" name="location_of_class"></br>
-		</div>
-		<div class="form-item">
-			Maximum Number of Attendees: <input type="number" name="max_attendees"></br>
-		</div>
-		<div class="form-item">
-			Current Number of Attendees: <input type="number" name="current_attendee_count"></br>
-		</div>
-	</form>
-	<form class="addToWaitlist">
-			<h4>Add Client to Waitlist</h4>
-			<div class="form-item">
-				Providers the client is eligibale for: <input type="text" class="eligiable_for"></br>
+				</form>
+				<form class="addClass form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+
+				</form>
+				<form class="add form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+
+				</form>
+				<form class="addClass form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+
+				</form>
+				<form class="addClass form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+
+				</form>
+				<form class="addClass form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+
+				</form>
+				<form class="addClass form noShow">
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+					<div class="form-item"></div>
+
+				</form>
 			</div>
-			<div class="form-item">
-				Today's Date: <input type="date" class="waitlistDate"></br>
-			</div>
-	</form>
-	<form class="eligibiltyCheck">
-			<div class="form-item">
-				Caregiver is on public assistance:
-					<input type="radio" name="public-assistance" value:"Y">Yes
-					<input type="radio" name="public-assistance" value:"N">No</br>
-			</div>
-			<div class="form-item">
-				Mother is 17 years old or younger:
-					<input type="radio" name="mother_17_or_younger" value:"Y">Yes
-					<input type="radio" name="mother_17_or_younger" value:"N">No</br>
-			</div>
-			<div class="form-item">
-				Caregiver is a client of my organization:
-					<input type="radio" name="is_client" value:"Y">Yes
-					<input type="radio" name="is_client" value:"N">No</br>
-			</div>
-			<!-- <div class="form-item">
-				Infant is one year old or younger:
-					<input type="radio" name="infant_under_1_year" value:"Y">Yes
-					<input type="radio" name="infant_under_1_year" value:"N">No</br>
-			</div> -->
-			<div class="form-item">
-				Mother is at least in the second trimester or infant is under 1 year old:
-					<input type="radio" name="months_pregnant" value:"Y">Yes
-					<input type="radio" name="months_pregnant" value:"N">No</br>
-			</div>
-			<div class="form-item">
-				Caregiver's county of residence:
-					<input type="radio" name="residency_requirement" value:"Y">Yes
-					<input type="radio" name="residency_requirement" value:"N">No</br>
-			</div>
-			<div class="form-item">
-				Caregiver is a client of one the following organizaitons: 
-				<select multiple name="client_of_other">
-						<option value="None">No</option>
-						<option value="AffiniaHealthcare">Affinia Healthcare</option>
-						<option value="Barnes Jewish Hospital- Teen Pregnancy">Barnes Jewish Hospital- Teen Pregnancy</option>
-						<option value="Family Care Health Center">Family Care Health Center</option>
-						<option value="Giving is a Family Tradition">Giving is a Family Tradition</option>
-						<option value="Infant Loss Resources">Infant Loss Resources</option>
-						<option value="Jamaa Birth Village">Jamaa Birth Village</option>
-						<option value="Lutheran Family Children's Services">Lutheran Family Children's Services</option>
-						<option value="Nurses for Newborns">Nurses for Newborns</option>
-						<option value="Parents As Teachers">Parents As Teachers</option>
-						<option value="Giving is a Family Tradition">Cardinal Glennon NICU</option>
-						<option value="Giving is a Family Tradition">St. Louis Children's Hospital NICU</option>
-						<option value="St. Louis Children's Hospital">St. Louis Children's Hospital</option>
-						<option value="SLCH- Raising St. Louis">SLCH- Raising St. Louis</option>
-						<option value="St. Louis County Department of Public Health">St. Louis County Department of Public Health</option>
-						<option value="St. Louis Crisis Nursery ">St. Louis Crisis Nursery </option>
-						<option value="SSM Health Cardinal Glennon">SSM Health Cardinal Glennon</option>
-					</select>
+			<div class="results">
+				result
 			</div>
 		</div>
-	</form>
-	<div class="results">
-		result
-	</div>
-	</div>
-	<div class="spacer"></div>
-</section>
+		<div class="spacer"></div>
+	</section>
 </body>
+
 </html>

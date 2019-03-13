@@ -4,10 +4,14 @@
 .main {
 	grid-template-columns: var(--side-channels) 1fr var(--side-channels);
 }
+.noShow {
+	display: none;
+}
 
 .grid {
 	display: grid;
 	column-gap: 1ch;
+	row-gap: 1ch;
 }
 
 .content {
@@ -16,11 +20,17 @@
 }
 
 .top {
-	grid-column: span 1 / 2;
+	/* grid-column: span 2; */
 	background: green;
-
 }
-.form {
+.menu {
+	background: purple;
+	grid-auto-flow: column;
+	grid-auto-columns: 150px;
+	row-gap: 3px;
+	grid-template-rows: repeat(2, 45px);
+}
+.forms {
 	grid-column: 1;
 	/* height: 110px; */
 	background: orange;
@@ -28,27 +38,37 @@
 }
 .results {
 	grid-column: 2;
-	height: 150px;
+	min-height: 150px;
 	background: blue;
+}
 
+/* menus */
+.formMenu {
+	/* grid-column: span 2; */
+}
+.viewMenu {
+	grid-column: span 2;
 }
 
 /* form types */
+.form {
+
+}
 .findCribs {
-	display: none;
+
 }
 .updateCribs {
-	display: none;
+
 }
 .addClass {
-	display: none;
+
 }
 .addToWaitlist {
-	display: none;
+
 }
 .eligibiltyCheck {
-	display: none;
+
 }
 .addresses {
-	display: none;
+
 }
