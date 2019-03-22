@@ -1,4 +1,4 @@
-:root {
+/* :root {
 	--side-channels: 75px;
 }
 .main {
@@ -6,7 +6,7 @@
 }
 .noShow {
 	display: none;
-}
+} */
 
 .grid {
 	display: grid;
@@ -19,10 +19,22 @@
 	/* background: yellowgreen; */
 }
 
-.top {
-	/* grid-column: span 2; */
+.toolbar {
 	background: green;
+	grid-template-columns: 1fr 1fr;
 }
+.toolbar > div {
+	grid-template-rows: 45px 45px;
+	grid-auto-flow: column;
+}
+
+.views {
+	/* background: green; */
+}
+.forms {
+	/* background: green; */
+}
+
 .menu {
 	background: purple;
 	grid-auto-flow: column;
@@ -30,12 +42,12 @@
 	row-gap: 3px;
 	grid-template-rows: repeat(2, 45px);
 }
-.forms {
+/* .forms {
 	grid-column: 1;
-	/* height: 110px; */
+	height: 110px;
 	background: orange;
 
-}
+} */
 .results {
 	grid-column: 2;
 	min-height: 150px;
