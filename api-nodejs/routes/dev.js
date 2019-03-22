@@ -30,19 +30,23 @@ expRtr.route('/:cmd?')
 				for (const one in tables) {
 					const _ = await DB.query(`DELETE FROM ${tables[one]}`)
 				}
-				res.status(200).json({data: 'done'})
+				res.status(200).json({data: 'delete done'})
 				break;
 			case 'drop':
 				for (const one in tables) {
 					const _ = await DB.query(`DROP TABLE IF EXISTS ${tables[one]}`)
 				}
-				res.status(200).json({data: 'done'})
+				res.status(200).json({data: 'drop done'})
 				break;
-			default:
+				case 'insert':
 				for (const stmnt in sql) {
+					console.log(stmnt)
 					const _ = await DB.query(sql[stmnt])
 				}
-				res.status(200).json({data: 'done'})
+				res.status(200).json({data: 'insert done'})
+				break;
+				default:
+				res.status(200).json({data: 'nothing done'})
 		}
 	} else {
 		console.log('error')
