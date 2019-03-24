@@ -1,9 +1,9 @@
-const { handleRes, makeTimestamp } = require('./shared')
+// const { handleRes, makeTimestamp } = require('./shared')
 const { safeBool } = require('./sanitize')
 
 
 module.exports = {
-	handleRes,
-	makeTimestamp,
+	handleRes: () => false,
+	makeTimestamp: () => false,
 	safeBool,
 }

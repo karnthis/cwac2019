@@ -1,3 +1,4 @@
+// ROUTES
 const calendar = require('./calendar')
 // const county = require('./county')
 const eligibility = require('./eligibility')
@@ -9,7 +10,9 @@ const auth = require('./auth')
 // const address = require('./address')
 // const waitlist = require('./waitlist')
 
+// EXPORT
 module.exports = (app) => {
+	// USE ROUTES
 	app.use('/calendar', calendar)
 	// app.use('/county', county)
 	app.use('/eligibility', eligibility)
