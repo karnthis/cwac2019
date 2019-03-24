@@ -5,7 +5,7 @@ const BearerStrategy = require('passport-http-bearer').Strategy;
 const DB = require('../core/db')
 
 // INTERNAL VARS
-const table
+// const table
 
 // INTERAL FUNCTIONS
 function cError(txt = '', err = null) {
@@ -24,7 +24,7 @@ Passport.use(new BearerStrategy(
   }
 ));
 
-function genCrypto({ base = 'base64', bytes =  } = {}) {
+function genCrypto({ base = 'base64', bytes = 32 } = {}) {
 	Crypto.randomBytes(48).toString('hex')
 
 

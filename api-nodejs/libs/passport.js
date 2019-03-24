@@ -3,6 +3,9 @@ BearerStrategy = require('passport-http-bearer').Strategy;
 const DB = require('../core/db')
 
 Passport.use(new BearerStrategy(
+
+
+	
   function(token, done) {
 		console.log('pp hit')
     User.findOne({ token: token }, function (err, user) {
@@ -13,7 +16,9 @@ Passport.use(new BearerStrategy(
   }
 ));
 
-
+// findToken,
+// saveToken,
+// refreshToken,
 // Passport.authenticate('bearer', { session: false })
 
 

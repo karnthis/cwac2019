@@ -1,7 +1,7 @@
 const { check, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
 
-const { MUST_MATCH = 'goodSamplegoESheer' } = process.env;
+const { MUST_MATCH } = process.env;
 
 const rootGet = {func: async (req, res) => {
 	const { rows } = await DB.query(`SELECT * FROM pg_catalog.pg_tables WHERE tablename NOT LIKE 'pg_%' AND tablename NOT LIKE 'sql_%'`)

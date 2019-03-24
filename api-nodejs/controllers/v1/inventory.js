@@ -15,10 +15,10 @@ const cols = [
 
 const tbl = 'INVENTORY'
 
-constrootGet = {}
-constrootPost = {}
-constinv_idGet = {}
-constinv_idPut = {}
+const rootGet = {}
+const rootPost = {}
+const inv_idGet = {}
+const inv_idPut = {}
 
 rootGet.func = async (req, res) => {
 	const {
@@ -131,6 +131,5 @@ module.exports = {
 	rootGet,
 	rootPost,
 	inv_idGet,
-	inv_idPost,
 	inv_idPut,
 }

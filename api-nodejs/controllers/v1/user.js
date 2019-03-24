@@ -43,15 +43,12 @@ useridGet.func = async (req, res) => {
 	//todo
 	const {
 		userid,
-		userid
 	} = req.params
 	const sql = {
 		cols,
 		tbl,
-		data: (userid) ? {
+		data: {
 			user_id: userid
-		} : {
-			member_of: userid
 		}
 	}
 	console.log(sql)

@@ -1,26 +1,25 @@
-// ROUTES
-const calendar = require('./calendar')
-// const county = require('./county')
-const eligibility = require('./eligibility')
-const inventory = require('./inventory')
-const provider = require('./provider')
-const users = require('./user')
-const auth = require('./auth')
-// const referral = require('./referral')
-// const address = require('./address')
-// const waitlist = require('./waitlist')
+const {
+	check,
+	param,
+	validationResult
+} = require('express-validator/check')
 
+
+const tmp = (req, res, next) => {
+	param('orgid').isInt()
+	next()
+}
 // EXPORT
 module.exports = (app) => {
 	// USE ROUTES
-	app.use('/calendar', calendar)
-	// app.use('/county', county)
-	app.use('/eligibility', eligibility)
-	app.use('/inventory', inventory)
-	app.use('/provider', provider)
-	app.use('/users', users)
-	app.use('/auth', auth)
-	// app.use('/referral', referral)
-	// app.use('/address', address)
-	// app.use('/waitlist', waitlist)
+	app.use('/calendar', require('./calendar'))
+	// app.use('/county', require('./county'))
+	app.use('/eligibility', require('./eligibility'))
+	app.use('/inventory', require('./inventory'))
+	app.use('/provider', require('./provider'))
+	app.use('/users', tmp(), require('./user'))
+	app.use('/auth', require('./auth'))
+	// app.use('/referral', require('./referral'))
+	// app.use('/address', require('./address'))
+	// app.use('/waitlist', require('./waitlist'))
 }
