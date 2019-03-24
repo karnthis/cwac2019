@@ -3,6 +3,7 @@ const {
 	validationResult
 } = require('express-validator/check')
 const DB = require('../../core/db')
+const { minPWLength } = require('../../core/config')
 
 const tbl = 'USERS'
 
@@ -13,7 +14,7 @@ rootPost.validate = [
 		min: 3
 	}).trim().escape(),
 	check('password').isLength({
-		min: 16
+		min: minPWLength
 	}).trim().escape(),
 ]
 

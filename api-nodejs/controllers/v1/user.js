@@ -6,17 +6,22 @@ const {
 const Argon2 = require('argon2')
 const ghCrypto = require('../../core/crypto')
 const DB = require('../../core/db')
+const { minPWLength } = require('../../core/config')
 
 const cols = [
 	'user_id',
 	'full_name',
 	'member_of',
 	'email',
-	'password'
+	// 'password'
 ]
 const tbl = 'USERS'
 
+//todo verify everything works
+
 const rootGet = {}
+const useridGet = {}
+const useridPut = {}
 const orgidGet = {}
 const orgidPost = {}
 const orgidPut = {}
@@ -30,14 +35,14 @@ rootGet.func = async (req, res) => {
 	})
 }
 
-orgidGet.validate = [
-	param('orgid').isInt(),
-	param('userid').isInt().optional(),
+useridGet.validate = [
+	param('userid').isInt(),
 ]
 
-orgidGet.func = async (req, res) => {
+useridGet.func = async (req, res) => {
+	//todo
 	const {
-		orgid,
+		userid,
 		userid
 	} = req.params
 	const sql = {
@@ -46,6 +51,41 @@ orgidGet.func = async (req, res) => {
 		data: (userid) ? {
 			user_id: userid
 		} : {
+			member_of: userid
+		}
+	}
+	console.log(sql)
+	const {
+		rows
+	} = await DB.doSelect(sql)
+	res.status(200).json({
+		data: rows
+	})
+}
+
+useridPut.validate = [
+	param('userid').isInt()
+]
+
+useridPut.func = async (req, res) => {
+	//todo
+	res.status(403).send('Under Construction')
+}
+
+orgidGet.validate = [
+	param('orgid').isInt(),
+]
+
+orgidGet.func = async (req, res) => {
+	//todo	confirm done
+	const {
+		orgid,
+		userid
+	} = req.params
+	const sql = {
+		cols,
+		tbl,
+		data: {
 			member_of: orgid
 		}
 	}
@@ -64,7 +104,7 @@ orgidPost.validate = [
 		min: 3
 	}).trim().escape(),
 	check('password').isLength({
-		min: 16
+		min: minPWLength
 	}).trim().escape(),
 	check('cpassword').custom((val, {
 		req
@@ -127,6 +167,7 @@ orgidPut.validate = [
 ]
 
 orgidPut.func = async (req, res) => {
+	//todo
 	res.status(403).send('Under Construction')
 }
 
@@ -136,6 +177,8 @@ orgidPut.func = async (req, res) => {
 // EXPORT ROUTES
 module.exports = {
 	rootGet,
+	useridGet,
+	useridPut,
 	orgidGet,
 	orgidPost,
 	orgidPut,
