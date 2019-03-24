@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 
-// const Passport = require('passport')
+const Passport = require('./libs/passport')
 
 let count = 0
 let isProd = false
@@ -14,12 +14,14 @@ if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
 // todo import models?
 const v1Routes = require('./routes/v1')
-const devRoutes = require('./routes/dev')
 
 // set up express
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+// passport
+// app.use(Passport.authenticate('bearer', { session: false }))
 
 // errors
 if (!isProd) {
@@ -39,8 +41,8 @@ app.get('/', (req, res) => {
 
 v1Routes(app)
 
-//TODO	TO BE REMOVED
-app.use('/dev', devRoutes)
+//TODO: 	TO BE REMOVED
+app.use('/dev', require('./routes/dev'))
 
 
 // Start server
