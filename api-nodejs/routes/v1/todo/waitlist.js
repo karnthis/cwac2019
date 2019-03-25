@@ -50,7 +50,7 @@ expRtr.route('/')
 					hours,
 					description: desc || null,
 					days_of_operation: days || null,
-					last_verified: makeTimestamp(),
+					last_verified: makeDateStamp(),
 				}
 			}
 			const { rows } = await DB.doInsert(sql)

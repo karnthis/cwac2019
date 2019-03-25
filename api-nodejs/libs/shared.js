@@ -15,7 +15,7 @@ const { LogSQLObject } = require('./classes')
 // let toLog = new LogSQLObject([1,2])
 
 // Functions
-function makeTimestamp() {
+function makeDateStamp() {
 	return Math.floor(Date.now()/1000)
 }
 
