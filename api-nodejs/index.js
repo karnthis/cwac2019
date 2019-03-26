@@ -32,7 +32,12 @@ if (!isProd) {
 const corsConfig = {
 	origin: isProd ? /findyour\.agency$/ : /.*/
 }
-app.use(cors(corsConfig));
+app.use(cors(corsConfig))
+
+app.use((req, res, next) => {
+	console.log(req.headers.authorization)
+	next()
+})
 
 // GET paths
 app.get('/', (req, res) => {

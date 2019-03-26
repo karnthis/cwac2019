@@ -34,13 +34,23 @@ if (!IS_PROD) {
 
 const PGPool = new Pool(pgConfig)
 
+//todo	move to shared functions
+function makeDateStamp(t) {
+	t = parseInt(t)
+	t = (isNaN(t)) ? 0 : t
+	const dd = new Date()
+	dd.setHours(dd.getHours() + t)
+	return Math.floor(dd.getTime()/1000)
+}
+// ========== //
+
 // FUNCTIONS
-const makeWhere = (vals = '', field = 'provider_id') => {
+function makeWhere(vals = '', field = 'provider_id') {
 	valArr = cleanArray(vals.split(`-`))
 	return (vals) ? `WHERE ${field} IN (${valArr})` : ''
 }
 
-const makeUpdates = (updateObj = {}) => {
+function makeUpdates(updateObj = {}) {
 	let retString = ''
 	for (const key in updateObj) {
 		retString += `${key} = `
@@ -61,7 +71,7 @@ function makePlaces(x) {
 	return str
 }
 
-const makeMarkers = (x) => {
+function makeMarkers(x) {
 	const markerCols = Object.keys(x)
 	return {
 		markerCols,
@@ -71,9 +81,11 @@ const makeMarkers = (x) => {
 }
 
 // EXPORTED FUNCTIONS
-const query = (sql) => PGPool.query(sql)
+function query(sql) {
+	return PGPool.query(sql)
+}
 
-const doSelect = (qryObj) => {
+function doSelect(qryObj) {
 	const { tbl, cols, data } = qryObj
 	const { markerCols, markerData, markerPlaces } = makeMarkers(data)
 	const sql = {
@@ -83,13 +95,63 @@ const doSelect = (qryObj) => {
 	return PGPool.query(sql)
 }
 
-const doUpdate = (qryObj) => {
+function doSelectToken(tkn) {
+	const qryObj = { 
+		tbl: 'USER_SESSIONS',
+		cols: [
+			'user_id',
+			'refresh_token',
+			'refresh_expires',
+			'session_token',
+			'session_expires',
+		],
+		data: {
+			session_token: tkn,
+		},
+	}
+	return doSelect(qryObj)
+}
+
+async function doTokenUpdate(type = '', stkn = '', replacement = {}) {
+	const tbl = 'USER_SESSIONS'
+	const delqry = {
+		text: `DELETE FROM USER_SESSIONS WHERE session_token = ?`,
+		values: [
+			stkn
+		]
+	}
+	const _ = await query(delqry)
+	if (type == 'refresh') {
+		const insqry = {
+			tbl,
+			data: replacement,
+		}
+		const _ = await doInsert(insqry)
+		return true
+	} else {
+		return false
+	}
+	
+
+}
+
+function doUpdate(qryObj) {
 	const { dataObj, tbl, inField, wVals } = qryObj
 	const sql = `UPDATE ${tbl} SET ${makeUpdates(dataObj)} ${makeWhere(wVals, inField)}`
 	return PGPool.query(sql)
 }
 
-const doInsert = (qryObj) => {
+function doInsert(qryObj) {
+	const { tbl, data } = qryObj
+	const { markerCols, markerData, markerPlaces } = makeMarkers(data)
+	const sql = {
+		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces})`,
+		values: markerData
+	}
+	return PGPool.query(sql)
+}
+
+function doDelete(qryObj) {
 	const { tbl, data } = qryObj
 	const { markerCols, markerData, markerPlaces } = makeMarkers(data)
 	const sql = {
@@ -104,4 +166,7 @@ module.exports = {
 	doSelect,
 	doInsert,
 	doUpdate,
+
+	doSelectToken,
+	// doRefreshToken,
 }
