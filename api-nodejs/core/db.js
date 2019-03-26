@@ -11,7 +11,7 @@ const {
 } = require('pg')
 const {
 	cleanArray
-} = require('../libs')
+} = require('./funcs')
 
 let pgConfig
 if (!IS_PROD) {

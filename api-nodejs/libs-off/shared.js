@@ -35,9 +35,7 @@ function runQuery(PGPool, sql, res) {
 	})
 }
 
-function cleanArray(arr) {
-	return arr.filter(x => !isNaN(parseInt(x))).map(x => parseInt(x))
-}
+
 
 function userMakeWhere(org, user) {
 	if (user != undefined) {

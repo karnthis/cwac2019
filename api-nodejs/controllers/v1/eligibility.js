@@ -1,4 +1,3 @@
-const Router = require('express-promise-router')
 const {
 	check,
 	param,
@@ -7,8 +6,7 @@ const {
 const DB = require('../../core/db')
 const {
 	makeTimestamp
-} = require('../../libs')
-const expRtr = new Router()
+} = require('../../core/funcs')
 
 //todo
 const cols = [

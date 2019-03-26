@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 
-const Passport = require('./libs/passport')
 
 let count = 0
 let isProd = false

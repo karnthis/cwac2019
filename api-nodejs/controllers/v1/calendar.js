@@ -1,8 +1,6 @@
-const Router = require('express-promise-router')
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
-const { makeTimestamp } = require('../../libs')
-const expRtr = new Router()
+const { makeTimestamp } = require('../../core/funcs')
 
 //todo
 const cols = [
