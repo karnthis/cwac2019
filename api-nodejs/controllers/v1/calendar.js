@@ -1,6 +1,6 @@
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
-const { makeTimestamp } = require('../../core/funcs')
+const { makeDateStamp } = require('../../core/funcs')
 
 //todo
 const cols = [
@@ -57,7 +57,7 @@ rootGet.func = async (req, res) => {
 					hours,
 					description: desc || null,
 					days_of_operation: days || null,
-					last_verified: makeTimestamp(),
+					last_verified: makeDateStamp(),
 				}
 			}
 			const { rows } = await DB.doInsert(sql)

@@ -119,7 +119,7 @@ orgidPost.validate = [
 ]
 
 orgidPost.argon = (req, res, next) => {
-	req.body.password = ghCrypto.encryptPW(req.body.password)
+	req.body.password = ghCrypto.encryptString(req.body.password)
 	next()
 }
 

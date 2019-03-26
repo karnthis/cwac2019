@@ -5,7 +5,7 @@ const {
 } = require('express-validator/check')
 const DB = require('../../core/db')
 const {
-	makeTimestamp
+	makeDateStamp
 } = require('../../core/funcs')
 
 //todo

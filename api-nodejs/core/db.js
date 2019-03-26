@@ -100,20 +100,15 @@ function findToken(qryObj) {
 	return PGPool.query(sql)
 }
 
-function saveToken(qryObj) {
+function saveToken(tknObj) {
 	//todo
-	const cols = [
-		username,
-		user_id,
-		refresh_token,
-		session_token,
-		expires
-	]
-	const { tkn = '', user = '' } = qryObj
-	const sql = {
-		text: `SELECT ${cols} FROM USERS LEFT JOIN USER_SESSIONS using(user_id) WHERE session_token = $1 OR username = $2`,
-		values: [ tkn, user ]
+	const qryObj = {
+		tbl:'USER_SESSIONS',
+		data: tknObj,
 	}
+
+	doInsert(qryObj)
+
 	return PGPool.query(sql)
 }
 

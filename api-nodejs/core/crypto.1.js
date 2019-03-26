@@ -1,19 +1,15 @@
 const Argon2 = require('argon2')
 const Crypto = require('crypto')
-const Passport = require('passport')
-const BearerStrategy = require('passport-http-bearer').Strategy;
 const DB = require('../core/db')
-
-// INTERNAL VARS
-// const table
+const { makeDateStamp } = require('../core/funcs')
 
 // INTERAL FUNCTIONS
 function cError(txt = '', err = null) {
 	return new Error({msg: txt, err})
 }
 
-function genCrypto({ base = 'base64', bytes = 32 } = {}) {
-	Crypto.randomBytes(48).toString('hex')
+function genCrypto({ base = 'base64', bytes = 48 } = {}) {
+	return Crypto.randomBytes(48).toString('hex')
 }
 
 
@@ -34,8 +30,12 @@ function genCrypto({ base = 'base64', bytes = 32 } = {}) {
 
 function issueToken() {
 	//todo
-
-	DB.saveToken()
+	DB.saveToken({
+		refresh_token: genCrypto(),
+		refresh_expires: makeDateStamp(36),
+		session_token: genCrypto(),
+		session_expires: makeDateStamp(1),
+	})
 	return ret
 }
 
