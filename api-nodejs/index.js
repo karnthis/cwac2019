@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // passport
-app.use(Passport.authenticate('bearer', { session: false }))
+// app.use(Passport.authenticate('bearer', { session: false }))
 
 // errors
 if (!isProd) {
@@ -33,7 +33,12 @@ if (!isProd) {
 const corsConfig = {
 	origin: isProd ? /findyour\.agency$/ : /.*/
 }
-app.use(cors(corsConfig));
+app.use(cors(corsConfig))
+
+app.use((req, res, next) => {
+	console.log(req.headers.authorization)
+	next()
+})
 
 // GET paths
 app.get('/', (req, res) => {

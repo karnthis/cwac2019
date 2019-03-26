@@ -112,7 +112,8 @@ function doSelectToken(tkn) {
 	return doSelect(qryObj)
 }
 
-async function doRefreshToken(type = '', stkn = '', replacement = {}) {
+async function doTokenUpdate(type = '', stkn = '', replacement = {}) {
+	const tbl = 'USER_SESSIONS'
 	const delqry = {
 		text: `DELETE FROM USER_SESSIONS WHERE session_token = ?`,
 		values: [
@@ -120,11 +121,17 @@ async function doRefreshToken(type = '', stkn = '', replacement = {}) {
 		]
 	}
 	const _ = await query(delqry)
-	const insqry = {
-		tbl: 'USER_SESSIONS',
-		data: replacement,0-p[;]
+	if (type == 'refresh') {
+		const insqry = {
+			tbl,
+			data: replacement,
+		}
+		const _ = await doInsert(insqry)
+		return true
+	} else {
+		return false
 	}
-	const _ = await doInsert(insqry)
+	
 
 }
 
@@ -144,6 +151,16 @@ function doInsert(qryObj) {
 	return PGPool.query(sql)
 }
 
+function doDelete(qryObj) {
+	const { tbl, data } = qryObj
+	const { markerCols, markerData, markerPlaces } = makeMarkers(data)
+	const sql = {
+		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces})`,
+		values: markerData
+	}
+	return PGPool.query(sql)
+}
+
 module.exports = {
 	query,
 	doSelect,
@@ -151,5 +168,5 @@ module.exports = {
 	doUpdate,
 
 	doSelectToken,
-	doRefreshToken,
+	// doRefreshToken,
 }

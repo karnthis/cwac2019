@@ -86,7 +86,7 @@ function handleSuccess(res, successObj) {
 module.exports = {
 	cleanArray,
 	makeWhere,
-	makeTimestamp,
+	makeDateStamp,
 	handleRes: handleSuccess,
 	handleSuccess,
 	handleError,

@@ -8,35 +8,39 @@ function makeDateStamp() {
 }
 // ========== //
 
-function stratFunc(token = '', done) {
-	console.log('pp hit')
+// function stratFunc(token = '', done) {
+// 	console.log('pp hit')
 
-	DB.doSelectToken(token)
-	.then(result => {
-		const stamp = makeDateStamp()
-		const { rows = [] } = result
-		if (!rows.length) return done(null, false)
-		const row = rows[0]
-		if (row.session_expires < stamp) {
-			if (row.refresh_expires < stamp) {
-				return done(null, false)
-			} else {
-				
-			}
-		}
-	})
-	.catch(err => done(err))
+// 	DB.doSelectToken(token)
+// 	.then(async result => {
+// 		const stamp = makeDateStamp()
+// 		const { rows = [] } = result
+// 		if (!rows.length) return done(null, false)
+// 		const row = rows[0]
+// 		if (row.session_expires < stamp) {
+// 			if (row.refresh_expires < stamp) {
+// 				return done(null, false)
+// 			} else {
+// 				//todo	attach token gen
+// 				const token = doTokenUpdate('refresh',row.session_token,generateToken())
 
+// 			}
+// 		} else {
 
-    User.findOne({ token: token }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      return done(null, user, { scope: 'all' });
-    });
-  }
+// 		}
+// 	})
+// 	.catch(err => done(err))
 
 
-	Passport.use(new BearerStrategy(	));
+//     User.findOne({ token: token }, function (err, user) {
+//       if (err) { return done(err); }
+//       if (!user) { return done(null, false); }
+//       return done(null, user, { scope: 'all' });
+//     });
+//   }
+
+
+// 	Passport.use(new BearerStrategy(	));
 
 // findToken,
 // saveToken,
@@ -45,4 +49,4 @@ function stratFunc(token = '', done) {
 // Passport.authenticate('bearer', { session: false })
 
 
-module.exports = Passport
+// module.exports = Passport
