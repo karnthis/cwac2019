@@ -1,24 +1,19 @@
 const {
 	findTokenInfo,
-	saveToken,
 	deleteToken,
 } = require('../core/db')
 const {
 	genToken,
+	prepToken,
 } = require('../core/crypt')
 const {
 	makeDateStamp,
-	lbtoa,
+	// cError,
 	latob,
 } = require('../core/funcs')
 
 // INTERNAL FUNCTIONS
-async function prepToken(tkn) {
-	const _ = await saveToken(tkn)
-	.catch(err => {throw new Error(err)})
-	const authString = `${tkn.user_id}.${tkn.refresh_token}.${tkn.session_token}`
-	return `Bearer ${lbtoa(authString)}`
-}
+
 // END INTERNAL
 
 // EXPORTED FUNCTIONS
@@ -26,10 +21,15 @@ async function checkToken(req, res, next) {
 	if (/auth/.test(req.path)) next()
 	const { authorization = '' } = req.headers
 	const authArray = authorization.split(' ')
-	if (authArray[0] != 'Bearer') res.status(401).send('Authorization Required')
+	if (authArray[0] != 'Bearer') {
+		return res.status(401).send('Authorization Required')
+	} 
 	const decoded = latob(authArray[1]).split('.')
+	console.log(decoded)
+	if (!decoded[0] || !decoded[1] || !decoded[2]) {
+		return res.status(401).send('Authentication Failed1')
 	// 0 == user, 1 == r, 2 == s
-	
+	}
 	const stamp = makeDateStamp()
 
 	const searchObject = {
@@ -46,6 +46,7 @@ async function checkToken(req, res, next) {
 	}
 
 	const { rows } = await findTokenInfo(searchObject)
+	.catch(err => {throw new Error(err)})
 
 	let sucStat, refStat
 	for (const i = 0; i < rows.length; i++) {
@@ -59,19 +60,21 @@ async function checkToken(req, res, next) {
 		if (rows[i].session_expires > stamp) next()
 		if (rows[i].refresh_expires > stamp) {
 			const replacementToken = genToken()
-			replacementToken.user_id = decoded[0]
+			replacementToken.user_id = parseInt(decoded[0])
 			deleteToken(rows[i].session_token)
 			.catch(err => {throw new Error(err)})
-			prepToken(replacementToken)
+			return await prepToken(replacementToken)
 			.then(out => {
 				req.headers.authorization = out
 				next()
 			})
 			.catch(err => {throw new Error(err)})
 		}
-		res.status(401).send('Authentication Failed')
+		deleteToken(rows[i].session_token)
+			.catch(err => {throw new Error(err)})
+		return res.status(401).send('Authentication Failed2')
 	}
-	res.status(401).send('Authentication Failed')
+	return res.status(401).send('Authentication Failed3')
 }
 // END EXPORT
 

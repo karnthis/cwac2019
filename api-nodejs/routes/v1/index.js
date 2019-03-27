@@ -17,9 +17,9 @@ module.exports = (app) => {
 	// USE ROUTES
 	app.use('/calendar', calendar)
 	// app.use('/county', county)
-	app.use('/eligibility', eligibility)
+	app.use('/eligibility', checkToken, eligibility)
 	app.use('/inventory', inventory)
-	app.use('/provider', checkToken, provider)
+	app.use('/provider', provider)
 	app.use('/users', users)
 	app.use('/auth', auth)
 	// app.use('/referral', referral)
