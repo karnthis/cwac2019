@@ -4,7 +4,7 @@ const {
 	validationResult
 } = require('express-validator/check')
 const Argon2 = require('argon2')
-const ghCrypto = require('../../core/crypto')
+const ghCrypto = require('../../core/crypt')
 const DB = require('../../core/db')
 const { minPWLength } = require('../../core/config')
 

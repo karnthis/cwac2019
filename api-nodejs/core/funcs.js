@@ -1,7 +1,19 @@
 
 // FUNCTIONS
 function makeTimestamp() {
+	// deprecated
 	return Math.floor(Date.now()/1000)
+}
+
+function lbtoa(x = '') {
+	return Buffer.from(x).toString('base64')
+}
+function latob(x = '') {
+	return Buffer.from(x, 'base64').toString()
+}
+
+function cError(msg = '', err = null) {
+	return new Error({msg, err})
 }
 
 function makeDateStamp(t) {
@@ -18,7 +30,9 @@ function cleanArray(arr) {
 
 // EXPORTS
 module.exports = {
-	makeTimestamp,
 	makeDateStamp,
 	cleanArray,
+	cError,
+	lbtoa,
+	latob,
 }

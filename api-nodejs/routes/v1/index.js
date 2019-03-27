@@ -1,3 +1,5 @@
+// IMPORTS
+const { checkToken } = require('../../middleware/tokenManager')
 // ROUTES
 const calendar = require('./calendar')
 // const county = require('./county')
@@ -17,7 +19,7 @@ module.exports = (app) => {
 	// app.use('/county', county)
 	app.use('/eligibility', eligibility)
 	app.use('/inventory', inventory)
-	app.use('/provider', provider)
+	app.use('/provider', checkToken, provider)
 	app.use('/users', users)
 	app.use('/auth', auth)
 	// app.use('/referral', referral)
