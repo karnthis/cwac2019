@@ -1,3 +1,4 @@
+const Argon2 = require('argon2')
 const {
 	findTokenInfo,
 	deleteToken,
@@ -18,7 +19,7 @@ const {
 
 // EXPORTED FUNCTIONS
 async function checkToken(req, res, next) {
-	if (/auth/.test(req.path)) next()
+	// if (/auth/.test(req.path)) next()
 	const { authorization = '' } = req.headers
 	const authArray = authorization.split(' ')
 	if (authArray[0] != 'Bearer') {
@@ -48,29 +49,41 @@ async function checkToken(req, res, next) {
 	const { rows } = await findTokenInfo(searchObject)
 	.catch(err => {throw new Error(err)})
 
-	let sucStat, refStat
-	for (const i = 0; i < rows.length; i++) {
-		sucStat = await Argon2.verify(rows[i].session_token, decoded[2])
-			.catch(err => {throw new Error('Auth Error')})
-			refStat = await Argon2.verify(rows[i].refresh_token, decoded[1])
+	let sucStat, refStat, index
+	for (let i = 0; i < rows.length; i++) {
+		index = i
+		console.dir(rows[i])
+		console.dir(rows[i].session_token)
+		console.dir(decoded[2])
+		const session_token = rows[i].session_token.toString('utf8')
+		const refresh_token = rows[i].refresh_token.toString('utf8')
+		console.dir(session_token)
+		sucStat = await Argon2.verify(session_token, decoded[2])
+			.catch(err => {
+				console.dir(err)
+				throw new Error('Auth Error')
+			})
+		refStat = await Argon2.verify(refresh_token, decoded[1])
 			.catch(err => {throw new Error('Auth Error')})
 		if (sucStat && refStat) break
 	}
 	if (sucStat && refStat) {
-		if (rows[i].session_expires > stamp) next()
-		if (rows[i].refresh_expires > stamp) {
+		if (rows[index].session_expires > stamp) next()
+		if (rows[index].refresh_expires > stamp) {
 			const replacementToken = genToken()
 			replacementToken.user_id = parseInt(decoded[0])
-			deleteToken(rows[i].session_token)
+			deleteToken(rows[index].session_token)
 			.catch(err => {throw new Error(err)})
 			return await prepToken(replacementToken)
 			.then(out => {
-				req.headers.authorization = out
+				res.set({
+					authorization: out
+				})
 				next()
 			})
 			.catch(err => {throw new Error(err)})
 		}
-		deleteToken(rows[i].session_token)
+		deleteToken(rows[index].session_token)
 			.catch(err => {throw new Error(err)})
 		return res.status(401).send('Authentication Failed2')
 	}

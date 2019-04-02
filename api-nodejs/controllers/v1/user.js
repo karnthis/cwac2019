@@ -119,8 +119,17 @@ orgidPost.validate = [
 ]
 
 orgidPost.argon = (req, res, next) => {
-	req.body.password = encryptString(req.body.password)
-	next()
+	console.dir(req.body.password)
+	encryptString(req.body.password)
+	.then(res => {
+		req.body.password = res
+		console.dir(req.body.password)
+		next()
+	})
+	.catch(err => {
+		console.dir(err)
+		res.status(403).send(JSON.stringify(err))
+	})
 }
 
 orgidPost.func = async (req, res) => {

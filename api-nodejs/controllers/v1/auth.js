@@ -4,8 +4,7 @@ const {
 } = require('express-validator/check')
 const { query, saveToken } = require('../../core/db')
 const { minPWLength } = require('../../core/config')
-const { verifyLogin } = require('../../core/crypt')
-// const { verifyLogin } = require('../../core/crypt')
+const { verifyLogin, prepToken } = require('../../core/crypt')
 
 const rootPost = {}
 
@@ -25,6 +24,7 @@ rootPost.func = async (req, res) => {
 			login,
 			password
 		} = req.body
+		console.dir(login)
 		sql = `SELECT user_id, password FROM USERS WHERE username = '${login}'`
 		const {
 			rows
@@ -33,10 +33,16 @@ rootPost.func = async (req, res) => {
 		const tmp = rows[0].password.toString('utf-8')
 		const tkn = await verifyLogin(tmp, password)
 		.catch(err => {throw new Error(err)})
+		// console.dir(tkn)
 		tkn.user_id = rows[0].user_id
 		const authHeader = await prepToken(tkn)
 		.catch(err => {throw new Error(err)})
-		res.headers.authorization = authHeader
+
+		res.set({
+			authorization: authHeader
+		})
+
+		// res.headers.authorization = authHeader
 		res.status(200).send('Authentication Successful')
 	} else {
 		console.log('error')

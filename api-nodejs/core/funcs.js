@@ -13,7 +13,8 @@ function latob(x = '') {
 }
 
 function cError(msg = '', err = null) {
-	return new Error({msg, err})
+	console.dir(err)
+	return new Error({err})
 }
 
 function makeDateStamp(t) {
