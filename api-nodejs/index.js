@@ -3,8 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 
-const Passport = require('./libs/passport')
-
 let count = 0
 let isProd = false
 
@@ -20,9 +18,6 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// passport
-// app.use(Passport.authenticate('bearer', { session: false }))
-
 // errors
 if (!isProd) {
 	app.use(require('errorhandler')())
@@ -32,7 +27,12 @@ if (!isProd) {
 const corsConfig = {
 	origin: isProd ? /findyour\.agency$/ : /.*/
 }
-app.use(cors(corsConfig));
+app.use(cors(corsConfig))
+
+app.use((req, res, next) => {
+	console.log(req.headers.authorization)
+	next()
+})
 
 // GET paths
 app.get('/', (req, res) => {

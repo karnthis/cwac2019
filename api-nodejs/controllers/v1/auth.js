@@ -2,10 +2,9 @@ const {
 	check,
 	validationResult
 } = require('express-validator/check')
-const DB = require('../../core/db')
+const { query, saveToken } = require('../../core/db')
 const { minPWLength } = require('../../core/config')
-
-const tbl = 'USERS'
+const { verifyLogin, prepToken } = require('../../core/crypt')
 
 const rootPost = {}
 
@@ -25,16 +24,26 @@ rootPost.func = async (req, res) => {
 			login,
 			password
 		} = req.body
-		sql = `SELECT password FROM ${tbl} WHERE username = '${login}' OR email = '${login}'`
+		console.dir(login)
+		sql = `SELECT user_id, password FROM USERS WHERE username = '${login}'`
 		const {
-			rowCount,
 			rows
-		} = await DB.query(sql)
-		console.dir(rowCount)
-		for (const row in rows) {
-			const tmp = rows[row].password.toString('utf-8')
-			
-		}
+		} = await query(sql)
+		// console.dir(rows)
+		const tmp = rows[0].password.toString('utf-8')
+		const tkn = await verifyLogin(tmp, password)
+		.catch(err => {throw new Error(err)})
+		// console.dir(tkn)
+		tkn.user_id = rows[0].user_id
+		const authHeader = await prepToken(tkn)
+		.catch(err => {throw new Error(err)})
+
+		res.set({
+			authorization: authHeader
+		})
+
+		// res.headers.authorization = authHeader
+		res.status(200).send('Authentication Successful')
 	} else {
 		console.log('error')
 		return res.status(422).json({

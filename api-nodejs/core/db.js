@@ -6,12 +6,12 @@ const {
 	PGDATABASE,
 	IS_PROD
 } = process.env
-const {
-	Pool
-} = require('pg')
+// const {
+// 	Pool
+// } = require('pg')
 const {
 	cleanArray
-} = require('../libs')
+} = require('./funcs')
 
 let pgConfig
 if (!IS_PROD) {
@@ -32,9 +32,9 @@ if (!IS_PROD) {
 	}
 }
 
-const PGPool = new Pool(pgConfig)
+const PGPool = new require('pg').Pool(pgConfig)
 
-// FUNCTIONS
+// INTERNAL FUNCTIONS
 function makeWhere(vals = '', field = 'provider_id') {
 	valArr = cleanArray(vals.split(`-`))
 	return (vals) ? `WHERE ${field} IN (${valArr})` : ''
@@ -55,15 +55,6 @@ function makeUpdates(updateObj = {}) {
 	return retString.slice(0, -2) //* trim trailing ', '
 }
 
-function deleteToken(qryObj) {
-	const { tkn = '' } = qryObj
-	const sql = {
-		text: `DELETE FROM USER_SESSIONS WHERE session_token = $1`,
-		values: [ tkn ]
-	}
-	return PGPool.query(sql)
-}
-
 function makePlaces(x) {
 	let str = `\$${x}`
 	if (x > 1) str = makePlaces(x - 1).concat(', ', str)
@@ -81,56 +72,6 @@ function makeMarkers(x) {
 
 // EXPORTED FUNCTIONS
 function query(sql) {
-	return PGPool.query(sql)
-}
-
-function findToken(qryObj) {
-	const cols = [
-		username,
-		user_id,
-		refresh_token,
-		session_token,
-		expires
-	]
-	const { tkn = '', user = '' } = qryObj
-	const sql = {
-		text: `SELECT ${cols} FROM USERS LEFT JOIN USER_SESSIONS using(user_id) WHERE session_token = $1 OR username = $2`,
-		values: [ tkn, user ]
-	}
-	return PGPool.query(sql)
-}
-
-function saveToken(qryObj) {
-	//todo
-	const cols = [
-		username,
-		user_id,
-		refresh_token,
-		session_token,
-		expires
-	]
-	const { tkn = '', user = '' } = qryObj
-	const sql = {
-		text: `SELECT ${cols} FROM USERS LEFT JOIN USER_SESSIONS using(user_id) WHERE session_token = $1 OR username = $2`,
-		values: [ tkn, user ]
-	}
-	return PGPool.query(sql)
-}
-
-function refreshToken() {
-	//todo
-	const cols = [
-		username,
-		user_id,
-		refresh_token,
-		session_token,
-		expires
-	]
-	const { tkn = '', user = '' } = qryObj
-	const sql = {
-		text: `SELECT ${cols} FROM USERS LEFT JOIN USER_SESSIONS using(user_id) WHERE session_token = $1 OR username = $2`,
-		values: [ tkn, user ]
-	}
 	return PGPool.query(sql)
 }
 
@@ -179,13 +120,46 @@ function doInsert(qryObj) {
 	}
 	return PGPool.query(sql)
 }
+// TOKEN FUNCS
+function deleteToken(tkn = '') {
+	const sql = {
+		text: `DELETE FROM USER_SESSIONS WHERE session_token = $1`,
+		values: [tkn]
+	}
+	return PGPool.query(sql)
+}
+
+function saveToken(tknObj) {
+	const qryObj = {
+		tbl: 'USER_SESSIONS',
+		data: tknObj,
+	}
+	return doInsert(qryObj)
+}
+
+function findTokenInfo(searchObject) {
+	const {
+		user,
+		stamp,
+		type,
+		cols
+	} = searchObject
+	const sql = {
+		text: `SELECT ${cols} FROM USER_SESSIONS WHERE user_id = $1 AND ${type} > $2`,
+		values: [user, stamp]
+	}
+	return PGPool.query(sql)
+}
+// END EXPORTED
 
 module.exports = {
 	query,
 	doSelect,
 	doInsert,
 	doUpdate,
-	findToken,
+	// findToken,
 	saveToken,
-	refreshToken,
+	// refreshToken,
+	deleteToken,
+	findTokenInfo,
 }

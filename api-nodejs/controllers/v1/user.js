@@ -3,8 +3,8 @@ const {
 	param,
 	validationResult
 } = require('express-validator/check')
-const Argon2 = require('argon2')
-const ghCrypto = require('../../core/crypto')
+// const Argon2 = require('argon2')
+const { encryptString } = require('../../core/crypt')
 const DB = require('../../core/db')
 const { minPWLength } = require('../../core/config')
 
@@ -119,8 +119,17 @@ orgidPost.validate = [
 ]
 
 orgidPost.argon = (req, res, next) => {
-	req.body.password = ghCrypto.encryptPW(req.body.password)
-	next()
+	console.dir(req.body.password)
+	encryptString(req.body.password)
+	.then(res => {
+		req.body.password = res
+		console.dir(req.body.password)
+		return next()
+	})
+	.catch(err => {
+		console.dir(err)
+		res.status(403).send(JSON.stringify(err))
+	})
 }
 
 orgidPost.func = async (req, res) => {
