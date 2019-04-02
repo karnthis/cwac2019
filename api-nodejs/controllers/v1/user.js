@@ -124,7 +124,7 @@ orgidPost.argon = (req, res, next) => {
 	.then(res => {
 		req.body.password = res
 		console.dir(req.body.password)
-		next()
+		return next()
 	})
 	.catch(err => {
 		console.dir(err)

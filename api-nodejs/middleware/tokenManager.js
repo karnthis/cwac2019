@@ -68,7 +68,9 @@ async function checkToken(req, res, next) {
 		if (sucStat && refStat) break
 	}
 	if (sucStat && refStat) {
-		if (rows[index].session_expires > stamp) next()
+		console.log(typeof rows[index].session_expires)
+		console.log(typeof stamp)
+		if (rows[index].session_expires > stamp) return next()
 		if (rows[index].refresh_expires > stamp) {
 			const replacementToken = genToken()
 			replacementToken.user_id = parseInt(decoded[0])
@@ -76,10 +78,12 @@ async function checkToken(req, res, next) {
 			.catch(err => {throw new Error(err)})
 			return await prepToken(replacementToken)
 			.then(out => {
-				res.set({
-					authorization: out
-				})
-				next()
+				req.headers = req.headers || {}
+				req.headers.authorization = out
+				// res.set({
+				// 	authorization: out
+				// })
+				return next()
 			})
 			.catch(err => {throw new Error(err)})
 		}

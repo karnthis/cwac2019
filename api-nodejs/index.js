@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 
-
 let count = 0
 let isProd = false
 
@@ -18,9 +17,6 @@ const v1Routes = require('./routes/v1')
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
-// passport
-// app.use(Passport.authenticate('bearer', { session: false }))
 
 // errors
 if (!isProd) {

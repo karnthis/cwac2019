@@ -1,6 +1,6 @@
 const cfg = {
 	minPWLength: 16,
-	refreshLifespan: 36,
+	refreshLifespan: 4,
 	tokenLifespan: 1,
 }
 
