@@ -17,14 +17,17 @@ const auth = require('./auth')
 module.exports = (app) => {
 
 	// USE ROUTES
-	app.use('/calendar', calendar)
-	// app.use('/county', county)
-	app.use('/eligibility', eligibility)
-	app.use('/inventory', inventory)
+	app.use('/calendar', checkToken, passToken, calendar)
+	app.use('/eligibility', checkToken, passToken, eligibility)
+	app.use('/inventory', checkToken, passToken, inventory)
 	app.use('/provider', checkToken, passToken, provider)
-	app.use('/users', users)
+	app.use('/users', checkToken, passToken, users)
+
+	// app.use('/county', checkToken, passToken, county)
+	// app.use('/referral', checkToken, passToken, referral)
+	// app.use('/address', checkToken, passToken, address)
+	// app.use('/waitlist', checkToken, passToken, waitlist)
+
 	app.use('/auth', auth)
-	// app.use('/referral', referral)
-	// app.use('/address', address)
-	// app.use('/waitlist', waitlist)
+	// app.use('/auth', checkToken, passToken, auth)
 }

@@ -4,18 +4,15 @@ const DB = require('../../core/db')
 const { makeDateStamp } = require('../../core/funcs')
 const expRtr = new Router()
 
-//todo
+//todo	only cols/tbl updated
 const cols = [
+	'waitlist_id',
 	'provider_id',
-	'public_assistance',
-	'mother_17_or_younger',
-	'is_client',
-	'client_of_other',
-	'trimester',
-	'residency_requirement',
-	'must_meet_all_criteria',
+	'creator_id',
+	'date_of_waitlist',
+	'eligiable_for',
 	]
-const tbl = 'ELIGIBILITY_REQUIREMENTS'
+const tbl = 'WAITLIST'
 
 expRtr.route('/')
 	//*	done
