@@ -1,5 +1,6 @@
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
+const { makeOptionals } = require('../../core/funcs')
 
 const cols = [
 	'waitlist_id',
@@ -58,12 +59,12 @@ pidPost.func = async (req, res) => {
 		const { creator_id, date_of_waitlist, eligiable_for} = req.body
 		const {
 			rows
-		} = await DB.query(`INSERT INTO ${tbl} (provider_id, creator_id, date_of_waitlist, eligiable_for) VALUES ($1,$2,$3,$4)`, [
+		} = await DB.query({text:`INSERT INTO ${tbl} (provider_id, creator_id, date_of_waitlist, eligiable_for) VALUES ($1,$2,$3,$4) RETURNING *`, values:[
 			req.params.orgid,
 			creator_id,
 			date_of_waitlist,
 			eligiable_for
-		])
+		]})
 		res.status(200).json({
 			rows
 		})
@@ -88,13 +89,13 @@ pidPut.func = async (req, res)=> {
 			eligiable_for,
 			waitlist_status,
 		} = req.body
-		const toUpdate = []
-		if (eligiable_for) toUpdate.push(`eligiable_for = '${eligiable_for}'`)
-		if (waitlist_status) toUpdate.push(`waitlist_status = '${waitlist_status}'`)
-		toUpdate.join(', ')
+		const toUpdate = makeOptionals([
+			['str','eligiable_for',eligiable_for],
+			['str','waitlist_status',waitlist_status],
+		])
 		const {
 			rows
-		} = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE waitlist_id = ${req.params.waitid}`)
+		} = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE waitlist_id = ${req.params.waitid} RETURNING *`)
 		res.status(200).json({
 			rows
 		})

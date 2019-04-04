@@ -1,7 +1,6 @@
-
-
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
+const { makeOptionals } = require('../../core/funcs')
 
 const cols = [
 	'referal_id',
@@ -68,7 +67,7 @@ rrPost.func = async (req, res) => {
 		const { creator_id, referee_id, is_eligiable, date_of_referal, referral_notes, fulfillment_status} = req.body
 		const {
 			rows
-		} = await DB.query(`INSERT INTO ${tbl} (referer_id, creator_id, referee_id, is_eligiable, date_of_referal, referral_notes, fulfillment_status) VALUES ($1,$2,$3,$4,$5,$6,$7)`, [
+		} = await DB.query({test:`INSERT INTO ${tbl} (referer_id, creator_id, referee_id, is_eligiable, date_of_referal, referral_notes, fulfillment_status) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`, values:[
 			req.params.orgid,
 			creator_id,
 			referee_id,
@@ -76,7 +75,7 @@ rrPost.func = async (req, res) => {
 			date_of_referal,
 			referral_notes,
 			fulfillment_status
-		])
+		]})
 		res.status(200).json({
 			rows
 		})
@@ -147,14 +146,14 @@ ridPut.func = async (req, res)=> {
 			referral_notes,
 			fulfillment_status,
 		} = req.body
-		const toUpdate = []
-		if (is_eligiable) toUpdate.push(`is_eligiable = ${is_eligiable}`)
-		if (referral_notes) toUpdate.push(`referral_notes = '${referral_notes}'`)
-		if (fulfillment_status) toUpdate.push(`fulfillment_status = '${fulfillment_status}'`)
-		toUpdate.join(', ')
+		const toUpdate = makeOptionals([
+			['bool','is_eligiable',is_eligiable],
+			['str','referral_notes',referral_notes],
+			['str','fulfillment_status',fulfillment_status],
+		])
 		const {
 			rows
-		} = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE referal_id = ${req.params.rid}`)
+		} = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE referal_id = ${req.params.rid} RETURNING *`)
 		res.status(200).json({
 			rows
 		})

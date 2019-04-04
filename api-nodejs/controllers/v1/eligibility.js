@@ -148,7 +148,7 @@ gidPut.func = async (req, res) => {
 		toUpdate.join(', ')
 		const {
 			rows
-		} = await DB.query(`UPDATE ${iTbl} SET ${toUpdate} WHERE elig_item_id = ${iTbl}`)
+		} = await DB.query(`UPDATE ${iTbl} SET ${toUpdate} WHERE elig_item_id = ${iTbl} Returning *`)
 		res.status(200).json({
 			rows
 		})
