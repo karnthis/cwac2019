@@ -70,7 +70,7 @@ orgidGet.func = async (req, res) => {
 		return res.status(422).json({
 			errors: errors.array()
 		})
-	}	
+	}
 }
 
 orgidPost.validate = [
@@ -105,7 +105,11 @@ gidPost.validate = [
 gidPost.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { elig_item_type_code, elig_item_type_label, elig_item_value } = req.body
+		const {
+			elig_item_type_code,
+			elig_item_type_label,
+			elig_item_value
+		} = req.body
 		const {
 			rows
 		} = await DB.query(`INSERT INTO ${iTbl} (${iColsI}) VALUES (${req.params.orgid}, ${elig_item_type_code}, '${elig_item_type_label}', '${elig_item_value}') RETURNING elig_item_id`)
@@ -132,7 +136,11 @@ gidPut.validate = [
 gidPut.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { elig_item_type_code, elig_item_type_label, elig_item_value } = req.body
+		const {
+			elig_item_type_code,
+			elig_item_type_label,
+			elig_item_value
+		} = req.body
 		const toUpdate = []
 		if (elig_item_type_code) toUpdate.push(`elig_item_type_code = ${elig_item_type_code}`)
 		if (elig_item_type_label) toUpdate.push(`elig_item_type_label = ${elig_item_type_label}`)
@@ -154,9 +162,9 @@ gidPut.func = async (req, res) => {
 
 // EXPORT ROUTES
 module.exports = {
-rootGet,
-orgidGet,
-orgidPost,
-gidPost,
-gidPut,
+	rootGet,
+	orgidGet,
+	orgidPost,
+	gidPost,
+	gidPut,
 }

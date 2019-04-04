@@ -11,7 +11,7 @@ const users = require('./user')
 const auth = require('./auth')
 // const referral = require('./referral')
 // const address = require('./address')
-// const waitlist = require('./waitlist')
+const waitlist = require('./waitlist')
 
 // EXPORT
 module.exports = (app) => {
@@ -26,7 +26,7 @@ module.exports = (app) => {
 	// app.use('/county', checkToken, passToken, county)
 	// app.use('/referral', checkToken, passToken, referral)
 	// app.use('/address', checkToken, passToken, address)
-	// app.use('/waitlist', checkToken, passToken, waitlist)
+	app.use('/waitlist', checkToken, passToken, waitlist)
 
 	app.use('/auth', auth)
 	// app.use('/auth', checkToken, passToken, auth)

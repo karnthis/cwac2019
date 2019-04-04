@@ -118,10 +118,6 @@ inv_idPut.func = async (req, res) => {
 			errors: errors.array()
 		})
 	}
-	const {
-		inv_id,
-		userid
-	} = req.params
 
 	// handleRes(res, {data: rows})
 }
