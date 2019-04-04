@@ -1,7 +1,5 @@
-const Router = require('express-promise-router')
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
-const expRtr = new Router()
 
 const cols = [
 	'waitlist_id',

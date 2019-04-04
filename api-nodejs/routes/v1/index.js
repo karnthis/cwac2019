@@ -9,7 +9,7 @@ const inventory = require('./inventory')
 const provider = require('./provider')
 const users = require('./user')
 const auth = require('./auth')
-// const referral = require('./referral')
+const referral = require('./referral')
 // const address = require('./address')
 const waitlist = require('./waitlist')
 
@@ -24,7 +24,7 @@ module.exports = (app) => {
 	app.use('/users', checkToken, passToken, users)
 
 	// app.use('/county', checkToken, passToken, county)
-	// app.use('/referral', checkToken, passToken, referral)
+	app.use('/referral', checkToken, passToken, referral)
 	// app.use('/address', checkToken, passToken, address)
 	app.use('/waitlist', checkToken, passToken, waitlist)
 
