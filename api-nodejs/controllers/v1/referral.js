@@ -3,13 +3,6 @@
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
 
-
-
-
-
-
-
-//todo	no work done yet
 const cols = [
 	'referal_id',
 	'referer_id',
