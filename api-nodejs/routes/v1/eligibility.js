@@ -4,21 +4,26 @@ const {
 } = require('../../controllers/shared/')
 const {
 	rootGet,
-	rootPost,
 	orgidGet,
-	orgidPut,
+	orgidPost,
+	gidPost,
+	gidPut,
 } = require('../../controllers/v1/eligibility')
 
 expRtr.route('/')
 	.get(rootGet.func)
-	.post(rootPost.validate, rootPost.func)
+	.post(NotSupp)
 	.put(NotSupp)
+
+expRtr.route('/e/:gid/:iid?')
+	.get(NotSupp)
+	.post(gidPost.validate, gidPost.func)
+	.put(gidPut.validate, gidPut.func)
 
 expRtr.route('/:orgid')
 	.get(orgidGet.validate, orgidGet.func)
-	.post(NotSupp)
-	.put(orgidPut.validate, orgidPut.func)
-
+	.post(orgidPost.validate, orgidPost.func)
+	.put(NotSupp)
 
 // EXPORT ROUTES
 module.exports = expRtr
