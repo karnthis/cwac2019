@@ -1,13 +1,13 @@
 const expRtr = new require('express-promise-router')()
 const {
 	NotSupp
-} = require('../../controllers/shared/')
+} = require('../../../controllers/shared')
 const {
 	rootGet,
 	pidGet,
 	pidPost,
 	pidPut,
-} = require('../../controllers/v1/waitlist')
+} = require('../../../controllers/v1/waitlist')
 
 expRtr.route('/')
 	.get(rootGet.func)
