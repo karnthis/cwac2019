@@ -1,9 +1,4 @@
-const {
-	check,
-	param,
-	validationResult
-} = require('express-validator/check')
-// const Argon2 = require('argon2')
+const { check, param, validationResult } = require('express-validator/check')
 const { encryptString } = require('../../core/crypt')
 const DB = require('../../core/db')
 const { minPWLength } = require('../../core/config')
@@ -13,11 +8,10 @@ const cols = [
 	'full_name',
 	'member_of',
 	'email',
-	// 'password'
 ]
 const tbl = 'USERS'
 
-//todo verify everything works
+//TODO verify everything works
 
 const rootGet = {}
 const useridGet = {}
@@ -40,7 +34,7 @@ useridGet.validate = [
 ]
 
 useridGet.func = async (req, res) => {
-	//todo
+	//TODO
 	const {
 		userid,
 	} = req.params
@@ -65,7 +59,7 @@ useridPut.validate = [
 ]
 
 useridPut.func = async (req, res) => {
-	//todo
+	//TODO
 	res.status(403).send('Under Construction')
 }
 
@@ -74,7 +68,7 @@ orgidGet.validate = [
 ]
 
 orgidGet.func = async (req, res) => {
-	//todo	confirm done
+	//TODO	confirm done
 	const {
 		orgid,
 		userid
@@ -121,15 +115,15 @@ orgidPost.validate = [
 orgidPost.argon = (req, res, next) => {
 	console.dir(req.body.password)
 	encryptString(req.body.password)
-	.then(res => {
-		req.body.password = res
-		console.dir(req.body.password)
-		return next()
-	})
-	.catch(err => {
-		console.dir(err)
-		res.status(403).send(JSON.stringify(err))
-	})
+		.then(res => {
+			req.body.password = res
+			console.dir(req.body.password)
+			return next()
+		})
+		.catch(err => {
+			console.dir(err)
+			res.status(403).send(JSON.stringify(err))
+		})
 }
 
 orgidPost.func = async (req, res) => {
@@ -173,7 +167,7 @@ orgidPut.validate = [
 ]
 
 orgidPut.func = async (req, res) => {
-	//todo
+	//TODO
 	res.status(403).send('Under Construction')
 }
 

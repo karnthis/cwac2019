@@ -30,10 +30,23 @@ function cleanArray(arr) {
 	return arr.filter(x => !isNaN(parseInt(x))).map(x => parseInt(x))
 }
 
+function makeOptionals (arr) {
+	return arr.map(el => {
+		if (el[2] == undefined || el[2] == '') {
+			return ''
+		} else if (el[0] == 'str') {
+			return `${el[1]} = '${el[2]}'`
+		} else {
+			return `${el[1]} = ${el[2]}`
+		}
+	}).filter(el => el != '').join()
+}
+
 // EXPORTS
 module.exports = {
 	makeDateStamp,
 	cleanArray,
+	makeOptionals,
 	cError,
 	lbtoa,
 	latob,

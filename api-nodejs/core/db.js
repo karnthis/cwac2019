@@ -35,6 +35,11 @@ if (!IS_PROD) {
 const PGPool = new require('pg').Pool(pgConfig)
 
 // INTERNAL FUNCTIONS
+async function pgQuery(sql) {
+	return await PGPool.query(sql).catch(err => err)
+}
+
+
 function makeWhere(vals = '', field = 'provider_id') {
 	valArr = cleanArray(vals.split(`-`))
 	return (vals) ? `WHERE ${field} IN (${valArr})` : ''
@@ -72,7 +77,7 @@ function makeMarkers(x) {
 
 // EXPORTED FUNCTIONS
 function query(sql) {
-	return PGPool.query(sql)
+	return pgQuery(sql)
 }
 
 function doSelect(qryObj) {
@@ -90,7 +95,7 @@ function doSelect(qryObj) {
 		text: `SELECT ${cols} FROM ${tbl} WHERE ${markerCols} = ${markerPlaces}`,
 		values: markerData
 	}
-	return PGPool.query(sql)
+	return pgQuery(sql)
 }
 
 function doUpdate(qryObj) {
@@ -101,10 +106,10 @@ function doUpdate(qryObj) {
 		wVals
 	} = qryObj
 	const sql = `UPDATE ${tbl} SET ${makeUpdates(dataObj)} ${makeWhere(wVals, inField)}`
-	return PGPool.query(sql)
+	return pgQuery(sql)
 }
 
-function doInsert(qryObj) {
+function doInsert(qryObj, retCols) {
 	const {
 		tbl,
 		data
@@ -114,11 +119,12 @@ function doInsert(qryObj) {
 		markerData,
 		markerPlaces
 	} = makeMarkers(data)
+	retCols = retCols || '*'
 	const sql = {
-		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces})`,
+		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces}) RETURN ${retCols}`,
 		values: markerData
 	}
-	return PGPool.query(sql)
+	return pgQuery(sql)
 }
 // TOKEN FUNCS
 function deleteToken(tkn = '') {
@@ -126,7 +132,7 @@ function deleteToken(tkn = '') {
 		text: `DELETE FROM USER_SESSIONS WHERE session_token = $1`,
 		values: [tkn]
 	}
-	return PGPool.query(sql)
+	return pgQuery(sql)
 }
 
 function saveToken(tknObj) {
@@ -148,7 +154,7 @@ function findTokenInfo(searchObject) {
 		text: `SELECT ${cols} FROM USER_SESSIONS WHERE user_id = $1 AND ${type} > $2`,
 		values: [user, stamp]
 	}
-	return PGPool.query(sql)
+	return pgQuery(sql)
 }
 // END EXPORTED
 

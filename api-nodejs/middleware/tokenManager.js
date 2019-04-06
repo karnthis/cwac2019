@@ -12,6 +12,9 @@ const {
 	// cError,
 	latob,
 } = require('../core/funcs')
+const {
+	validationResult
+} = require('express-validator/check')
 
 // INTERNAL FUNCTIONS
 
@@ -19,6 +22,11 @@ const {
 
 // EXPORTED FUNCTIONS
 async function checkToken(req, res, next) {
+
+	const errors = validationResult(req)
+	if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
+
+
 	// if (/auth/.test(req.path)) next()
 	const { authorization = '' } = req.headers
 	const authArray = authorization.split(' ')
@@ -46,7 +54,7 @@ async function checkToken(req, res, next) {
 		stamp
 	}
 
-	const { rows } = await findTokenInfo(searchObject)
+	const { rows = [] } = await findTokenInfo(searchObject)
 	.catch(err => {throw new Error(err)})
 
 	let sucStat, refStat, index

@@ -14,6 +14,20 @@ function generateToken() {
 
 
 
+pidPut.func = async (req, res)=> {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+
+	} else {
+		console.log('error')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
+
+
+
 function verifyAuth(req, res, next) {
 	const authArray = req.headers.authorization.split(' ')
 	if (/auth/.test(req.path)) next()
