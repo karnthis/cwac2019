@@ -1,5 +1,6 @@
 # CWAC 2019 GenerateHealth API
 ## Endpoint Details:
+<!-- 
 ### template
 <details>
 	<summary> / </summary>
@@ -22,6 +23,7 @@
 		- Accepts: Nothing
 		- Returns: Nothing
 </details>
+-->
 
 ### Providers: /provider
 <details>
