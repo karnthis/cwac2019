@@ -60,14 +60,13 @@ rootPost.func = async (req, res) => {
 				provider_name,
 				phone,
 				hours,
-				description: desc || null,
-				days_of_operation: days || null,
 				last_verified: makeDateStamp()
 			}
-		};
-		const { rows } = await DB.doInsert(sql);
-		res.status(200).json({ rows: rows[0] });
-		// res.status(200).json({ rows: 'hit' })
+		}
+		if (desc) sql.data.description = desc
+		if (days) sql.data.days_of_operation = days
+		const { rows = [] } = await DB.doInsert(sql);
+		res.status(200).json({ data: rows[0] });
 	} else {
 		console.log("error");
 		return res.status(422).json({ errors: errors.array() });

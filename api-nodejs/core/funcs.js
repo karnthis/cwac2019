@@ -17,6 +17,22 @@ function cError(msg = '', err = null) {
 	return new Error({err})
 }
 
+function sanitize(data, whitelist) {
+	return whitelist.reduce(
+		(result, key) => data[key] !== undefined ? Object.assign(result, { [key]: data[key] }) : result, {}
+	)
+}
+
+function makeUpdates(obj) {
+	return Object.keys(obj).map(key => `${key} = '${obj[key]}'`)
+	
+	
+	// return Object.keys(obj).reduce((ret, key) => {
+	// 	return (obj[key] !== undefined) ? ret.push(`${key} = ${obj[key]}`) : ret
+	// }, [])
+
+}
+
 function makeDateStamp(t) {
 	console.dir(t)
 	t = parseInt(t)
@@ -45,8 +61,10 @@ function makeOptionals (arr) {
 // EXPORTS
 module.exports = {
 	makeDateStamp,
-	cleanArray,
 	makeOptionals,
+	makeUpdates,
+	cleanArray,
+	sanitize,
 	cError,
 	lbtoa,
 	latob,

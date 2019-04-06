@@ -10,7 +10,6 @@ let isProd = false
 const { NODE_ENV, IS_PROD } = process.env
 if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
-// todo import models?
 const v1Routes = require('./routes/v1')
 
 // set up express

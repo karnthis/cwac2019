@@ -29,7 +29,6 @@ rootPost.func = async (req, res) => {
 		const {
 			rows
 		} = await query(sql)
-		// console.dir(rows)
 		const tmp = rows[0].password.toString('utf-8')
 		const tkn = await verifyLogin(tmp, password)
 		.catch(err => {throw new Error(err)})
@@ -43,7 +42,7 @@ rootPost.func = async (req, res) => {
 		})
 
 		// res.headers.authorization = authHeader
-		res.status(200).send('Authentication Successful')
+		res.status(200).json({data: 'Authentication Successful'})
 	} else {
 		console.log('error')
 		return res.status(422).json({
