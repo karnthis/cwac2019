@@ -121,7 +121,7 @@ function doInsert(qryObj, retCols) {
 	} = makeMarkers(data)
 	retCols = retCols || '*'
 	const sql = {
-		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces}) RETURN ${retCols}`,
+		text: `INSERT INTO ${tbl} (${markerCols}) VALUES (${markerPlaces}) RETURNING ${retCols}`,
 		values: markerData
 	}
 	return pgQuery(sql)

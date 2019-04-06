@@ -2,7 +2,6 @@ const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
 const { makeDateStamp } = require('../../core/funcs')
 
-//todo
 const cols = [
 	'class_id',
 	'provider_id',

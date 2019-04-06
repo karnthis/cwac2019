@@ -17,14 +17,14 @@ const { check } = require("express-validator/check");
 // EXPORT
 module.exports = app => {
 	// USE ROUTES
-	app.use([
-		check("authorization")
-			.isLength({ min: 16 })
-			.trim()
-			.escape(),
-		checkToken,
-		passToken
-	]);
+	// app.use([
+	// 	check("authorization")
+	// 		.isLength({ min: 16 })
+	// 		.trim()
+	// 		.escape(),
+	// 	checkToken,
+	// 	passToken
+	// ]);
 	app.use("/calendar", calendar);
 	app.use("/eligibility", eligibility);
 	app.use("/inventory", inventory);
