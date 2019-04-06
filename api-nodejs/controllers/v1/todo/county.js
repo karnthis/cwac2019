@@ -54,8 +54,7 @@ expRtr.route('/')
 				}
 			}
 			const { rows } = await DB.doInsert(sql)
-			res.status(200).json({ rows: rows })
-			// res.status(200).json({ rows: 'hit' })
+			res.status(200).json({ data: rows[0] })
 		} else {
 			console.log('error')
 			return res.status(422).json({ errors: errors.array() })
@@ -78,7 +77,7 @@ expRtr.route('/')
 	.post([], async (req, res) => {
 		res.status(403).send('Not Supported')
 	})
-	//todo
+	//TODO
 	.put([
 		param('orgid').isInt(),
 		check('provider_name').trim().escape(),

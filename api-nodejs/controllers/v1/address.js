@@ -92,7 +92,7 @@ orgPost.func = async (req, res) => {
 			`${zip_base5}-${zip_plus4}`
 		]})
 		res.status(200).json({
-			rows
+			data: rows[0]
 		})
 	} else {
 		console.log('error')
@@ -165,7 +165,7 @@ aidPut.func = async (req, res)=> {
 			rows
 		} = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE address_id = ${aid} RETURNING *`)
 		res.status(200).json({
-			rows
+			data: rows[0]
 		})
 	} else {
 		console.log('error')

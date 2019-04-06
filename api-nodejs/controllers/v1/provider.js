@@ -66,8 +66,7 @@ rootPost.func = async (req, res) => {
 			}
 		};
 		const { rows } = await DB.doInsert(sql);
-		res.status(200).json({ rows: rows[0] });
-		// res.status(200).json({ rows: 'hit' })
+		res.status(200).json({ data: rows[0] });
 	} else {
 		console.log("error");
 		return res.status(422).json({ errors: errors.array() });

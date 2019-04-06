@@ -38,7 +38,7 @@ rootGet.func = async (req, res) => {
 	]
 	
 	rootPost.func = async (req, res) => {
-		//todo
+		//TODO
 		const errors = validationResult(req)
 		if (errors.isEmpty()) {
 			console.log('pass')
@@ -61,8 +61,7 @@ rootGet.func = async (req, res) => {
 				}
 			}
 			const { rows } = await DB.doInsert(sql)
-			res.status(200).json({ rows: rows })
-			// res.status(200).json({ rows: 'hit' })
+			res.status(200).json({ data: rows[0] })
 		} else {
 			console.log('error')
 			return res.status(422).json({ errors: errors.array() })
@@ -86,12 +85,11 @@ rootGet.func = async (req, res) => {
 	]
 	
 	orgidPut.func = async (req, res) => {
-		//todo
+		//TODO
 		const { body } = req
 		const { orgid, userid } = req.params
 		let sql = `SELECT ${cols} FROM USERS WHERE ${userMakeWhere(orgid, userid)}`
 		const { rows } = await DB.query(sql)
-		// handleRes(res, {data: rows})
 	}
 
 // EXPORT ROUTES
