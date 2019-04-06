@@ -11,7 +11,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": ""
+		"url": "https://github.com/karnthis/cwac2019.git"
 	},
 	"keywords": [
 		"Inventory",
@@ -43,6 +43,7 @@
 		"express-promise-router": "^3.0.3",
 		"express-validator": "^5.3.1",
 		"passport": "^0.4.0",
+		"passport-http-bearer": "^1.0.1",
 		"pg": "^7.7.1"
 	},
 	"devDependencies": {

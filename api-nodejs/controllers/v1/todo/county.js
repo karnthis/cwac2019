@@ -1,7 +1,7 @@
 const Router = require('express-promise-router')
 const { check, param, validationResult } = require('express-validator/check')
-const DB = require('../../db')
-const { makeTimestamp } = require('../../libs')
+const DB = require('../../core/db')
+const { makeDateStamp } = require('../../core/funcs')
 const expRtr = new Router()
 
 //todo
@@ -50,7 +50,7 @@ expRtr.route('/')
 					hours,
 					description: desc || null,
 					days_of_operation: days || null,
-					last_verified: makeTimestamp(),
+					last_verified: makeDateStamp(),
 				}
 			}
 			const { rows } = await DB.doInsert(sql)

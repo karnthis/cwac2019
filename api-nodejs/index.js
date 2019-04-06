@@ -3,8 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 
-// const Passport = require('passport')
-
 let count = 0
 let isProd = false
 
@@ -14,7 +12,6 @@ if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
 // todo import models?
 const v1Routes = require('./routes/v1')
-const devRoutes = require('./routes/dev')
 
 // set up express
 const app = express();
@@ -30,7 +27,12 @@ if (!isProd) {
 const corsConfig = {
 	origin: isProd ? /findyour\.agency$/ : /.*/
 }
-app.use(cors(corsConfig));
+app.use(cors(corsConfig))
+
+app.use((req, res, next) => {
+	console.log(req.headers.authorization)
+	next()
+})
 
 // GET paths
 app.get('/', (req, res) => {
@@ -39,8 +41,8 @@ app.get('/', (req, res) => {
 
 v1Routes(app)
 
-//TODO	TO BE REMOVED
-app.use('/dev', devRoutes)
+//TODO: 	TO BE REMOVED
+app.use('/dev', require('./routes/dev'))
 
 
 // Start server

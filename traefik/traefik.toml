@@ -11,7 +11,7 @@ defaultEntryPoints = ["https"]
     [entryPoints.https.tls]
 
 [acme]
-email = "contact@devhangout.space"
+email = "contact@atomicbear.com"
 storage = "acme.json"
 caServer = "https://acme-v02.api.letsencrypt.org/directory"
 entryPoint = "https"

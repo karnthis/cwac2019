@@ -1,37 +1,44 @@
-const Router = require('express-promise-router')
 const { check, param, validationResult } = require('express-validator/check')
-const DB = require('../../db')
-const { makeTimestamp } = require('../../libs')
-const expRtr = new Router()
+const DB = require('../../core/db')
+const { makeDateStamp } = require('../../core/funcs')
 
 //todo
 const cols = [
+	'class_id',
 	'provider_id',
-	'public_assistance',
-	'mother_17_or_younger',
-	'is_client',
-	'client_of_other',
-	'trimester',
-	'residency_requirement',
-	'must_meet_all_criteria',
+	'creator_id',
+	'class_name',
+	'class_description',
+	'address_id',
+	'date_of_class',
+	'time_of_class',
+	'current_attendee_count',
+	'max_attendees',
+	'class_status',
 	]
-const tbl = 'ELIGIBILITY_REQUIREMENTS'
+const tbl = 'CLASSES'
 
-expRtr.route('/')
-	//*	done
-	.get([], async (req, res) => {
+const rootGet = {}
+const rootPost = {}
+const orgidGet = {}
+const orgidPut = {}
+
+rootGet.func = async (req, res) => {
 		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
 		res.status(200).json({data: rows})
-	})
-	//todo
-	.post([
+	}
+	
+	rootPost.validate = [
 		check('provider_name').isLength({ min: 3 }).trim().escape(),
 		check('phone').isMobilePhone().trim().escape(),
 		check('hours').isLength({ min: 3 }).trim().escape(),
 		//*	NOT REQUIRED
 		check('desc').trim().escape(),
 		check('days').isLength({ max: 7 }).trim().escape(),
-	], async (req, res) => {
+	]
+	
+	rootPost.func = async (req, res) => {
+		//todo
 		const errors = validationResult(req)
 		if (errors.isEmpty()) {
 			console.log('pass')
@@ -50,7 +57,7 @@ expRtr.route('/')
 					hours,
 					description: desc || null,
 					days_of_operation: days || null,
-					last_verified: makeTimestamp(),
+					last_verified: makeDateStamp(),
 				}
 			}
 			const { rows } = await DB.doInsert(sql)
@@ -60,39 +67,37 @@ expRtr.route('/')
 			console.log('error')
 			return res.status(422).json({ errors: errors.array() })
 		}
-	})
-	//*	done
-	.put([], async (req, res) => {
-		res.status(403).send('Not Supported')
-	})
+	}
 
-	expRtr.route('/:orgid')
-	//*	done
-	.get([
+	orgidGet.validate = [
 		param('orgid').isInt(),
-	], async (req, res) => {
+	]
+	
+	orgidGet.func = async (req, res) => {
 		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
 		res.status(200).json({data: rows})
-	})
-	//*	done
-	.post([], async (req, res) => {
-		res.status(403).send('Not Supported')
-	})
-	//todo
-	.put([
+	}
+	
+	orgidPut.validate = [
 		param('orgid').isInt(),
 		check('provider_name').trim().escape(),
 		check('phone').trim().escape(),
 		check('hours').trim().escape(),
-	], async (req, res) => {
+	]
+	
+	orgidPut.func = async (req, res) => {
+		//todo
 		const { body } = req
 		const { orgid, userid } = req.params
 		let sql = `SELECT ${cols} FROM USERS WHERE ${userMakeWhere(orgid, userid)}`
 		const { rows } = await DB.query(sql)
 		// handleRes(res, {data: rows})
-	})
-
-// FUNCTIONS
+	}
 
 // EXPORT ROUTES
-module.exports = expRtr
+module.exports = {
+	rootGet,
+	rootPost,
+	orgidGet,
+	orgidPut,
+}
