@@ -1,5 +1,9 @@
+'use strict'
+
 const { check, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
+const { encryptString } = require('../../core/crypt')
+const { sanitize } = require('../../core/funcs')
 
 const { MUST_MATCH } = process.env;
 
@@ -43,6 +47,38 @@ cmdPost.func = async (req, res) => {
 				}
 				res.status(200).json({data: 'insert done'})
 				break;
+			case 'orgs':
+				{const D = sanitize(req.body, [
+					'provider_name',
+					'phone',
+					'hours',
+					'description',
+					'days_of_operation'
+				])
+				const sqll = {
+					tbl: 'PROVIDERS',
+					data: D
+				}
+				const { rows = [] } = await DB.doInsert(sqll);
+				res.status(200).json({ data: rows[0] });
+				break;}
+			case 'logins':
+				{const D = sanitize(req.body, [
+					'member_of',
+					'username',
+					'password',
+					'full_name',
+					'email'
+				]) 
+				D.password = await encryptString(D.password)
+				.catch(err => console.log(err))
+				const sqll = {
+					tbl: 'USERS',
+					data: D
+				}
+				const { rows } = await DB.doInsert(sqll)
+				res.status(200).json({ data: rows })
+				break;}
 			default:
 				res.status(200).json({data: 'nothing done'})
 		}

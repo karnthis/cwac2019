@@ -24,8 +24,10 @@ if (!isProd) {
 
 // CORS
 const corsConfig = {
-	origin: isProd ? /findyour\.agency$/ : /.*/
+	// origin: isProd ? /findyour\.agency$/ : /.*/
+	origin: /.*/
 }
+// app.use(cors())
 app.use(cors(corsConfig))
 
 app.use((req, res, next) => {

@@ -2,6 +2,7 @@ const { check, param, validationResult } = require('express-validator/check')
 const { encryptString } = require('../../core/crypt')
 const DB = require('../../core/db')
 const { minPWLength } = require('../../core/config')
+const { sanitize } = require('../../core/funcs')
 
 const cols = [
 	'user_id',
@@ -10,6 +11,13 @@ const cols = [
 	'email',
 ]
 const tbl = 'USERS'
+
+const saniValues = [
+	'username',
+	'password',
+	'full_name',
+	'email'
+]
 
 //TODO verify everything works
 
@@ -45,7 +53,6 @@ useridGet.func = async (req, res) => {
 			user_id: userid
 		}
 	}
-	console.log(sql)
 	const {
 		rows
 	} = await DB.doSelect(sql)
@@ -80,7 +87,6 @@ orgidGet.func = async (req, res) => {
 			member_of: orgid
 		}
 	}
-	console.log(sql)
 	const {
 		rows
 	} = await DB.doSelect(sql)
@@ -113,11 +119,9 @@ orgidPost.validate = [
 ]
 
 orgidPost.argon = (req, res, next) => {
-	console.dir(req.body.password)
 	encryptString(req.body.password)
 		.then(res => {
 			req.body.password = res
-			console.dir(req.body.password)
 			return next()
 		})
 		.catch(err => {
@@ -131,25 +135,13 @@ orgidPost.func = async (req, res) => {
 
 	if (errors.isEmpty()) {
 		console.log('pass')
-		const {
-			username,
-			password,
-			full_name,
-			email,
-		} = req.body
+		const D = sanitize(req.body, saniValues) 
+		D.member_of = req.params.orgid
 		const sql = {
 			tbl,
-			data: {
-				member_of: req.params.orgid,
-				username,
-				password,
-				full_name,
-				email,
-			}
+			data: D
 		}
-		const {
-			rows
-		} = await DB.doInsert(sql)
+		const { rows } = await DB.doInsert(sql)
 		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
