@@ -1,6 +1,6 @@
 const { check, param, validationResult } = require('express-validator/check')
 const DB = require('../../core/db')
-const { sanitize } = require('../../core/funcs')
+const { sanitize, makeUpdates } = require('../../core/funcs')
 
 const cols = [
 	'address_id',
@@ -33,12 +33,8 @@ const aidGet = {}
 const aidPut = {}
 
 rootGet.func = async (req, res) => {
-	const {
-		rows
-	} = await DB.query(`SELECT ${cols} FROM ${tbl}`)
-	res.status(200).json({
-		data: rows
-	})
+	const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	res.status(200).json({ data: rows })
 }
 
 orgGet.validate = [
@@ -48,12 +44,8 @@ orgGet.validate = [
 orgGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const {
-			rows
-		} = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
-		res.status(200).json({
-			data: rows
-		})
+		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
+		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
 		return res.status(422).json({
@@ -114,12 +106,8 @@ aidGet.validate = [
 aidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const {
-			rows
-		} = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE address_id = '${req.params.aid}'`)
-		res.status(200).json({
-			data: rows
-		})
+		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE address_id = ${req.params.aid}`)
+		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
 		return res.status(422).json({
@@ -156,7 +144,7 @@ aidPut.func = async (req, res)=> {
 
 		const { zip_base5, zip_plus4 = 'xxxx' } = req.body
 		const D = sanitize(req.body, saniValues)
-		D.zip_code = `${zip_base5}-${zip_plus4}`
+		if (zip_base5) D.zip_code = `${zip_base5}-${zip_plus4}`
 		const toUpdate = makeUpdates(D)
 
 		const { rows } = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE address_id = ${aid} RETURNING *`)

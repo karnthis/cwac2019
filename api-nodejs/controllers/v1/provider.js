@@ -1,6 +1,6 @@
 const { check, param, validationResult } = require("express-validator/check");
 const DB = require("../../core/db");
-const { sanitize, makeOptionals } = require("../../core/funcs");
+const { sanitize, makeUpdates } = require("../../core/funcs");
 
 //*	done
 const cols = [
@@ -111,21 +111,12 @@ orgidPut.validate = [
 ];
 
 orgidPut.func = async (req, res) => {
-	//TODO: Moar
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { provider_name, phone, hours, desc, days } = req.body;
-		const toUpdate = makeOptionals([
-			['str', 'provider_name', provider_name],
-			['str', 'phone', phone],
-			['str', 'hours', hours],
-			['str', 'desc', desc],
-			['str', 'days', days],
-		])
+		const D = sanitize(req.body, saniValues);
+		const toUpdate = makeUpdates(D)
 		const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE provider_id = ${req.params.orgid} RETURNING *`)
-		res.status(200).json({
-			data: rows[0]
-		})
+		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
 		return res.status(422).json({

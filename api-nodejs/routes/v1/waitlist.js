@@ -14,7 +14,13 @@ expRtr.route('/')
 	.post(NotSupp)
 	.put(NotSupp)
 
-expRtr.route('/orgid/:waitid?')
+	// TODO	clean up split
+expRtr.route('/one/:waitid')
+	.get(pidGet.validate, pidGet.func)
+	.post(pidPost.validate, pidPost.func)
+	.put(pidPut.validate, pidPut.func)
+
+expRtr.route('/org/:orgid')
 	.get(pidGet.validate, pidGet.func)
 	.post(pidPost.validate, pidPost.func)
 	.put(pidPut.validate, pidPut.func)

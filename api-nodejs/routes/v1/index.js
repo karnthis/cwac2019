@@ -16,6 +16,7 @@ const { check } = require("express-validator/check");
 
 // EXPORT
 module.exports = app => {
+	app.use("/auth", auth);
 	// USE ROUTES
 	// app.use([
 	// 	check("authorization")
@@ -30,12 +31,8 @@ module.exports = app => {
 	app.use("/inventory", inventory);
 	app.use("/provider", provider);
 	app.use("/users", users);
-
 	// app.use('/county', county)
 	app.use("/referral", referral);
 	app.use("/address", address);
 	app.use("/waitlist", waitlist);
-
-	app.use("/auth", auth);
-	// app.use('/auth', auth)
 };

@@ -85,7 +85,7 @@
 - Authenticated Path
 	- GET: 
 		- Description: Retrieve all valid providers
-		- Requires: orgid
+		- Requires: Nothing
 		- Accepts: Nothing
 		- Returns: Query Result Object
 	- POST: DISABLED
@@ -135,7 +135,7 @@
 - Authenticated Path
 	- GET: 
 		- Description: Retrieve target user
-		- Requires: userid
+		- Requires: Nothing
 		- Accepts: Nothing
 		- Returns: Query Result Object
 	- POST: DISABLED
@@ -164,7 +164,7 @@
 - Authenticated Path
 	- GET: 
 		- Description: Retrieve all valid users for target provider
-		- Requires: orgid
+		- Requires: Nothing
 		- Accepts: Nothing
 		- Returns: Query Result Array
 	- POST:
@@ -176,7 +176,7 @@
 			- full_name
 			- email
 		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Object
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
@@ -184,23 +184,21 @@
 		- Returns: Nothing
 </details>
 
-<!-- TODO -->
 ### Addresses: /address
 <details>
 	<summary> / (route root)</summary>
 
 - Authenticated Path
 	- GET: 
-		- Description: Retrieve all valid providers
+		- Description: Retrieve all valid addresses
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Array
+	- POST: DISABLED
+		- Description: 
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Nothing
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
@@ -209,42 +207,60 @@
 </details>
 
 <details>
-	<summary> / (route root)</summary>
+	<summary> /one/(INTEGER:aid)</summary>
 
 - Authenticated Path
 	- GET: 
-		- Description: Retrieve all valid providers
+		- Description: Retrieve one address
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
+		- Returns: Query Result Object
+	- POST: DISABLED
 		- Description: 
 		- Requires: Nothing
 		- Accepts: Nothing
 		- Returns: Nothing
+	- PUT: 
+		- Description: Update address
+		- Requires: Object containing:
+			- OPTIONAL:
+				- primary_site
+				- location_type
+				- location_name
+				- street
+				- line_2
+				- city
+				- state
+				- zip_base5
+				- zip_plus4
+		- Accepts: JSON body with above
+		- Returns: Query Result Object
 </details>
 
 <details>
-	<summary> / (route root)</summary>
+	<summary> /org/(INTEGER:orgid)</summary>
 
 - Authenticated Path
 	- GET: 
-		- Description: Retrieve all valid providers
+		- Description: Retrieve all valid addresses for one provider
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
+		- Returns: Query Result Array
 	- POST:
-		- Description: Add new provider
+		- Description: Add new address
 		- Requires: Object containing:
+			- primary_site
+			- location_type
+			- location_name
+			- street
+			- city
+			- zip_base5
 			- OPTIONAL:
+				- line_2
+				- state
+				- zip_plus4
 		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Object
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
@@ -252,28 +268,73 @@
 		- Returns: Nothing
 </details>
 
-<!-- TODO -->
 ### Inventories: /inventory
 <details>
 	<summary> / (route root)</summary>
 
 - Authenticated Path
 	- GET: 
-		- Description: Retrieve all valid providers
+		- Description: Retrieve all valid Inventories
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
+		- Returns: Query Result Array
 	- POST:
-		- Description: Add new provider
+		- Description: Add new Inventories
 		- Requires: Object containing:
+			- provider_id
+			- inv_count
 			- OPTIONAL:
+				- inv_type (not currently used)
 		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Object
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
 		- Accepts: Nothing
 		- Returns: Nothing
+</details>
+
+<details>
+	<summary> /dispense </summary>
+
+- Authenticated Path
+	- GET: DISABLED
+		- Description: 
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Nothing
+	- POST: DISABLED
+		- Description: 
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Nothing
+	- PUT: 
+		- Description: Decrement target inventory by one
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Query Result Object
+</details>
+
+<details>
+	<summary> /(INTEGER:inv_id) </summary>
+
+- Authenticated Path
+	- GET: 
+		- Description: Retrieve target inventory
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Query Result Object
+	- POST: DISABLED
+		- Description: 
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Nothing
+	- PUT: 
+		- Description: Update target inventory count
+		- Requires: Object containing:
+			- inv_count
+		- Accepts: JSON body with above
+		- Returns: Query Result Object
 </details>
 
 <!-- TODO -->
@@ -286,13 +347,13 @@
 		- Description: Retrieve all valid providers
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
+		- Returns: Query Result Array
 	- POST:
 		- Description: Add new provider
 		- Requires: Object containing:
 			- OPTIONAL:
 		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Array
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
@@ -308,13 +369,13 @@
 		- Description: Retrieve all valid providers
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
+		- Returns: Query Result Array
 	- POST:
 		- Description: Add new provider
 		- Requires: Object containing:
 			- OPTIONAL:
 		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Array
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
