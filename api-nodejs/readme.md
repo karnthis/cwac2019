@@ -60,7 +60,7 @@
 		- Description: Retrieve all valid providers
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
+		- Returns: Query Result Array
 	- POST:
 		- Description: Add new provider
 		- Requires: Object containing:
@@ -107,7 +107,6 @@
 		- Returns: Query Result Object
 </details>
 
-<!-- TODO -->
 ### Users: /user
 <details>
 	<summary> / (route root)</summary>
@@ -117,13 +116,12 @@
 		- Description: Retrieve all valid users
 		- Requires: Nothing
 		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
+		- Returns: Query Result Array
+	- POST: DISABLED
+		- Description: 
+		- Requires: Nothing
+		- Accepts: Nothing
+		- Returns: Nothing
 	- PUT: DISABLED
 		- Description: 
 		- Requires: Nothing
@@ -137,20 +135,27 @@
 - Authenticated Path
 	- GET: 
 		- Description: Retrieve target user
-		- Requires: Nothing
+		- Requires: userid
 		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
+		- Returns: Query Result Object
+	- POST: DISABLED
 		- Description: 
 		- Requires: Nothing
 		- Accepts: Nothing
 		- Returns: Nothing
+	- PUT: 
+		- Description: Update target user
+		- Requires: 
+			- orgid
+			- Object containing (OPTIONAL):
+				- member_of
+				- username
+				- password
+				- cpassword
+				- full_name
+				- email 
+		- Accepts: JSON body with above
+		- Returns: Query Result Object
 </details>
 
 <details>
@@ -159,13 +164,17 @@
 - Authenticated Path
 	- GET: 
 		- Description: Retrieve all valid users for target provider
-		- Requires: Nothing
+		- Requires: orgid
 		- Accepts: Nothing
-		- Returns: Array
+		- Returns: Query Result Array
 	- POST:
-		- Description: Add new provider
+		- Description: Add new user to provider
 		- Requires: Object containing:
-			- OPTIONAL:
+			- username
+			- password
+			- cpassword
+			- full_name
+			- email
 		- Accepts: JSON body with above
 		- Returns: Array
 	- PUT: DISABLED

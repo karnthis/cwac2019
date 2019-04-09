@@ -19,7 +19,7 @@ expRtr.route('/')
 	expRtr.route('/one/:userid')
 	.get(useridGet.validate, useridGet.func)
 	.post(NotSupp)
-	.put(useridPut.validate, useridPut.func)
+	.put(useridPut.validate, useridPut.argon, useridPut.func)
 
 expRtr.route('/group/:orgid')
 	.get(orgidGet.validate, orgidGet.func)

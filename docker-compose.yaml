@@ -59,9 +59,6 @@ services:
       - "dbdata:/var/lib/postgresql/data"
     labels:
       - traefik.backend=db-main
-      # - traefik.frontend.rule=Host:postgres.${COREDOMAIN}
-      # - traefik.port=5432
-      # - traefik.frontend.priority=5
 
   api-nodejs:
     image: node:latest
