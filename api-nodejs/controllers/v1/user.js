@@ -2,6 +2,7 @@ const { check, param, validationResult } = require('express-validator/check')
 const { encryptString } = require('../../core/crypt')
 const DB = require('../../core/db')
 const { minPWLength } = require('../../core/config')
+const { sanitize } = require('../../core/funcs')
 
 const cols = [
 	'user_id',
@@ -11,6 +12,14 @@ const cols = [
 ]
 const tbl = 'USERS'
 
+const saniValues = [
+	'member_of',
+	'username',
+	'password',
+	'full_name',
+	'email'
+]
+
 //TODO verify everything works
 
 const rootGet = {}
@@ -18,15 +27,10 @@ const useridGet = {}
 const useridPut = {}
 const orgidGet = {}
 const orgidPost = {}
-const orgidPut = {}
 
 rootGet.func = async (req, res) => {
-	const {
-		rows
-	} = await DB.query(`SELECT ${cols} FROM ${tbl}`)
-	res.status(200).json({
-		data: rows
-	})
+	const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	res.status(200).json({ data: rows })
 }
 
 useridGet.validate = [
@@ -34,33 +38,72 @@ useridGet.validate = [
 ]
 
 useridGet.func = async (req, res) => {
-	//TODO
-	const {
-		userid,
-	} = req.params
-	const sql = {
-		cols,
-		tbl,
-		data: {
-			user_id: userid
-		}
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const { userid } = req.params
+		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE user_id = ${userid}`)
+		res.status(200).json({ data: rows[0] })
+	} else {
+		console.log('error')
+		return res.status(422).json({
+			errors: errors.array()
+		})
 	}
-	console.log(sql)
-	const {
-		rows
-	} = await DB.doSelect(sql)
-	res.status(200).json({
-		data: rows
-	})
 }
 
 useridPut.validate = [
-	param('userid').isInt()
+	param('userid').isInt(),
+	check('member_of').optional().isInt(),
+	check('username').optional().isLength({
+		min: 3
+	}).trim().escape(),
+	check('password').optional().isLength({
+		min: minPWLength
+	}).trim().escape(),
+	check('cpassword').optional().custom((val, {
+		req
+	}) => {
+		if (val !== req.body.password) {
+			throw new Error('Password fields do not match')
+		} else {
+			return true
+		}
+	}).escape(),
+	check('full_name').optional().isLength({
+		min: 4
+	}).trim().escape(),
+	check('email').optional().isEmail().normalizeEmail()
 ]
 
+useridPut.argon = (req, res, next) => {
+	if (req.body.password) {
+		encryptString(req.body.password)
+		.then(res => {
+			req.body.password = res
+			return next()
+		})
+		.catch(err => {
+			console.dir(err)
+			res.status(403).send(JSON.stringify(err))
+		})
+	} else {
+		return next()
+	}
+}
+
 useridPut.func = async (req, res) => {
-	//TODO
-	res.status(403).send('Under Construction')
+		const errors = validationResult(req)
+		if (errors.isEmpty()) {
+			const D = sanitize(req.body, saniValues)
+			const toUpdate = makeUpdates(D)
+			const { rows } = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE user_id = ${req.params.userid} RETURNING *`)
+			res.status(200).json({ data: rows[0] })
+		} else {
+			console.log('error')
+			return res.status(422).json({
+				errors: errors.array()
+			})
+		}
 }
 
 orgidGet.validate = [
@@ -68,25 +111,16 @@ orgidGet.validate = [
 ]
 
 orgidGet.func = async (req, res) => {
-	//TODO	confirm done
-	const {
-		orgid,
-		userid
-	} = req.params
-	const sql = {
-		cols,
-		tbl,
-		data: {
-			member_of: orgid
-		}
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE member_of = ${req.params.orgid}`)
+		res.status(200).json({ data: rows })
+	} else {
+		console.log('error')
+		return res.status(422).json({
+			errors: errors.array()
+		})
 	}
-	console.log(sql)
-	const {
-		rows
-	} = await DB.doSelect(sql)
-	res.status(200).json({
-		data: rows
-	})
 }
 
 orgidPost.validate = [
@@ -113,11 +147,9 @@ orgidPost.validate = [
 ]
 
 orgidPost.argon = (req, res, next) => {
-	console.dir(req.body.password)
 	encryptString(req.body.password)
 		.then(res => {
 			req.body.password = res
-			console.dir(req.body.password)
 			return next()
 		})
 		.catch(err => {
@@ -128,47 +160,22 @@ orgidPost.argon = (req, res, next) => {
 
 orgidPost.func = async (req, res) => {
 	const errors = validationResult(req)
-
 	if (errors.isEmpty()) {
 		console.log('pass')
-		const {
-			username,
-			password,
-			full_name,
-			email,
-		} = req.body
+		const D = sanitize(req.body, saniValues) 
+		D.member_of = req.params.orgid
 		const sql = {
 			tbl,
-			data: {
-				member_of: req.params.orgid,
-				username,
-				password,
-				full_name,
-				email,
-			}
+			data: D
 		}
-		const {
-			rows
-		} = await DB.doInsert(sql)
-		res.status(200).json({
-			rows: rows
-		})
-		// res.status(200).json({ rows: 'hit' })
+		const { rows } = await DB.doInsert(sql)
+		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
 		return res.status(422).json({
 			errors: errors.array()
 		})
 	}
-}
-
-orgidPut.validate = [
-	param('userid').isInt()
-]
-
-orgidPut.func = async (req, res) => {
-	//TODO
-	res.status(403).send('Under Construction')
 }
 
 // FUNCTIONS
@@ -181,5 +188,4 @@ module.exports = {
 	useridPut,
 	orgidGet,
 	orgidPost,
-	orgidPut,
 }

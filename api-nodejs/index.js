@@ -10,7 +10,6 @@ let isProd = false
 const { NODE_ENV, IS_PROD } = process.env
 if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
-// todo import models?
 const v1Routes = require('./routes/v1')
 
 // set up express
@@ -25,8 +24,10 @@ if (!isProd) {
 
 // CORS
 const corsConfig = {
-	origin: isProd ? /findyour\.agency$/ : /.*/
+	// origin: isProd ? /findyour\.agency$/ : /.*/
+	origin: /.*/
 }
+// app.use(cors())
 app.use(cors(corsConfig))
 
 app.use((req, res, next) => {

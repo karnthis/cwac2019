@@ -1,6 +1,6 @@
 const { check, param, validationResult } = require("express-validator/check");
 const DB = require("../../core/db");
-const { makeDateStamp, makeOptionals } = require("../../core/funcs");
+const { sanitize, makeUpdates } = require("../../core/funcs");
 
 //*	done
 const cols = [
@@ -13,6 +13,14 @@ const cols = [
 	"last_verified"
 ];
 const tbl = "PROVIDERS";
+
+const saniValues = [
+	'provider_name',
+	'phone',
+	'hours',
+	'description',
+	'days_of_operation'
+]
 
 const rootGet = {};
 const rootPost = {};
@@ -38,11 +46,11 @@ rootPost.validate = [
 		.trim()
 		.escape(),
 	//*	NOT REQUIRED
-	check("desc")
+	check("description")
 		.optional()
 		.trim()
 		.escape(),
-	check("days")
+	check("days_of_operation")
 		.optional()
 		.isLength({ max: 7 })
 		.trim()
@@ -52,22 +60,13 @@ rootPost.validate = [
 rootPost.func = async (req, res) => {
 	const errors = validationResult(req);
 	if (errors.isEmpty()) {
-		console.log("pass");
-		const { provider_name, phone, hours, desc, days } = req.body;
+		const D = sanitize(req.body, saniValues)
 		const sql = {
 			tbl,
-			data: {
-				provider_name,
-				phone,
-				hours,
-				description: desc || null,
-				days_of_operation: days || null,
-				last_verified: makeDateStamp()
-			}
-		};
-		const { rows } = await DB.doInsert(sql);
-		res.status(200).json({ rows: rows[0] });
-		// res.status(200).json({ rows: 'hit' })
+			data: D
+		}
+		const { rows = [] } = await DB.doInsert(sql);
+		res.status(200).json({ data: rows[0] });
 	} else {
 		console.log("error");
 		return res.status(422).json({ errors: errors.array() });
@@ -112,21 +111,12 @@ orgidPut.validate = [
 ];
 
 orgidPut.func = async (req, res) => {
-	//TODO: Moar
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { provider_name, phone, hours, desc, days } = req.body;
-		const toUpdate = makeOptionals([
-			['str', 'provider_name', provider_name],
-			['str', 'phone', phone],
-			['str', 'hours', hours],
-			['str', 'desc', desc],
-			['str', 'days', days],
-		])
+		const D = sanitize(req.body, saniValues);
+		const toUpdate = makeUpdates(D)
 		const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE provider_id = ${req.params.orgid} RETURNING *`)
-		res.status(200).json({
-			data: rows[0]
-		})
+		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
 		return res.status(422).json({
