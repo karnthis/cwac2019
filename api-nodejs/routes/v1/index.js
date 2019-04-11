@@ -14,15 +14,31 @@ const address = require("./address");
 const waitlist = require("./waitlist");
 const { check } = require("express-validator/check");
 
+
+// SWAGGER //
+const options = {
+	swaggerDefinition: {
+		info: {
+			title: 'GenerateHealth',
+			version: '1.0.0',
+			description: 'Swagger for the GenerateHealth CWAC2019 project API',
+		},
+	},
+	apis: ['./routes/v1/*.js'],
+};
+const specs = require('swagger-jsdoc')(options)
+const swaggerUi = require('swagger-ui-express');
+// END SWAGGER //
+
+
 // EXPORT
 module.exports = app => {
+	// NO TOKEN REQUIRED
 	app.use("/auth", auth);
-	// USE ROUTES
+	// END NO TOKEN
+	// TOKEN REQUIRED
 	// app.use([
-	// 	check("authorization")
-	// 		.isLength({ min: 16 })
-	// 		.trim()
-	// 		.escape(),
+	// 	check("authorization").isLength({ min: 16 }).trim().escape(),
 	// 	checkToken,
 	// 	passToken
 	// ]);
@@ -35,4 +51,7 @@ module.exports = app => {
 	app.use("/referral", referral);
 	app.use("/address", address);
 	app.use("/waitlist", waitlist);
+	app.use("/", swaggerUi.serve, swaggerUi.setup(specs))
+
+	// END TOKEN
 };
