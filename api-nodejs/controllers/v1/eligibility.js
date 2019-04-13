@@ -7,12 +7,8 @@ const {
 const DB = require('../../core/db')
 const { makeUpdates, sanitize, array2Object } = require('../../core/funcs')
 
-//todo
-const gCols = [
-	'elig_group_id',
-	'provider_id',
-]
 const gTbl = 'ELIGIBILITY_GROUP'
+const iTbl = 'ELIGIBILITY_ITEM'
 
 const iColsS = [
 	'elig_item_id',
@@ -21,13 +17,6 @@ const iColsS = [
 	'elig_item_type_label',
 	'elig_item_value',
 ]
-const iColsI = [
-	'elig_group_id',
-	'elig_item_type_code',
-	'elig_item_type_label',
-	'elig_item_value',
-]
-const iTbl = 'ELIGIBILITY_ITEM'
 
 const saniValues = [
 	'elig_item_type_code',
@@ -204,8 +193,6 @@ orgidPost.validate = [
 	check('eligibility[*][*].elig_item_value').trim().escape(),
 ]
 
-//	TODO
-
 orgidPost.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
@@ -249,31 +236,6 @@ orgidPut.validate = [
 	check('eligibility[*][*].elig_item_type_label').trim().escape(),
 	check('eligibility[*][*].elig_item_value').trim().escape(),
 ]
-
-//	TODO
-
-const errors = validationResult(req)
-if (errors.isEmpty()) {
-	let _ = await DB.query(`DELETE FROM ${iTbl} WHERE elig_group_id = ${req.params.grpid}`)
-	const ret = []
-	for (const i in req.body.group_members) {
-		const curr = req.body.group_members[i]
-		const D = sanitize(curr, saniValues)
-		D.elig_group_id = req.params.grpid
-		const sql = {
-			iTbl,
-			data: D
-		}
-		const { rows = [] } = await DB.doInsert(sql, 'elig_item_id')
-		ret.push(...rows)
-	}
-	res.status(200).json({ data: ret })
-} else {
-	console.log('error')
-	return res.status(422).json({ errors: errors.array() })
-}
-
-//	TODO
 
 orgidPut.func = async (req, res) => {
 	const errors = validationResult(req)
