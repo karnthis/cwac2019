@@ -243,8 +243,9 @@ orgidPut.func = async (req, res) => {
 		const ret = []
 
 		const b = await DB.query('begin')
-		const _ = await DB.query(`DELETE FROM ${iTbl} WHERE elig_group_id IN (SELECT DISTINCT elig_group_id FROM ${gTbl} WHERE provider_id = ${orgid})`)
-		const __ = await DB.query(`DELETE FROM ${gTbl} WHERE provider_id = ${orgid}`)
+
+		const dela = await DB.query(`DELETE FROM ${iTbl} WHERE elig_group_id IN (SELECT DISTINCT elig_group_id FROM ${gTbl} WHERE provider_id = ${orgid})`)
+		const delb = await DB.query(`DELETE FROM ${gTbl} WHERE provider_id = ${orgid}`)
 
 		const elig = req.body.eligibility
 		for (const i in elig) {
