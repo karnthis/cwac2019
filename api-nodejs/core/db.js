@@ -6,12 +6,7 @@ const {
 	PGDATABASE,
 	IS_PROD
 } = process.env
-// const {
-// 	Pool
-// } = require('pg')
-const {
-	cleanArray
-} = require('./funcs')
+const { cleanArray } = require('./funcs')
 
 let pgConfig
 if (!IS_PROD) {

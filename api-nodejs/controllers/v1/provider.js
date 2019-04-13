@@ -45,7 +45,6 @@ rootPost.validate = [
 		.isLength({ min: 3 })
 		.trim()
 		.escape(),
-	//*	NOT REQUIRED
 	check("description")
 		.optional()
 		.trim()

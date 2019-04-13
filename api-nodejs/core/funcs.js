@@ -17,6 +17,22 @@ function cError(msg = '', err = null) {
 	return new Error({err})
 }
 
+// OLD VERSION
+// function array2Object(x, key) {
+// 	return x.reduce((obj, item) => {
+// 		obj[item[key]] = item
+// 		return obj
+// 	}, {})
+// }
+
+function array2Object(x, key) {
+	return x.reduce((ret, row) => {
+		if (!ret[row[key]]) ret[row[key]] = []
+		ret[row[key]].push(row)
+		return ret
+	}, {})
+}
+
 function sanitize(data, whitelist) {
 	return whitelist.reduce(
 		(result, key) => data[key] !== undefined ? Object.assign(result, { [key]: data[key] }) : result, {}
@@ -65,6 +81,7 @@ module.exports = {
 	makeUpdates,
 	cleanArray,
 	sanitize,
+	array2Object,
 	cError,
 	lbtoa,
 	latob,
