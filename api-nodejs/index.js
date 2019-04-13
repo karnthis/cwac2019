@@ -18,6 +18,12 @@ const corsConfig = {
 // app.use(cors())
 app.use(cors(corsConfig))
 
+app.get('/', (req, res) => {
+	res
+	.status(200)
+	.json({ data: 'They killed me Mal... Killed me with a sword... How weird is that?' })
+})
+
 // HOOK FOR ALL ROUTES //
 require('./routes/v1')(app)
 

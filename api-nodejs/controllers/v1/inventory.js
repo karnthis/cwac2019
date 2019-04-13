@@ -38,7 +38,6 @@ rootGet.func = async (req, res) => {
 rootPost.validate = [
 	check('provider_id').isInt(),
 	check('inv_count').isInt(),
-	//*	NOT IMPLEMENTED
 	check('inv_type').optional().trim().escape(),
 ]
 

@@ -52,172 +52,23 @@
 </details>
 
 ### Providers: /provider
-Please see [Swagger](https://findyour.agency)
+Please see [Swagger](https://api.findyour.agency)
 
 ### Users: /user
-Please see [Swagger](https://findyour.agency)
+Please see [Swagger](https://api.findyour.agency)
 
 ### Addresses: /address
-Please see [Swagger](https://findyour.agency)
+Please see [Swagger](https://api.findyour.agency)
 
 ### Inventories: /inventory
-<details>
-	<summary> / (route root)</summary>
+Please see [Swagger](https://api.findyour.agency)
 
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid Inventories
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Query Result Array
-	- POST:
-		- Description: Add new Inventories
-		- Requires: Object containing:
-			- provider_id
-			- inv_count
-			- OPTIONAL:
-				- inv_type (not currently used)
-		- Accepts: JSON body with above
-		- Returns: Query Result Object
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<details>
-	<summary> /dispense </summary>
-
-- Authenticated Path
-	- GET: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-	- POST: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-	- PUT: 
-		- Description: Decrement target inventory by one
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Query Result Object
-</details>
-
-<details>
-	<summary> /(INTEGER:inv_id) </summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve target inventory
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Query Result Object
-	- POST: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-	- PUT: 
-		- Description: Update target inventory count
-		- Requires: Object containing:
-			- inv_count
-		- Accepts: JSON body with above
-		- Returns: Query Result Object
-</details>
+### Referrals: /referral
+Please see [Swagger](https://api.findyour.agency)
 
 <!-- TODO -->
-### Referrals: /referral
-<details>
-	<summary> / (route root)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Query Result Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Query Result Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<details>
-	<summary> / (route root)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Query Result Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Query Result Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<details>
-	<summary> / (route root)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<details>
-	<summary> / (route root)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
+### Eligilibility: /eligibility
+Please see [Swagger](https://api.findyour.agency)
 
 <!-- TODO -->
 ## Waitlisted: /waitlist

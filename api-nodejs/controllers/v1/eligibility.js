@@ -1,13 +1,11 @@
 const {
 	check,
 	param,
+	oneOf,
 	validationResult
 } = require('express-validator/check')
 const DB = require('../../core/db')
-const {
-	makeUpdates,
-	sanitize
-} = require('../../core/funcs')
+const { makeUpdates, sanitize, array2Object } = require('../../core/funcs')
 
 //todo
 const gCols = [
@@ -31,28 +29,148 @@ const iColsI = [
 ]
 const iTbl = 'ELIGIBILITY_ITEM'
 
-const rootGet = {}
-const orgidGet = {}
-const orgidPost = {}
-const gidPost = {}
-const gidPut = {}
-
 const saniValues = [
 	'elig_item_type_code',
 	'elig_item_type_label',
-	'elig_item_value'
+	'elig_item_value',
 ]
+
+const rootGet = {}
+const iidGet = {}
+const iidPut = {}
+const grpidGet = {}
+const grpidPost = {}
+const grpidPut = {}
+const orgidGet = {}
+const orgidPost = {}
+const orgidPut = {}
+
 rootGet.func = async (req, res) => {
-	const {
-		rows
-	} = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} LEFT JOIN ${gTbl} using(elig_group_id)`)
-	const ret = {}
-	rows.forEach(el => {
-		const pid = el.provider_id
-		if (!ret[pid]) ret[pid] = []
-		ret[pid].push(el)
-	})
+	const { rows } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id)`)
+	const ret = array2Object(rows, 'provider_id')
 	res.status(200).json({ data: ret })
+}
+
+iidGet.validate = [
+	param('iid').isInt(),
+]
+
+iidGet.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const { rows } = await DB.query(`SELECT ${iColsS} FROM ${iTbl} WHERE elig_item_id = ${res.params.iid}`)
+		res.status(200).json({ data: rows[0] })
+	} else {
+		console.log('error')
+		return res.status(422).json({ errors: errors.array() })
+	}
+}
+
+iidPut.validate = [
+	param('iid').isInt(),
+	check('elig_item_type_code').optional().isInt(),
+	check('elig_item_type_label').optional().trim().escape(),
+	check('elig_item_value').optional().trim().escape(),
+]
+
+iidPut.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const D = sanitize(req.body, saniValues)
+		const toUpdate = makeUpdates(D)
+		const { rows } = await DB.query(`UPDATE ${iTbl} SET ${toUpdate} WHERE elig_item_id = ${req.params.iid} Returning *`)
+		res.status(200).json({ data: rows[0] })
+	} else {
+		console.log('error')
+		return res.status(422).json({ errors: errors.array() })
+	}
+}
+
+grpidGet.validate = [
+	param('grpid').isInt(),
+]
+
+grpidGet.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const { rows } = await DB.query(`SELECT ${iColsS} FROM ${iTbl} WHERE elig_group_id = ${res.params.grpid}`)
+		const ret = array2Object(rows, 'elig_group_id')
+		res.status(200).json({ data: ret })
+	} else {
+		console.log('error')
+		return res.status(422).json({ errors: errors.array() })
+	}
+}
+
+
+grpidPost.validate = [
+	param('grpid').isInt(),
+	// oneOf([
+	// 	check('group_members').isJSON(),
+	// 	check('group_members').isArray(),
+	// ], 'group_members must be JSON or an Array'),
+	// check('group_members[*].elig_item_type_code').optional().isInt(),
+	// check('group_members[*].elig_item_type_label').trim().escape(),
+	// check('group_members[*].elig_item_value').trim().escape(),
+	check('elig_item_type_code').optional().isInt(),
+	check('elig_item_type_label').trim().escape(),
+	check('elig_item_value').trim().escape(),
+]
+
+grpidPost.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const ret = []
+		for (const i in req.body.group_members) {
+			const curr = req.body.group_members[i]
+			const D = sanitize(curr, saniValues)
+			D.elig_group_id = req.params.grpid
+			const sql = {
+				iTbl,
+				data: D
+			}
+			const { rows = [] } = await DB.doInsert(sql, 'elig_item_id')
+			ret.push(...rows)
+		}
+		res.status(200).json({ data: ret })
+	} else {
+		console.log('error')
+		return res.status(422).json({ errors: errors.array() })
+	}
+}
+
+grpidPut.validate = [
+	param('grpid').isInt(),
+	oneOf([
+		check('group_members').isJSON(),
+		check('group_members').isArray(),
+	], 'group_members must be JSON or an Array'),
+	check('group_members[*].elig_item_type_code').optional().isInt(),
+	check('group_members[*].elig_item_type_label').trim().escape(),
+	check('group_members[*].elig_item_value').trim().escape(),
+]
+
+grpidPut.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		let _ = await DB.query(`DELETE FROM ${iTbl} WHERE elig_group_id = ${req.params.grpid}`)
+		const ret = []
+		for (const i in req.body.group_members) {
+			const curr = req.body.group_members[i]
+			const D = sanitize(curr, saniValues)
+			D.elig_group_id = req.params.grpid
+			const sql = {
+				iTbl,
+				data: D
+			}
+			const { rows = [] } = await DB.doInsert(sql, 'elig_item_id')
+			ret.push(...rows)
+		}
+		res.status(200).json({ data: ret })
+	} else {
+		console.log('error')
+		return res.status(422).json({ errors: errors.array() })
+	}
 }
 
 orgidGet.validate = [
@@ -62,15 +180,8 @@ orgidGet.validate = [
 orgidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const {
-			rows
-		} = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} LEFT JOIN ${gTbl} using(elig_group_id) WHERE provider_id = ${req.params.orgid}`)
-		const ret = {}
-		rows.forEach(el => {
-			const pid = el.provider_id
-			if (!ret[pid]) ret[pid] = []
-			ret[pid].push(el)
-		})
+		const { rows } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id) WHERE provider_id = ${req.params.orgid}`)
+		const ret = array2Object(rows, 'elig_group_id')
 		res.status(200).json({ data: ret })
 	} else {
 		console.log('error')
@@ -80,56 +191,119 @@ orgidGet.func = async (req, res) => {
 
 orgidPost.validate = [
 	param('orgid').isInt(),
+	oneOf([
+		check('eligibility').isJSON(),
+		check('eligibility').isArray(),
+	], 'eligibility must be JSON or Array'),
+	oneOf([
+		check('eligibility[*]').isJSON(),
+		check('eligibility[*]').isArray(),
+	], 'eligibility[*] must be JSON or Array'),
+	check('eligibility[*][*].elig_item_type_code').optional().isInt(),
+	check('eligibility[*][*].elig_item_type_label').trim().escape(),
+	check('eligibility[*][*].elig_item_value').trim().escape(),
 ]
+
+//	TODO
 
 orgidPost.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
-		res.status(200).json({ data: rows[0] })
+		const ret = []
+		const elig = req.body.eligibility
+		for (const i in elig) {
+			let { rows } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
+
+			const link = rows[0]
+			const round = elig[i]
+			for (const j in round) {
+
+				const D = sanitize(round[j], saniValues)
+				D.elig_group_id = link
+				const sql = {
+					iTbl,
+					data: D
+				}
+				let { rows = [] } = await DB.doInsert(sql, 'elig_item_id')
+				ret.push(...rows)
+			}
+		}
+		res.status(200).json({ data: ret })
 	} else {
 		console.log('error')
 		return res.status(422).json({ errors: errors.array() })
 	}
 }
 
-gidPost.validate = [
-	// param('orgid').isInt(),
-	param('gid').isInt(),
-	check('elig_item_type_code').optional().isInt(),
-	check('elig_item_type_label').trim().escape(),
-	check('elig_item_value').trim().escape(),
+orgidPut.validate = [
+	param('orgid').isInt(),
+	oneOf([
+		check('eligibility').isJSON(),
+		check('eligibility').isArray(),
+	], 'eligibility must be JSON or Array'),
+	oneOf([
+		check('eligibility[*]').isJSON(),
+		check('eligibility[*]').isArray(),
+	], 'eligibility[*] must be JSON or Array'),
+	check('eligibility[*][*].elig_item_type_code').optional().isInt(),
+	check('eligibility[*][*].elig_item_type_label').trim().escape(),
+	check('eligibility[*][*].elig_item_value').trim().escape(),
 ]
 
-gidPost.func = async (req, res) => {
-	const errors = validationResult(req)
-	if (errors.isEmpty()) {
-		const D = sanitize(req.body, saniValues)
-		const { rows } = await DB.query(`INSERT INTO ${iTbl} (${iColsI}) VALUES (${req.params.orgid}, ${D.elig_item_type_code}, '${D.elig_item_type_label}', '${D.elig_item_value}') RETURNING elig_item_id`)
-		res.status(200).json({ data: rows[0] })
-	} else {
-		console.log('error')
-		return res.status(422).json({ errors: errors.array() })
+//	TODO
+
+const errors = validationResult(req)
+if (errors.isEmpty()) {
+	let _ = await DB.query(`DELETE FROM ${iTbl} WHERE elig_group_id = ${req.params.grpid}`)
+	const ret = []
+	for (const i in req.body.group_members) {
+		const curr = req.body.group_members[i]
+		const D = sanitize(curr, saniValues)
+		D.elig_group_id = req.params.grpid
+		const sql = {
+			iTbl,
+			data: D
+		}
+		const { rows = [] } = await DB.doInsert(sql, 'elig_item_id')
+		ret.push(...rows)
 	}
+	res.status(200).json({ data: ret })
+} else {
+	console.log('error')
+	return res.status(422).json({ errors: errors.array() })
 }
 
-gidPut.validate = [
-	// param('orgid').isInt(),
-	param('gid').isInt(),
-	param('iid').isInt(),
-	check('elig_item_type_code').optional().isInt(),
-	check('elig_item_type_label').optional().trim().escape(),
-	check('elig_item_value').optional().trim().escape(),
-]
+//	TODO
 
-gidPut.func = async (req, res) => {
+orgidPut.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const D = sanitize(req.body, saniValues)
-		const toUpdate = makeUpdates(D)
-		toUpdate.join(', ')
-		const { rows } = await DB.query(`UPDATE ${iTbl} SET ${toUpdate} WHERE elig_item_id = ${iTbl} Returning *`)
-		res.status(200).json({ data: rows[0] })
+		const ret = []
+
+		const b = await DB.query('begin')
+		const _ = await DB.query(`DELETE FROM ${iTbl} WHERE elig_group_id IN (SELECT DISTINCT elig_group_id FROM ${gTbl} WHERE provider_id = ${orgid})`)
+		const __ = await DB.query(`DELETE FROM ${gTbl} WHERE provider_id = ${orgid}`)
+
+		const elig = req.body.eligibility
+		for (const i in elig) {
+			let { rows } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
+
+			const link = rows[0]
+			const round = elig[i]
+			for (const j in round) {
+
+				const D = sanitize(round[j], saniValues)
+				D.elig_group_id = link
+				const sql = {
+					iTbl,
+					data: D
+				}
+				let { rows = [] } = await DB.doInsert(sql, 'elig_item_id')
+				ret.push(...rows)
+			}
+		}
+		const end = await DB.query('end')
+		res.status(200).json({ data: ret })
 	} else {
 		console.log('error')
 		return res.status(422).json({ errors: errors.array() })
@@ -139,8 +313,12 @@ gidPut.func = async (req, res) => {
 // EXPORT ROUTES
 module.exports = {
 	rootGet,
+	iidGet,
+	iidPut,
+	grpidGet,
+	grpidPost,
+	grpidPut,
 	orgidGet,
 	orgidPost,
-	gidPost,
-	gidPut,
+	orgidPut,
 }

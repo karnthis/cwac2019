@@ -51,7 +51,7 @@ module.exports = app => {
 	app.use("/referral", referral);
 	app.use("/address", address);
 	app.use("/waitlist", waitlist);
-	app.use("/", swaggerUi.serve, swaggerUi.setup(specs))
+	app.use("/swagger", swaggerUi.serve, swaggerUi.setup(specs))
 
 	// END TOKEN
 };
