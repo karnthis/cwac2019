@@ -23,7 +23,7 @@ rootPost.func = async (req, res) => {
 		const { username, password } = req.body
 		console.dir(username)
 		sql = `SELECT user_id, password FROM USERS WHERE username = '${username}'`
-		const { rows } = await query(sql)
+		const { rows = [] } = await query(sql)
 		// console.dir(rows)
 		if (!rows.length) return res.status(401).json({ errors: 'Auth Error 7' })
 

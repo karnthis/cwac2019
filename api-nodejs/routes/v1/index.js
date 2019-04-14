@@ -18,13 +18,15 @@ const { check } = require("express-validator/check");
 // SWAGGER //
 const options = {
 	swaggerDefinition: {
+		openapi: '3.0.0',
+		// swagger: '2.0',
 		info: {
 			title: 'GenerateHealth',
 			version: '1.0.0',
 			description: 'Swagger for the GenerateHealth CWAC2019 project API',
 		},
 	},
-	apis: ['./routes/v1/*.js'],
+	apis: ['./routes/v1/*.yml'],
 };
 const specs = require('swagger-jsdoc')(options)
 const swaggerUi = require('swagger-ui-express');
