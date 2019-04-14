@@ -1,0 +1,802 @@
+servers:
+  - url: http://api.irl.technology
+    description: Development server
+  - url: http://api.findyour.agency
+    description: Test server
+
+paths:
+  /auth:
+    get:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    post:
+      summary:
+      description: Submit Login Credentials
+      # description: Optional description in *Markdown*
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  example: Fluffy
+                  type: string
+                password:
+                  example: I<3mypup
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Authentication Successful
+          default:
+            description: Unexpected error
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /provider:
+    get:
+      summary:
+      description: Fetch All Active Providers
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary:
+      description: Add new Provider
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_name
+                - phone
+                - hours
+              properties:
+                provider_name:
+                  example: GenerateHealth
+                  type: string
+                phone:
+                  example: 123-456-7890
+                  type: string
+                hours:
+                  example: 0800-1700
+                  type: string
+                desc:
+                  example: Local Non-profit
+                  type: string
+                days:
+                  example: UMTWRFS
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Added New Provider Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /provider/{orgid}:
+    get:
+      summary:
+      description: Get Provider by ID
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Provider Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary:
+      description: Update Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider_name:
+                  example: GenerateHealth
+                  type: string
+                phone:
+                  example: 123-456-7890
+                  type: string
+                hours:
+                  example: 0800-1700
+                  type: string
+                desc:
+                  example: Local Non-profit
+                  type: string
+                days:
+                  example: UMTWRFS
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Updated Provider Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+# +++++
+  /user:
+    get:
+      summary:
+      description: Fetch All Active Users
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /users/one/{userid}:
+    get:
+      summary:
+      description: Get User by ID
+      parameters:
+        - in: path
+          name: userid
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: User Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary:
+      description: Update Target User
+      parameters:
+        - in: path
+          name: userid
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_of:
+                  example: 1
+                  type: integer
+                username:
+                  example: myUsername
+                  type: string
+                password:
+                  example: password123
+                  type: string
+                cpassword:
+                  example: password123
+                  type: string
+                full_name:
+                  example: John Sample
+                  type: string
+                email:
+                  example: john@samplesite.som
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Updated User Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+# +++++
+  /users/group/{orgid}:
+    get:
+      summary:
+      description: Get All Users for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: User(s) Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary:
+      description: Add User For Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+                - cpassword
+                - full_name
+                - email
+              properties:
+                username:
+                  example: myUsername
+                  type: string
+                password:
+                  example: password123
+                  type: string
+                cpassword:
+                  example: password123
+                  type: string
+                full_name:
+                  example: John Sample
+                  type: string
+                email:
+                  example: john@samplesite.som
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Created User Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /address:
+    get:
+      summary:
+      description: Fetch All Active Addresses
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /address/one/{aid}:
+    get:
+      summary:
+      description: Get Address by ID
+      parameters:
+        - in: path
+          name: aid
+          description: Address ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Address Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary:
+      description: Update Target Address
+      parameters:
+        - in: path
+          name: aid
+          description: Address ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                primary_site:
+                  example: true
+                  type: boolean
+                location_type:
+                  example: Popup Clinic
+                  type: string
+                location_name:
+                  example: 13th and Penn
+                  type: string
+                street:
+                  example: Penn Ave
+                  type: string
+                line_2:
+                  example: \#4
+                  type: string
+                city:
+                  example: St Louis
+                  type: string
+                state:
+                  example: MO
+                  type: string
+                zip_base5:
+                  example: 12345
+                  type: string
+                zip_plus4:
+                  example: 4422
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Updated Address Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+# +++++
+  /address/org/{orgid}:
+    get:
+      summary:
+      description: Get All Addresses for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Address(es) Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary:
+      description: Add Address For Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - primary_site
+                - location_type
+                - location_name
+                - street
+                - city
+                - zip_base5
+              properties:
+                primary_site:
+                  example: true
+                  type: boolean
+                location_type:
+                  example: Popup Clinic
+                  type: string
+                location_name:
+                  example: 13th and Penn
+                  type: string
+                street:
+                  example: Penn Ave
+                  type: string
+                line_2:
+                  example: \#4
+                  type: string
+                city:
+                  example: St Louis
+                  type: string
+                state:
+                  example: MO
+                  type: string
+                zip_base5:
+                  example: 12345
+                  type: string
+                zip_plus4:
+                  example: 4422
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Created Address Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /referral:
+    get:
+      summary:
+      description: Fetch All Active Referrals
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /referral/byreferer/{orgid}:
+    get:
+      summary:
+      description: Get All Referrals From Target Referer Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Referral(s) Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary:
+      description: Add New Referral From Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - creator_id
+                - referee_id
+                - is_eligiable
+                - date_of_referal
+              properties:
+                creator_id:
+                  example: 1
+                  type: integer
+                referee_id:
+                  example: 2
+                  type: integer
+                is_eligiable:
+                  example: true
+                  type: boolean
+                date_of_referal:
+                  example: 1555546
+                  type: string
+                referral_notes:
+                  example: Client needs 2 items
+                  type: string
+                fulfillment_status:
+                  example: received
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Created Address Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /referral/byreferee/{orgid}:
+    get:
+      summary:
+      description: Get All Referrals From Target Referee Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Referral(s) Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+# +++++
+  /referral/byreferral/{rid}:
+    get:
+      summary:
+      description: Get Referral by ID
+      parameters:
+        - in: path
+          name: rid
+          description: Referral ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Referral Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        default:
+          description: Unexpected error
+    post:
+      summary: Request Type Not Supported
+      $ref: '#/definitions/NotSupported'
+    put:
+      summary:
+      description: Update Target Referral
+      parameters:
+        - in: path
+          name: rid
+          description: Referral ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_eligiable:
+                  example: true
+                  type: boolean
+                referral_notes:
+                  example: Client needs 2 items
+                  type: string
+                fulfillment_status:
+                  example: received
+                  type: string
+        produces:
+          - application/json
+        responses:
+          200:
+            description: Created Address Successfully
+            content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+          default:
+            description: Unexpected error
+
+
+
+
+
+
+
+# ==========
+definitions:
+  NotSupported:
+    produces:
+     - application/json
+    responses:
+      403:
+        description: Not Supported
+      default:
+        description: Unexpected error
+# ==========
+
+
+
+
