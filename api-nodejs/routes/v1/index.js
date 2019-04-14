@@ -26,7 +26,7 @@ const options = {
 			description: 'Swagger for the GenerateHealth CWAC2019 project API',
 		},
 	},
-	apis: ['./routes/v1/*.yml'],
+	apis: ['./routes/v1/swagger.yml'],
 };
 const specs = require('swagger-jsdoc')(options)
 const swaggerUi = require('swagger-ui-express');
