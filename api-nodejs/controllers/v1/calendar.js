@@ -38,8 +38,8 @@ const orgidGet = {}
 const orgidPost = {}
 
 rootGet.func = async (req, res) => {
-	const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
-	res.status(200).json({ data: rows })
+	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	res.status(200).json({ data: rows = [] })
 }
 
 //	TODO	clean this shit up
@@ -62,7 +62,7 @@ cidGet.validate = [
 cidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE class_id = '${req.params.cid}'`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE class_id = '${req.params.cid}'`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -89,7 +89,7 @@ cidPut.func = async (req, res) => {
 	if (errors.isEmpty()) {
 		const D = sanitize(req.body, saniValues)
 		const toUpdate = makeUpdates(D)
-		const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE class_id = ${req.params.cid} RETURNING *`)
+		const { rows = [] } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE class_id = ${req.params.cid} RETURNING *`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -104,8 +104,8 @@ aidGet.validate = [
 aidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE address_id = '${req.params.aid}'`)
-		res.status(200).json({ data: rows })
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE address_id = '${req.params.aid}'`)
+		res.status(200).json({ data: rows = [] })
 	} else {
 		console.log('error')
 		return res.status(422).json({ errors: errors.array() })
@@ -119,8 +119,8 @@ orgidGet.validate = [
 orgidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
-		res.status(200).json({ data: rows })
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
+		res.status(200).json({ data: rows = [] })
 	} else {
 		console.log('error')
 		return res.status(422).json({ errors: errors.array() })
@@ -150,7 +150,7 @@ orgidPost.func = async (req, res) => {
 			tbl,
 			data: D
 		}
-		const { rows } = await DB.doInsert(sql)
+		const { rows = [] } = await DB.doInsert(sql)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')

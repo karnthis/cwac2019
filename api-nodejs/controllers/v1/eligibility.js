@@ -35,7 +35,7 @@ const orgidPost = {}
 const orgidPut = {}
 
 rootGet.func = async (req, res) => {
-	const { rows } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id)`)
+	const { rows = [] } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id)`)
 	const ret = array2Object(rows, 'provider_id')
 	res.status(200).json({ data: ret })
 }
@@ -47,7 +47,7 @@ iidGet.validate = [
 iidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${iColsS} FROM ${iTbl} WHERE elig_item_id = ${res.params.iid}`)
+		const { rows = [] } = await DB.query(`SELECT ${iColsS} FROM ${iTbl} WHERE elig_item_id = ${res.params.iid}`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -67,7 +67,7 @@ iidPut.func = async (req, res) => {
 	if (errors.isEmpty()) {
 		const D = sanitize(req.body, saniValues)
 		const toUpdate = makeUpdates(D)
-		const { rows } = await DB.query(`UPDATE ${iTbl} SET ${toUpdate} WHERE elig_item_id = ${req.params.iid} Returning *`)
+		const { rows = [] } = await DB.query(`UPDATE ${iTbl} SET ${toUpdate} WHERE elig_item_id = ${req.params.iid} Returning *`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -82,7 +82,7 @@ grpidGet.validate = [
 grpidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${iColsS} FROM ${iTbl} WHERE elig_group_id = ${res.params.grpid}`)
+		const { rows = [] } = await DB.query(`SELECT ${iColsS} FROM ${iTbl} WHERE elig_group_id = ${res.params.grpid}`)
 		const ret = array2Object(rows, 'elig_group_id')
 		res.status(200).json({ data: ret })
 	} else {
@@ -169,7 +169,7 @@ orgidGet.validate = [
 orgidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id) WHERE provider_id = ${req.params.orgid}`)
+		const { rows = [] } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id) WHERE provider_id = ${req.params.orgid}`)
 		const ret = array2Object(rows, 'elig_group_id')
 		res.status(200).json({ data: ret })
 	} else {
@@ -199,7 +199,7 @@ orgidPost.func = async (req, res) => {
 		const ret = []
 		const elig = req.body.eligibility
 		for (const i in elig) {
-			let { rows } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
+			let { rows = [] } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
 
 			const link = rows[0]
 			const round = elig[i]
@@ -249,7 +249,7 @@ orgidPut.func = async (req, res) => {
 
 		const elig = req.body.eligibility
 		for (const i in elig) {
-			let { rows } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
+			let { rows = [] } = await DB.query(`INSERT INTO ${gTbl} (provider_id) VALUES (${req.params.orgid}) RETURNING elig_group_id`)
 
 			const link = rows[0]
 			const round = elig[i]

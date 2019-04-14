@@ -8,7 +8,7 @@ const { sanitize } = require('../../core/funcs')
 const { MUST_MATCH } = process.env;
 
 const rootGet = {func: async (req, res) => {
-	const { rows } = await DB.query(`SELECT * FROM pg_catalog.pg_tables WHERE tablename NOT LIKE 'pg_%' AND tablename NOT LIKE 'sql_%'`)
+	const { rows = [] } = await DB.query(`SELECT * FROM pg_catalog.pg_tables WHERE tablename NOT LIKE 'pg_%' AND tablename NOT LIKE 'sql_%'`)
 	res.status(200).json({data: rows})
 }}
 
@@ -76,8 +76,8 @@ cmdPost.func = async (req, res) => {
 					tbl: 'USERS',
 					data: D
 				}
-				const { rows } = await DB.doInsert(sqll)
-				res.status(200).json({ data: rows })
+				const { rows = [] } = await DB.doInsert(sqll)
+				res.status(200).json({ data: rows = [] })
 				break;}
 			default:
 				res.status(200).json({data: 'nothing done'})

@@ -32,7 +32,7 @@ rootGet.func = async (req, res) => {
 	const {
 		rows
 	} = await DB.query(`SELECT ${cols} FROM ${tbl}`)
-	res.status(200).json({ data: rows })
+	res.status(200).json({ data: rows = [] })
 }
 
 rootPost.validate = [
@@ -49,7 +49,7 @@ rootPost.func = async (req, res) => {
 			tbl,
 			data: D
 		}
-		const { rows } = await DB.doInsert(sql)
+		const { rows = [] } = await DB.doInsert(sql)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -67,7 +67,7 @@ dispense.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
 		let sql = `UPDATE ${tbl} SET inv_count = inv_count - 1 WHERE inv_id = ${req.params.inv_id} RETURNING *`
-		const { rows } = await DB.query(sql)
+		const { rows = [] } = await DB.query(sql)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -108,7 +108,7 @@ inv_idPut.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
 		let sql = `UPDATE ${tbl} SET inv_count = ${req.body.inv_count} WHERE inv_id = ${req.params.inv_id} RETURNING *`
-		const { rows } = await DB.query(sql)
+		const { rows = [] } = await DB.query(sql)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')

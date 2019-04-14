@@ -28,8 +28,8 @@ const orgidGet = {};
 const orgidPut = {};
 
 rootGet.func = async (req, res) => {
-	const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`);
-	res.status(200).json({ data: rows });
+	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`);
+	res.status(200).json({ data: rows = [] });
 };
 
 rootPost.validate = [
@@ -75,7 +75,7 @@ rootPost.func = async (req, res) => {
 orgidGet.validate = [param("orgid").isInt()];
 
 orgidGet.func = async (req, res) => {
-	const { rows } = await DB.query(
+	const { rows = [] } = await DB.query(
 		`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`
 	);
 	res.status(200).json({ data: rows[0] });
@@ -114,7 +114,7 @@ orgidPut.func = async (req, res) => {
 	if (errors.isEmpty()) {
 		const D = sanitize(req.body, saniValues);
 		const toUpdate = makeUpdates(D)
-		const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE provider_id = ${req.params.orgid} RETURNING *`)
+		const { rows = [] } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE provider_id = ${req.params.orgid} RETURNING *`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
