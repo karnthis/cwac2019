@@ -70,7 +70,7 @@ Please see [Swagger](https://api.findyour.agency)
 Please see [Swagger](https://api.findyour.agency)
 
 <!-- TODO -->
-## Waitlisted: /waitlist
+### Waitlisted: /waitlist
 Please see [Swagger](https://api.findyour.agency)
 
 ### Classes: /calendar

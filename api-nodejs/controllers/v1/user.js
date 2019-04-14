@@ -96,7 +96,7 @@ useridPut.func = async (req, res) => {
 		if (errors.isEmpty()) {
 			const D = sanitize(req.body, saniValues)
 			const toUpdate = makeUpdates(D)
-			const { rows } = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE user_id = ${req.params.userid} RETURNING *`)
+			const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE user_id = ${req.params.userid} RETURNING *`)
 			res.status(200).json({ data: rows[0] })
 		} else {
 			console.log('error')

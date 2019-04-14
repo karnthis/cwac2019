@@ -147,7 +147,7 @@ aidPut.func = async (req, res)=> {
 		if (zip_base5) D.zip_code = `${zip_base5}-${zip_plus4}`
 		const toUpdate = makeUpdates(D)
 
-		const { rows } = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE address_id = ${aid} RETURNING *`)
+		const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE address_id = ${req.params.aid} RETURNING *`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')

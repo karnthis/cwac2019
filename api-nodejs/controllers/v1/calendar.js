@@ -88,12 +88,8 @@ cidPut.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
 		const D = sanitize(req.body, saniValues)
-		D.class_id = req.params.cid
-		const sql = {
-			tbl,
-			data: D
-		}
-		const { rows } = await DB.doInsert(sql)
+		const toUpdate = makeUpdates(D)
+		const { rows } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE class_id = ${req.params.cid} RETURNING *`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
