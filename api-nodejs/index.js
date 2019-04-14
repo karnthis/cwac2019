@@ -1,15 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
 // Misc ENV vars
-const { NODE_ENV, IS_PROD } = process.env
+const { NODE_ENV, IS_PROD, COOKIE_CODE } = process.env
 if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
 // set up express
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cookieParser(COOKIE_CODE))
 
 // CORS
 const corsConfig = {
@@ -31,7 +33,7 @@ require('./routes/v1')(app)
 app.use('/dev', require('./routes/dev'))
 
 // Start server //
-let port = process.env.PROD_PORT || 51515;
+let port = process.env.PROD_PORT || 5555;
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
 });

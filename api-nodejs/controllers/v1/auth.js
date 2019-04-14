@@ -9,7 +9,7 @@ const { verifyLogin, prepToken } = require('../../core/crypt')
 const rootPost = {}
 
 rootPost.validate = [
-	check('login').isLength({
+	check('username').isLength({
 		min: 3
 	}).trim().escape(),
 	check('password').isLength({
@@ -20,28 +20,26 @@ rootPost.validate = [
 rootPost.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const {
-			login,
-			password
-		} = req.body
-		console.dir(login)
-		sql = `SELECT user_id, password FROM USERS WHERE username = '${login}'`
-		const {
-			rows
-		} = await query(sql)
+		const { username, password } = req.body
+		console.dir(username)
+		sql = `SELECT user_id, password FROM USERS WHERE username = '${username}'`
+		const { rows } = await query(sql)
+		// console.dir(rows)
+		if (!rows.length) return res.status(401).json({ errors: 'Auth Error 7' })
+
 		const tmp = rows[0].password.toString('utf-8')
 		const tkn = await verifyLogin(tmp, password)
 		.catch(err => {throw new Error(err)})
 		// console.dir(tkn)
 		tkn.user_id = rows[0].user_id
-		const authHeader = await prepToken(tkn)
+		const authToken = await prepToken(tkn)
 		.catch(err => {throw new Error(err)})
 
-		res.set({
-			authorization: authHeader
-		})
+		res.cookie('ghSession', authToken, { signed: true });
+		// res.set({
+		// 	authorization: authHeader
+		// })
 
-		// res.headers.authorization = authHeader
 		res.status(200).json({data: 'Authentication Successful'})
 	} else {
 		console.log('error')

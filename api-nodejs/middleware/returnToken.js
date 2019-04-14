@@ -7,6 +7,11 @@ function passToken(req, res, next) {
 	next()
 }
 
+function readToken(req, res, next) {
+	console.log(req.signedCookies.ghSession)
+	next()
+}
+
 module.exports = {
-	passToken
+	readToken
 }

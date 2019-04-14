@@ -1,6 +1,6 @@
 // IMPORTS
 const { checkToken } = require("../../middleware/tokenManager");
-const { passToken } = require("../../middleware/returnToken");
+const { passToken, readToken } = require("../../middleware/returnToken");
 // ROUTES
 const calendar = require("./calendar");
 // const county = require('./county')
@@ -35,6 +35,7 @@ const swaggerUi = require('swagger-ui-express');
 module.exports = app => {
 	// NO TOKEN REQUIRED
 	app.use("/auth", auth);
+	app.use([readToken])
 	// END NO TOKEN
 	// TOKEN REQUIRED
 	// app.use([

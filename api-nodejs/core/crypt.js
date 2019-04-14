@@ -43,8 +43,11 @@ async function prepToken(tkn) {
 	.then(res => tkn.session_token = res)
 	const _ = await saveToken(tkn)
 	.catch(err => {throw new Error(err)})
-	const authString = `${tkn.user_id}.${refresh_token}.${session_token}`
-	return `Bearer ${lbtoa(authString)}`
+
+	return lbtoa(`${tkn.user_id}.${refresh_token}.${session_token}`)
+
+	// const authString = `${tkn.user_id}.${refresh_token}.${session_token}`
+	// return `Bearer ${lbtoa(authString)}`
 }
 
 async function verifyLogin(against = '', toCheck = '') {

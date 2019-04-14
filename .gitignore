@@ -1,6 +1,7 @@
 # DIRECTORIES
 node_modules/
 notes/
+coverage/
 
 # FILES
 .env
