@@ -66,98 +66,12 @@ Please see [Swagger](https://api.findyour.agency)
 ### Referrals: /referral
 Please see [Swagger](https://api.findyour.agency)
 
-<!-- TODO -->
 ### Eligilibility: /eligibility
 Please see [Swagger](https://api.findyour.agency)
 
 <!-- TODO -->
 ## Waitlisted: /waitlist
-<details>
-	<summary> / (route root)</summary>
+Please see [Swagger](https://api.findyour.agency)
 
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<details>
-	<summary> / (route root)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<!-- TODO -->
 ### Classes: /calendar
-<details>
-	<summary> / (route root)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
-
-<details>
-	<summary> /(INTEGER:orgid)</summary>
-
-- Authenticated Path
-	- GET: 
-		- Description: Retrieve all valid providers
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Array
-	- POST:
-		- Description: Add new provider
-		- Requires: Object containing:
-			- OPTIONAL:
-		- Accepts: JSON body with above
-		- Returns: Array
-	- PUT: DISABLED
-		- Description: 
-		- Requires: Nothing
-		- Accepts: Nothing
-		- Returns: Nothing
-</details>
+Please see [Swagger](https://api.findyour.agency)
