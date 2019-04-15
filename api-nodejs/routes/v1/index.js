@@ -27,6 +27,7 @@ const options = {
 		},
 	},
 	apis: ['./routes/v1/swagger.yml'],
+	docExpansion : "none"
 };
 const specs = require('swagger-jsdoc')(options)
 const swaggerUi = require('swagger-ui-express');
