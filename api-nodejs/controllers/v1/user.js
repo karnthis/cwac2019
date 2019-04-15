@@ -164,7 +164,6 @@ orgidPost.func = async (req, res) => {
 		console.log('pass')
 		const D = sanitize(req.body, saniValues) 
 		D.member_of = req.params.orgid
-		console.log(D)
 		const sql = {
 			tbl,
 			data: D
