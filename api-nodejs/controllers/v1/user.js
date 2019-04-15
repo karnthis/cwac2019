@@ -30,7 +30,7 @@ const orgidPost = {}
 
 rootGet.func = async (req, res) => {
 	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
-	res.status(200).json({ data: rows = [] })
+	res.status(200).json({ data: rows })
 }
 
 useridGet.validate = [
@@ -114,7 +114,7 @@ orgidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
 		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE member_of = ${req.params.orgid}`)
-		res.status(200).json({ data: rows = [] })
+		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
 		return res.status(422).json({
@@ -169,7 +169,7 @@ orgidPost.func = async (req, res) => {
 			data: D
 		}
 		const { rows = [] } = await DB.doInsert(sql)
-		res.status(200).json({ data: rows = [] })
+		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
 		return res.status(422).json({

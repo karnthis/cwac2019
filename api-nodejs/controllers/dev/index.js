@@ -77,7 +77,7 @@ cmdPost.func = async (req, res) => {
 					data: D
 				}
 				const { rows = [] } = await DB.doInsert(sqll)
-				res.status(200).json({ data: rows = [] })
+				res.status(200).json({ data: rows })
 				break;}
 			default:
 				res.status(200).json({data: 'nothing done'})

@@ -29,7 +29,7 @@ const orgidPut = {};
 
 rootGet.func = async (req, res) => {
 	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`);
-	res.status(200).json({ data: rows = [] });
+	res.status(200).json({ data: rows });
 };
 
 rootPost.validate = [
