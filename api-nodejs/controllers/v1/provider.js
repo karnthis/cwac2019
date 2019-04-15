@@ -28,7 +28,8 @@ const orgidGet = {};
 const orgidPut = {};
 
 rootGet.func = async (req, res) => {
-	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`);
+	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	.catch(err => console.log(err))
 	res.status(200).json({ data: rows });
 };
 

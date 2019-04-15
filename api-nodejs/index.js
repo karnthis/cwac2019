@@ -17,8 +17,8 @@ app.use(cookieParser(COOKIE_CODE))
 const corsConfig = {
 	origin: /.*/
 }
-// app.use(cors())
-app.use(cors(corsConfig))
+app.use(cors())
+// app.use(cors(corsConfig))
 
 app.get('/', (req, res) => {
 	res
