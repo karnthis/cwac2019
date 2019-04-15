@@ -31,7 +31,7 @@ const PGPool = new require('pg').Pool(pgConfig)
 
 // INTERNAL FUNCTIONS
 async function pgQuery(sql) {
-	return await PGPool.query(sql).catch(err => err)
+	return await PGPool.query(sql).catch(err => console.log(err))
 }
 
 
