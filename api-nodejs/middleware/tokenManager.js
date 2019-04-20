@@ -23,7 +23,7 @@ async function checkToken(req, res, next) {
 	// const authArray = ghSession.split(' ')
 	if (!ghSession) return res.status(401).json({ errors: 'Authorization Required' })
 	const decoded = latob(ghSession).split('.')
-	console.log(decoded)
+	// console.log(decoded)
 	if (decoded[0].length != 3) return res.status(401).json({ errors: 'Invalid Auth Token' })
 	const stamp = makeDateStamp()
 
