@@ -14,7 +14,7 @@ expRtr.route('/')
 
 	.get(NotSupp)
 
-	.post(rootPost.func)
+	.post(rootPost.validate, rootPost.func)
 
 	.put(NotSupp)
 

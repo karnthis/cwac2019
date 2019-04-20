@@ -15,35 +15,6 @@ expRtr.route('/')
 
 	.get(rootGet.func)
 
-	/**
-	 * @swagger
-	 * /inventory:
-	 *    post:
-	 *      description: Create new inventory
-	 *      parameters:
-	 *       - name: provider_id
-	 *         description: Parent agency to link to new inventory
-	 *         in: POST body
-	 *         required: true
-	 *         type: integer
-	 *       - name: inv_count
-	 *         description: Parent agency to insert
-	 *         in: POST body
-	 *         required: true
-	 *         type: integer
-	 *       - name: inv_type
-	 *         description: Username to insert
-	 *         in: POST body
-	 *         required: false
-	 *         type: string
-	 *      produces:
-	 *       - application/json
-	 *      responses:
-	 *       200:
-	 *         description: Good Request
-	 *      returns:
-	 *        data: Query Result Object
-	 */
 	.post(rootPost.validate, rootPost.func)
 
 	.put(NotSupp)
