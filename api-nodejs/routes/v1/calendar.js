@@ -4,6 +4,7 @@ const {
 } = require('../../controllers/shared/')
 const {
 	rootGet,
+	statusGet,
 	cidGet,
 	cidPut,
 	aidGet,
@@ -14,6 +15,14 @@ const {
 expRtr.route('/')
 
 	.get(rootGet.func)
+
+	.post(NotSupp)
+
+	.put(NotSupp)
+
+expRtr.route('/status/:stat')
+
+	.get(statusGet.validate, statusGet.func)
 
 	.post(NotSupp)
 

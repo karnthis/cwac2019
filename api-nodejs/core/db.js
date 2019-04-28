@@ -26,6 +26,7 @@ if (!IS_PROD) {
 		port: PGPORT,
 	}
 }
+console.log(pgConfig.host)
 
 const PGPool = new require('pg').Pool(pgConfig)
 

@@ -31,6 +31,7 @@ const saniValues = [
 ]
 
 const rootGet = {}
+const statusGet = {}
 const cidGet = {}
 const cidPut = {}
 const aidGet = {}
@@ -39,6 +40,15 @@ const orgidPost = {}
 
 rootGet.func = async (req, res) => {
 	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	res.status(200).json({ data: rows })
+}
+
+cidGet.validate = [
+	param('stat').isInt(),
+]
+
+statusGet.func = async (req, res) => {
+	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE class_status = "${req.param.stat}"`)
 	res.status(200).json({ data: rows })
 }
 
@@ -161,6 +171,7 @@ orgidPost.func = async (req, res) => {
 // EXPORT ROUTES
 module.exports = {
 	rootGet,
+	statusGet,
 	cidGet,
 	cidPut,
 	aidGet,

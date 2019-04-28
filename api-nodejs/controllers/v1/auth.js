@@ -40,7 +40,7 @@ rootPost.func = async (req, res) => {
 		// 	authorization: authHeader
 		// })
 
-		res.status(200).json({data: rows[0], msg: 'Authentication Successful'})
+		res.status(200).json({data: [user_id], msg: 'Authentication Successful'})
 	} else {
 		console.log('error')
 		return res.status(422).json({

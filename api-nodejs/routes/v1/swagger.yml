@@ -1773,7 +1773,52 @@ paths:
       tags:
         - Calendar
       summary:
-      description: Fetch All Active Events
+      description: Fetch All Events
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+  /calendar/status/{stat}:
+    get:
+      tags:
+        - Calendar
+      summary:
+      description: Fetch All Events for Target Status
       produces:
         - application/json
       responses:
