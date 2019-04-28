@@ -43,7 +43,7 @@ rootGet.func = async (req, res) => {
 	res.status(200).json({ data: rows })
 }
 
-cidGet.validate = [
+statusGet.validate = [
 	param('stat').isInt(),
 ]
 
