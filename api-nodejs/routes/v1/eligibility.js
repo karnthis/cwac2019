@@ -4,6 +4,7 @@ const {
 } = require('../../controllers/shared/')
 const {
 	rootGet,
+	uniGet
 	iidGet,
 	iidPut,
 	grpidGet,
@@ -17,6 +18,14 @@ const {
 expRtr.route('/')
 
 	.get(rootGet.func)
+
+	.post(NotSupp)
+
+	.put(NotSupp)
+
+expRtr.route('/unique')
+
+	.get(uniGet.func)
 
 	.post(NotSupp)
 

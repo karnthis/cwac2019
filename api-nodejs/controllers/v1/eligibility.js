@@ -25,6 +25,7 @@ const saniValues = [
 ]
 
 const rootGet = {}
+const uniGet = {}
 const iidGet = {}
 const iidPut = {}
 const grpidGet = {}
@@ -38,6 +39,12 @@ rootGet.func = async (req, res) => {
 	const { rows = [] } = await DB.query(`SELECT provider_id, ${iColsS} FROM ${iTbl} JOIN ${gTbl} using(elig_group_id)`)
 	const ret = array2Object(rows, 'provider_id')
 	res.status(200).json({ data: ret })
+}
+
+uniGet.func = async (req, res) => {
+	const { rows = [] } = await DB.query(`SELECT DISTINCT elig_item_type_code, elig_item_type_label FROM ${iTbl}`)
+	// const ret = array2Object(rows, 'provider_id')
+	res.status(200).json({ data: rows })
 }
 
 iidGet.validate = [
@@ -276,6 +283,7 @@ orgidPut.func = async (req, res) => {
 // EXPORT ROUTES
 module.exports = {
 	rootGet,
+	uniGet,
 	iidGet,
 	iidPut,
 	grpidGet,

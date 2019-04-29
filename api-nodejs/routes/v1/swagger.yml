@@ -1066,6 +1066,48 @@ paths:
           description: Not Supported
         default:
           description: Unexpected error
+  /eligibility/unique:
+    get:
+      tags:
+        - Eligibility
+      summary:
+      description: Fetch Unique Eligibility Items
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+    post:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
   /eligibility/one/{iid}:
     get:
       tags:
