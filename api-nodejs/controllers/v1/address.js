@@ -57,8 +57,8 @@ orgGet.func = async (req, res) => {
 orgPost.validate = [
 	param('orgid').isInt(),
 	check('primary_site').isBoolean(),
-	check('location_type').trim().escape(),
-	check('location_name').trim().escape(),
+	check('location_type').optional().trim().escape(),
+	check('location_name').optional().trim().escape(),
 	check('street').trim().escape(),
 	check('line_2').optional().trim().escape(),
 	check('city').trim().escape(),
@@ -70,12 +70,10 @@ orgPost.validate = [
 	min: 5,
 	max: 5
 }),
-// .trim().escape(),
 	check('zip_plus4').optional().isInt().isLength({
 	min: 4,
 	max: 4
 })
-// .trim().escape(),
 ]
 
 orgPost.func = async (req, res) => {
