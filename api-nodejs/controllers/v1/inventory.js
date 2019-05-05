@@ -27,6 +27,8 @@ const rootPost = {}
 const dispense = {}
 const inv_idGet = {}
 const inv_idPut = {}
+const orgidGet = {}
+const orgidPut = {}
 
 rootGet.func = async (req, res) => {
 	const {
@@ -118,6 +120,46 @@ inv_idPut.func = async (req, res) => {
 	}
 }
 
+orgidGet.validate = [
+	param('orgid').isInt(),
+]
+
+orgidGet.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		const {
+			rows
+		} = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = ${req.params.orgid}`)
+		res.status(200).json({ data: rows[0] })
+	} else {
+		console.log('error')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
+
+orgidPut.validate = [
+	param('orgid').isInt(),
+	check('inv_count').isInt({
+		min: 0,
+		max: 99
+	}),
+]
+
+orgidPut.func = async (req, res) => {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		let sql = `UPDATE ${tbl} SET inv_count = ${req.body.inv_count} WHERE provider_id = ${req.params.orgid} RETURNING *`
+		const { rows = [] } = await DB.query(sql)
+		res.status(200).json({ data: rows[0] })
+	} else {
+		console.log('error')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
 
 
 // EXPORT ROUTES
@@ -127,4 +169,6 @@ module.exports = {
 	dispense,
 	inv_idGet,
 	inv_idPut,
+	orgidGet,
+	orgidPut,
 }

@@ -28,6 +28,20 @@ tags:
     description: TODO
 
 paths:
+  /heartbeat:
+    get:
+      tags:
+        - Heatbeat
+      summary: Ping server
+    description: Basic path for checking validity of session
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Authentication Successful
+      default:
+        description: Unexpected error
+
   /auth:
     get:
       tags:
@@ -1564,16 +1578,55 @@ paths:
           description: Not Supported
         default:
           description: Unexpected error
+  /inventory/byorg/{orgid}:
+    get:
+      tags:
+        - Inventory
+      summary:
+      description: Get Inventory by Provider ID
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Inventory Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Inventory
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
 
     put:
       tags:
         - Inventory
       summary:
-      description: Update Target Inventory
+      description: Update Target Provider's Inventory
       parameters:
         - in: path
-          name: inv_id
-          description: Inventory ID
+          name: orgid
+          description: Provider ID
           required: true
           schema:
             type: integer
