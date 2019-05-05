@@ -33,7 +33,7 @@ const aidGet = {}
 const aidPut = {}
 
 rootGet.func = async (req, res) => {
-	const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
 	res.status(200).json({ data: rows })
 }
 
@@ -44,7 +44,7 @@ orgGet.validate = [
 orgGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
 		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
@@ -57,8 +57,8 @@ orgGet.func = async (req, res) => {
 orgPost.validate = [
 	param('orgid').isInt(),
 	check('primary_site').isBoolean(),
-	check('location_type').trim().escape(),
-	check('location_name').trim().escape(),
+	check('location_type').optional().trim().escape(),
+	check('location_name').optional().trim().escape(),
 	check('street').trim().escape(),
 	check('line_2').optional().trim().escape(),
 	check('city').trim().escape(),
@@ -70,12 +70,10 @@ orgPost.validate = [
 	min: 5,
 	max: 5
 }),
-// .trim().escape(),
 	check('zip_plus4').optional().isInt().isLength({
 	min: 4,
 	max: 4
 })
-// .trim().escape(),
 ]
 
 orgPost.func = async (req, res) => {
@@ -89,7 +87,7 @@ orgPost.func = async (req, res) => {
 			tbl,
 			data: D
 		}
-		const { rows } = await DB.doInsert(sql)
+		const { rows = [] } = await DB.doInsert(sql)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -106,7 +104,7 @@ aidGet.validate = [
 aidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE address_id = ${req.params.aid}`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE address_id = ${req.params.aid}`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -147,7 +145,7 @@ aidPut.func = async (req, res)=> {
 		if (zip_base5) D.zip_code = `${zip_base5}-${zip_plus4}`
 		const toUpdate = makeUpdates(D)
 
-		const { rows } = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE address_id = ${aid} RETURNING *`)
+		const { rows = [] } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE address_id = ${req.params.aid} RETURNING *`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')

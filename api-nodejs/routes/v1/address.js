@@ -11,18 +11,27 @@ const {
 } = require('../../controllers/v1/address')
 
 expRtr.route('/')
+
 	.get(rootGet.func)
+
 	.post(NotSupp)
+
 	.put(NotSupp)
 
 	expRtr.route('/one/:aid')
+
 	.get(aidGet.validate, aidGet.func)
+
 	.post(NotSupp)
+
 	.put(aidPut.validate, aidPut.func)
 
 expRtr.route('/org/:orgid')
-	.get(orgPost.validate, orgGet.func)
+
+	.get(orgGet.validate, orgGet.func)
+
 	.post(orgPost.validate, orgPost.func)
+
 	.put(NotSupp)
 
 

@@ -69,6 +69,7 @@ services:
       NODE_ENV: ${RUN_ENV}
       MUST_MATCH: ${MUST_MATCH}
       IS_PROD: ${IS_PROD}
+      COOKIE_CODE: ${COOKIE_CODE}
       PGHOST: 'db-main'
       PGDATABASE: 'postgres'
       PGUSER: 'postgres'

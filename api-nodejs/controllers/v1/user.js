@@ -29,7 +29,7 @@ const orgidGet = {}
 const orgidPost = {}
 
 rootGet.func = async (req, res) => {
-	const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+	const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
 	res.status(200).json({ data: rows })
 }
 
@@ -41,7 +41,7 @@ useridGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
 		const { userid } = req.params
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE user_id = ${userid}`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE user_id = ${userid}`)
 		res.status(200).json({ data: rows[0] })
 	} else {
 		console.log('error')
@@ -96,7 +96,7 @@ useridPut.func = async (req, res) => {
 		if (errors.isEmpty()) {
 			const D = sanitize(req.body, saniValues)
 			const toUpdate = makeUpdates(D)
-			const { rows } = await DB.query(`INSERT INTO ${tbl} SET ${toUpdate} WHERE user_id = ${req.params.userid} RETURNING *`)
+			const { rows = [] } = await DB.query(`UPDATE ${tbl} SET ${toUpdate} WHERE user_id = ${req.params.userid} RETURNING *`)
 			res.status(200).json({ data: rows[0] })
 		} else {
 			console.log('error')
@@ -113,7 +113,7 @@ orgidGet.validate = [
 orgidGet.func = async (req, res) => {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE member_of = ${req.params.orgid}`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE member_of = ${req.params.orgid}`)
 		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')
@@ -168,7 +168,7 @@ orgidPost.func = async (req, res) => {
 			tbl,
 			data: D
 		}
-		const { rows } = await DB.doInsert(sql)
+		const { rows = [] } = await DB.doInsert(sql)
 		res.status(200).json({ data: rows })
 	} else {
 		console.log('error')

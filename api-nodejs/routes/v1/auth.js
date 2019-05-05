@@ -6,9 +6,16 @@ const {
 	rootPost
 } = require('../../controllers/v1/auth')
 
+/**
+ * Swagger Docs in swagger.yml
+ */
+
 expRtr.route('/')
+
 	.get(NotSupp)
-	.post(rootPost.func)
+
+	.post(rootPost.validate, rootPost.func)
+
 	.put(NotSupp)
 
 // EXPORT ROUTES

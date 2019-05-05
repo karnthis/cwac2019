@@ -1,0 +1,2216 @@
+servers:
+  - url: http://api.irl.technology
+    description: Development server
+  - url: http://api.findyour.agency
+    description: Test server
+
+
+tags:
+  - name: Auth
+    description: Authenticate Yourself
+  - name: Provider
+    description: TODO
+  - name: Users
+    description: TODO
+  - name: Address
+    description: TODO
+  - name: Referral
+    description: TODO
+
+  - name: Eligibility
+    description: TODO
+
+  - name: Inventory
+    description: TODO
+  - name: Waitlist
+    description: TODO
+  - name: Calendar
+    description: TODO
+
+paths:
+  /heartbeat:
+    get:
+      tags:
+        - Heatbeat
+      summary: Ping server
+    description: Basic path for checking validity of session
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Authentication Successful
+      default:
+        description: Unexpected error
+
+  /auth:
+    get:
+      tags:
+        - Auth
+      summary: Request Type Not Supported
+    description: Not Supported
+    produces:
+      - application/json
+    responses:
+      403:
+        description: Not Supported
+      default:
+        description: Unexpected error
+
+    post:
+      tags:
+        - Auth
+      summary:
+      description: Submit Login Credentials
+      # description: Optional description in *Markdown*
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  example: Fluffy
+                  type: string
+                password:
+                  example: I<3mypup
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Authentication Successful
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Auth
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+# +++++
+  /provider:
+    get:
+      tags:
+        - Provider
+      summary:
+      description: Fetch All Active Providers
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Provider
+      summary:
+      description: Add new Provider
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_name
+                - phone
+                - hours
+              properties:
+                provider_name:
+                  example: GenerateHealth
+                  type: string
+                phone:
+                  example: 123-456-7890
+                  type: string
+                hours:
+                  example: 0800-1700
+                  type: string
+                desc:
+                  example: Local Non-profit
+                  type: string
+                days:
+                  example: UMTWRFS
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Added New Provider Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Provider
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+# +++++
+  /provider/{orgid}:
+    get:
+      tags:
+        - Provider
+      summary:
+      description: Get Provider by ID
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Provider Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Provider
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+    put:
+      tags:
+        - Provider
+      summary:
+      description: Update Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider_name:
+                  example: GenerateHealth
+                  type: string
+                phone:
+                  example: 123-456-7890
+                  type: string
+                hours:
+                  example: 0800-1700
+                  type: string
+                desc:
+                  example: Local Non-profit
+                  type: string
+                days:
+                  example: UMTWRFS
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Updated Provider Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+# +++++
+  /users:
+    get:
+      tags:
+        - Users
+      summary:
+      description: Fetch All Active Users
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Users
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+    put:
+      tags:
+        - Users
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+# +++++
+  /users/one/{userid}:
+    get:
+      tags:
+        - Users
+      summary:
+      description: Get User by ID
+      parameters:
+        - in: path
+          name: userid
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: User Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Users
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+    put:
+      tags:
+        - Users
+      summary:
+      description: Update Target User
+      parameters:
+        - in: path
+          name: userid
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_of:
+                  example: 1
+                  type: integer
+                username:
+                  example: myUsername
+                  type: string
+                password:
+                  example: password123
+                  type: string
+                cpassword:
+                  example: password123
+                  type: string
+                full_name:
+                  example: John Sample
+                  type: string
+                email:
+                  example: john@samplesite.som
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Updated User Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+# +++++
+  /users/group/{orgid}:
+    get:
+      tags:
+        - Users
+      summary:
+      description: Get All Users for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: User(s) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Users
+      summary:
+      description: Add User For Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+                - cpassword
+                - full_name
+                - email
+              properties:
+                username:
+                  example: myUsername
+                  type: string
+                password:
+                  example: password123
+                  type: string
+                cpassword:
+                  example: password123
+                  type: string
+                full_name:
+                  example: John Sample
+                  type: string
+                email:
+                  example: john@samplesite.som
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created User Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Users
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+# +++++
+  /address:
+    get:
+      tags:
+        - Address
+      summary:
+      description: Fetch All Active Addresses
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Address
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+    put:
+      tags:
+        - Address
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+# +++++
+  /address/one/{aid}:
+    get:
+      tags:
+        - Address
+      summary:
+      description: Get Address by ID
+      parameters:
+        - in: path
+          name: aid
+          description: Address ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Address Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Address
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+    put:
+      tags:
+        - Address
+      summary:
+      description: Update Target Address
+      parameters:
+        - in: path
+          name: aid
+          description: Address ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                primary_site:
+                  example: true
+                  type: boolean
+                location_type:
+                  example: Popup Clinic
+                  type: string
+                location_name:
+                  example: 13th and Penn
+                  type: string
+                street:
+                  example: Penn Ave
+                  type: string
+                line_2:
+                  example: \#4
+                  type: string
+                city:
+                  example: St Louis
+                  type: string
+                state:
+                  example: MO
+                  type: string
+                zip_base5:
+                  example: 12345
+                  type: string
+                zip_plus4:
+                  example: 4422
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Updated Address Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+# +++++
+  /address/org/{orgid}:
+    get:
+      tags:
+        - Address
+      summary:
+      description: Get All Addresses for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Address(es) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Address
+      summary:
+      description: Add Address For Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - primary_site
+                - location_type
+                - location_name
+                - street
+                - city
+                - zip_base5
+              properties:
+                primary_site:
+                  example: true
+                  type: boolean
+                location_type:
+                  example: Popup Clinic
+                  type: string
+                location_name:
+                  example: 13th and Penn
+                  type: string
+                street:
+                  example: Penn Ave
+                  type: string
+                line_2:
+                  example: \#4
+                  type: string
+                city:
+                  example: St Louis
+                  type: string
+                state:
+                  example: MO
+                  type: string
+                zip_base5:
+                  example: 12345
+                  type: string
+                zip_plus4:
+                  example: 4422
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Address
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+         403:
+           description: Not Supported
+         default:
+           description: Unexpected error
+
+# +++++
+  /referral:
+    get:
+      tags:
+        - Referral
+      summary:
+      description: Fetch All Active Referrals
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Referral
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+    403:
+      description: Not Supported
+    default:
+      description: Unexpected error
+
+    put:
+      tags:
+        - Referral
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+# +++++
+  /referral/byreferer/{orgid}:
+    get:
+      tags:
+        - Referral
+      summary:
+      description: Get All Referrals From Target Referer Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Referral(s) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Referral
+      summary:
+      description: Add New Referral From Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - creator_id
+                - referee_id
+                - is_eligiable
+                - date_of_referal
+              properties:
+                creator_id:
+                  example: 1
+                  type: integer
+                referee_id:
+                  example: 2
+                  type: integer
+                is_eligiable:
+                  example: true
+                  type: boolean
+                date_of_referal:
+                  example: 1555546
+                  type: string
+                referral_notes:
+                  example: Client needs 2 items
+                  type: string
+                fulfillment_status:
+                  example: received
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Referral
+      summary: Request Type Not Supported
+      description: Not Supported
+    produces:
+        - application/json
+    responses:
+      403:
+        description: Not Supported
+      default:
+        description: Unexpected error
+
+# +++++
+  /referral/byreferee/{orgid}:
+    get:
+      tags:
+        - Referral
+      summary:
+      description: Get All Referrals From Target Referee Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Referral(s) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Referral
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+    put:
+      tags:
+        - Referral
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+# +++++
+  /referral/byreferral/{rid}:
+    get:
+      tags:
+        - Referral
+      summary:
+      description: Get Referral by ID
+      parameters:
+        - in: path
+          name: rid
+          description: Referral ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Referral Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Referral
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+        - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Referral
+      summary:
+      description: Update Target Referral
+      parameters:
+        - in: path
+          name: rid
+          description: Referral ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                is_eligiable:
+                  example: true
+                  type: boolean
+                referral_notes:
+                  example: Client needs 2 items
+                  type: string
+                fulfillment_status:
+                  example: received
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+
+# +++++
+  /eligibility:
+    get:
+      tags:
+        - Eligibility
+      summary:
+      description: Fetch All Eligibility Requirements
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+    post:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+  /eligibility/unique:
+    get:
+      tags:
+        - Eligibility
+      summary:
+      description: Fetch Unique Eligibility Items
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+    post:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+  /eligibility/one/{iid}:
+    get:
+      tags:
+        - Eligibility
+      summary:
+      description: Get Eligibility Item by ID
+      parameters:
+        - in: path
+          name: iid
+          description: Eligibility Item ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Eligibility Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Eligibility
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Eligibility
+      summary:
+      description: Update Target Eligibility Item
+      parameters:
+        - in: path
+          name: iid
+          description: Eligibility Item ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                elig_item_type_code:
+                  example: 2
+                  type: integer
+                elig_item_type_label:
+                  example: Client is on public assistance
+                  type: string
+                elig_item_value:
+                  example: Yes
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+
+  /eligibility/group/{grpid}:
+    get:
+      tags:
+        - Eligibility
+      summary:
+      description: Get Eligibility Group by ID
+      parameters:
+        - in: path
+          name: grpid
+          description: Eligibility Group ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Eligibility Group Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Eligibility
+      summary:
+      description: Create New Eligibility Item Within Group
+      parameters:
+        - in: path
+          name: grpid
+          description: Eligibility Group ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - elig_item_type_label
+                - elig_item_value
+              properties:
+                elig_item_type_code:
+                  example: 2
+                  type: integer
+                elig_item_type_label:
+                  example: Client is on public assistance
+                  type: string
+                elig_item_value:
+                  example: Yes
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Eligibility Item Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+
+    put:
+      tags:
+        - Eligibility
+      summary:
+      description: Update Target Eligibility Group
+      parameters:
+        - in: path
+          name: grpid
+          description: Eligibility Group ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              required: true
+              items:
+                type: object
+                properties:
+                  elig_item_type_code:
+                    example: 2
+                    type: integer
+                  elig_item_type_label:
+                    example: Client is on public assistance
+                    type: string
+                  elig_item_value:
+                    example: yes
+                    type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+
+  /eligibility/org/{orgid}:
+    get:
+      tags:
+        - Eligibility
+      summary:
+      description: Get all valid eligibility groups and items for target provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Eligibility Group(s) and Item(s) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Eligibility
+      summary:
+      description: Insert Eligibility Items For Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              required: true
+              items:
+                type: array
+                required: true
+                items:
+                  type: object
+                  required:
+                    - elig_item_type_label
+                    - elig_item_value
+                  properties:
+                    elig_item_type_code:
+                      example: 2
+                      type: integer
+                    elig_item_type_label:
+                      example: Client is on public assistance
+                      type: string
+                    elig_item_value:
+                      example: yes
+                      type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+
+    put:
+      tags:
+        - Eligibility
+      summary:
+      description: Update Eligibility Items For Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              required: true
+              items:
+                type: array
+                required: true
+                items:
+                  type: object
+                  required:
+                    - elig_item_type_label
+                    - elig_item_value
+                  properties:
+                    elig_item_type_code:
+                      example: 2
+                      type: integer
+                    elig_item_type_label:
+                      example: Client is on public assistance
+                      type: string
+                    elig_item_value:
+                      example: yes
+                      type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Created Address Successfully
+          content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+# +++++
+  /inventory:
+    get:
+      tags:
+        - Inventory
+      summary:
+      description: Fetch All Inventories
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+    post:
+      tags:
+        - Inventory
+
+    put:
+      tags:
+        - Inventory
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+  /inventory/dispense/{inv_id}:
+    get:
+      tags:
+        - Inventory
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Inventory
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Inventory
+      summary:
+      description: Reduce target inventory total by one
+      parameters:
+        - in: path
+          name: inv_id
+          description: Inventory ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Updated Provider Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+  /inventory/manage/{inv_id}:
+    get:
+      tags:
+        - Inventory
+      summary:
+      description: Get Inventory by ID
+      parameters:
+        - in: path
+          name: inv_id
+          description: Inventory ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Inventory Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Inventory
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+  /inventory/byorg/{orgid}:
+    get:
+      tags:
+        - Inventory
+      summary:
+      description: Get Inventory by Provider ID
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Inventory Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Inventory
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+    put:
+      tags:
+        - Inventory
+      summary:
+      description: Update Target Provider's Inventory
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inv_count:
+                  example: 5
+                  type: integer
+                inv_type:
+                  example: crib
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Updated Inventory Successfully
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+  /waitlist:
+    get:
+      tags:
+        - Waitlist
+      summary:
+      description: Fetch All Active Waitlist(s)
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Waitlist
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Waitlist
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+  /waitlist/one/{waitid}:
+    get:
+      tags:
+        - Waitlist
+      summary:
+      description: Get Waitlist Item by ID
+      parameters:
+        - in: path
+          name: waitid
+          description: Waitlist Item ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Waitlist Item Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Waitlist
+      summary:
+      description: Update Waitlist Item
+      parameters:
+        - in: path
+          name: waitid
+          description: Waitlist Item ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider_id:
+                  example: 1
+                  type: integer
+                date_of_waitlist:
+                  example: 1554548
+                  type: integer
+                eligiable_for:
+                  example: A Crib
+                  type: string
+                waitlist_status:
+                  example: New
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Update Successful
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+  /waitlist/org/{orgid}:
+    get:
+      tags:
+        - Waitlist
+      summary:
+      description: Get All Waitlist Items for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Waitlist Item(s) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Waitlist
+      summary:
+      description: Add Waitlist Item for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - creator_id
+                - date_of_waitlist
+                - eligiable_for
+                - waitlist_status
+              properties:
+                creator_id:
+                  example: 1
+                  type: integer
+                date_of_waitlist:
+                  example: 1554548
+                  type: integer
+                eligiable_for:
+                  example: A Crib
+                  type: string
+                waitlist_status:
+                  example: New
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Update Successful
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Waitlist
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+  /calendar:
+    get:
+      tags:
+        - Calendar
+      summary:
+      description: Fetch All Events
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+  /calendar/status/{stat}:
+    get:
+      tags:
+        - Calendar
+      summary:
+      description: Fetch All Events for Target Status
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+  /calendar/one/{cid}:
+    get:
+      tags:
+        - Calendar
+      summary:
+      description: Get Event by ID
+      parameters:
+        - in: path
+          name: cid
+          description: Event ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Event Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Calendar
+      summary:
+      description: Update Target Event
+      parameters:
+        - in: path
+          name: cid
+          description: Event ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider_id:
+                  example: 1
+                  type: integer
+                address_id:
+                  example: 1
+                  type: integer
+                class_name:
+                  example: Newborn Care
+                  type: string
+                class_description:
+                  example: Learn about babies
+                  type: string
+                date_of_class:
+                  example: 155548
+                  type: integer
+                time_of_class:
+                  example: 1700-1800
+                  type: string
+                current_attendee_count:
+                  example: 3
+                  type: integer
+                max_attendees:
+                  example: 25
+                  type: integer
+                class_status:
+                  example: Planned
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Update Successful
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+
+  /calendar/byaddress/{aid}:
+    get:
+      tags:
+        - Calendar
+      summary:
+      description: Get All Events for Target Address
+      parameters:
+        - in: path
+          name: aid
+          description: Address ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Event(s) Found
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error
+
+  /calendar/byagency/{orgid}:
+    get:
+      tags:
+        - Calendar
+      summary:
+      description: Get All Events for Target Provider
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Event(s) Found
+          content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Calendar
+      summary:
+      description: Add New Event
+      parameters:
+        - in: path
+          name: orgid
+          description: Provider ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - creator_id
+                - address_id
+                - class_name
+                - class_description
+                - date_of_class
+                - time_of_class
+                - current_attendee_count
+                - max_attendees
+                - class_status
+              properties:
+                creator_id:
+                  example: 1
+                  type: integer
+                address_id:
+                  example: 1
+                  type: integer
+                class_name:
+                  example: Newborn Care
+                  type: string
+                class_description:
+                  example: Learn about babies
+                  type: string
+                date_of_class:
+                  example: 155548
+                  type: integer
+                time_of_class:
+                  example: 1700-1800
+                  type: string
+                current_attendee_count:
+                  example: 0
+                  type: integer
+                max_attendees:
+                  example: 25
+                  type: integer
+                class_status:
+                  example: Planned
+                  type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Update Successful
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+        default:
+          description: Unexpected error
+    put:
+      tags:
+        - Calendar
+      summary: Request Type Not Supported
+      description: Not Supported
+      produces:
+       - application/json
+      responses:
+        403:
+          description: Not Supported
+        default:
+          description: Unexpected error

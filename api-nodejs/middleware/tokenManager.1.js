@@ -1,8 +1,20 @@
 const Argon2 = require('argon2')
-const { findTokenInfo, deleteToken } = require('../core/db')
-const { genToken, prepToken } = require('../core/crypt')
-const { makeDateStamp, latob } = require('../core/funcs')
-const { validationResult } = require('express-validator/check')
+const {
+	findTokenInfo,
+	deleteToken,
+} = require('../core/db')
+const {
+	genToken,
+	prepToken,
+} = require('../core/crypt')
+const {
+	makeDateStamp,
+	// cError,
+	latob,
+} = require('../core/funcs')
+const {
+	validationResult
+} = require('express-validator/check')
 
 // INTERNAL FUNCTIONS
 
@@ -14,17 +26,19 @@ async function checkToken(req, res, next) {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
 
-	console.dir(req.signedCookies.ghSession)
-	res.cookie('ghSession', 'testing', { signed: true })
-
 
 	// if (/auth/.test(req.path)) next()
-	const { ghSession = '' } = req.signedCookies
-	// const authArray = ghSession.split(' ')
-	if (!ghSession) return res.status(401).json({ errors: 'Authorization Required' })
-	const decoded = latob(ghSession).split('.')
-	// console.log(decoded)
-	if (decoded[0].length != 3) return res.status(401).json({ errors: 'Invalid Auth Token' })
+	const { authorization = '' } = req.headers
+	const authArray = authorization.split(' ')
+	if (authArray[0] != 'Bearer') {
+		return res.status(401).send('Authorization Required')
+	} 
+	const decoded = latob(authArray[1]).split('.')
+	console.log(decoded)
+	if (!decoded[0] || !decoded[1] || !decoded[2]) {
+		return res.status(401).send('Authentication Failed1')
+	// 0 == user, 1 == r, 2 == s
+	}
 	const stamp = makeDateStamp()
 
 	const searchObject = {
@@ -46,15 +60,15 @@ async function checkToken(req, res, next) {
 	let sucStat, refStat, index
 	for (let i = 0; i < rows.length; i++) {
 		index = i
-		// console.dir(rows[i])
-		// console.dir(rows[i].session_token)
-		// console.dir(decoded[2])
+		console.dir(rows[i])
+		console.dir(rows[i].session_token)
+		console.dir(decoded[2])
 		const session_token = rows[i].session_token.toString('utf8')
 		const refresh_token = rows[i].refresh_token.toString('utf8')
-		// console.dir(session_token)
+		console.dir(session_token)
 		sucStat = await Argon2.verify(session_token, decoded[2])
 			.catch(err => {
-				// console.dir(err)
+				console.dir(err)
 				throw new Error('Auth Error')
 			})
 		refStat = await Argon2.verify(refresh_token, decoded[1])
@@ -62,8 +76,8 @@ async function checkToken(req, res, next) {
 		if (sucStat && refStat) break
 	}
 	if (sucStat && refStat) {
-		// console.log(typeof rows[index].session_expires)
-		// console.log(typeof stamp)
+		console.log(typeof rows[index].session_expires)
+		console.log(typeof stamp)
 		if (rows[index].session_expires > stamp) return next()
 		if (rows[index].refresh_expires > stamp) {
 			const replacementToken = genToken()
@@ -72,19 +86,20 @@ async function checkToken(req, res, next) {
 			.catch(err => {throw new Error(err)})
 			return await prepToken(replacementToken)
 			.then(out => {
-				res.cookie('ghSession', out, { signed: true })
-				// req.headers = req.headers || {}
-				// req.headers.authorization = out
-
+				req.headers = req.headers || {}
+				req.headers.authorization = out
+				// res.set({
+				// 	authorization: out
+				// })
 				return next()
 			})
 			.catch(err => {throw new Error(err)})
 		}
 		deleteToken(rows[index].session_token)
 			.catch(err => {throw new Error(err)})
-		return res.status(401).send({ errors: 'Expired Token' })
+		return res.status(401).send('Authentication Failed2')
 	}
-	return res.status(401).send({ errors: 'Authentication Failed' })
+	return res.status(401).send('Authentication Failed3')
 }
 // END EXPORT
 

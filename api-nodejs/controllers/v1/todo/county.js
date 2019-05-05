@@ -20,7 +20,7 @@ const tbl = 'ELIGIBILITY_REQUIREMENTS'
 expRtr.route('/')
 	//*	done
 	.get([], async (req, res) => {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl}`)
 		res.status(200).json({data: rows})
 	})
 	//todo
@@ -53,7 +53,7 @@ expRtr.route('/')
 					last_verified: makeDateStamp(),
 				}
 			}
-			const { rows } = await DB.doInsert(sql)
+			const { rows = [] } = await DB.doInsert(sql)
 			res.status(200).json({ data: rows[0] })
 		} else {
 			console.log('error')
@@ -70,7 +70,7 @@ expRtr.route('/')
 	.get([
 		param('orgid').isInt(),
 	], async (req, res) => {
-		const { rows } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
+		const { rows = [] } = await DB.query(`SELECT ${cols} FROM ${tbl} WHERE provider_id = '${req.params.orgid}'`)
 		res.status(200).json({data: rows})
 	})
 	//*	done
@@ -87,7 +87,7 @@ expRtr.route('/')
 		const { body } = req
 		const { orgid, userid } = req.params
 		let sql = `SELECT ${cols} FROM USERS WHERE ${userMakeWhere(orgid, userid)}`
-		const { rows } = await DB.query(sql)
+		const { rows = [] } = await DB.query(sql)
 		// handleRes(res, {data: rows})
 	})
 

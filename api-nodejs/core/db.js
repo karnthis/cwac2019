@@ -6,12 +6,7 @@ const {
 	PGDATABASE,
 	IS_PROD
 } = process.env
-// const {
-// 	Pool
-// } = require('pg')
-const {
-	cleanArray
-} = require('./funcs')
+const { cleanArray } = require('./funcs')
 
 let pgConfig
 if (!IS_PROD) {
@@ -31,12 +26,13 @@ if (!IS_PROD) {
 		port: PGPORT,
 	}
 }
+console.log(pgConfig.host)
 
 const PGPool = new require('pg').Pool(pgConfig)
 
 // INTERNAL FUNCTIONS
 async function pgQuery(sql) {
-	return await PGPool.query(sql).catch(err => err)
+	return await PGPool.query(sql).catch(err => console.log(err))
 }
 
 
