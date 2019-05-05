@@ -98,7 +98,7 @@ cmdPost.func = async (req, res) => {
 
 			case 'eligibility':
 				{const D = sanitize(req.body, [
-					'eligibility',
+					'elig_json',
 					'provider_id'
 				]) 
 				const sqll = {
