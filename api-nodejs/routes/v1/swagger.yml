@@ -6,6 +6,8 @@ servers:
 
 
 tags:
+  - name: Heartbeat
+    description: TODO
   - name: Auth
     description: Authenticate Yourself
   - name: Provider
@@ -31,7 +33,7 @@ paths:
   /heartbeat:
     get:
       tags:
-        - Heatbeat
+        - Heartbeat
       summary: Ping server
     description: Basic path for checking validity of session
     produces:
