@@ -1,9 +1,9 @@
+const expRtr = new require('express-promise-router')()
+const {
+	rootGet,
+} = require('../../controllers/v1/heartbeat')
 
-const rootGet = {}
-rootGet.func = async (req, res) => {
-	res.status(200).json({ data: 'Heartbeat heard' })
-}
+expRtr.route('/')
+	.get(rootGet.func)
 
-module.exports = {
-	rootGet
-}
+module.exports = expRtr
