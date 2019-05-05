@@ -4,7 +4,7 @@ const {
 } = require('../../controllers/shared/')
 const {
 	rootGet,
-	uniGet
+	uniGet,
 	iidGet,
 	iidPut,
 	grpidGet,
