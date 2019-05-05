@@ -7,8 +7,9 @@ const {
 	rootPost,
 	dispense,
 	inv_idGet,
-	// inv_idPost,
 	inv_idPut,
+	orgidGet,
+	orgidPut,
 } = require('../../controllers/v1/inventory')
 
 expRtr.route('/')
@@ -34,6 +35,14 @@ expRtr.route('/manage/:inv_id')
 	.post(NotSupp)
 
 	.put(inv_idPut.validate, inv_idPut.func)
+
+expRtr.route('/byorg/:orgid')
+
+	.get(orgidGet.validate, orgidGet.func)
+
+	.post(NotSupp)
+
+	.put(orgidPut.validate, orgidPut.func)
 
 // EXPORT ROUTES
 module.exports = expRtr

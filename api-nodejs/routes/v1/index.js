@@ -2,6 +2,7 @@
 const { checkToken } = require("../../middleware/tokenManager");
 const { passToken, readToken } = require("../../middleware/returnToken");
 // ROUTES
+const heartbeat = require("./heartbeat");
 const calendar = require("./calendar");
 // const county = require('./county')
 const eligibility = require("./eligibility");
@@ -42,6 +43,7 @@ module.exports = app => {
 	// END NO TOKEN
 	// TOKEN REQUIRED
 	// app.use([checkToken]);
+	app.use("/heartbeat", heartbeat);
 	app.use("/calendar", calendar);
 	app.use("/eligibility", eligibility);
 	app.use("/inventory", inventory);
