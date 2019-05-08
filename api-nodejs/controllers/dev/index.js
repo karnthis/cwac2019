@@ -85,9 +85,9 @@ cmdPost.func = async (req, res) => {
 					'primary_site',
 					'street',
 					'line_2',
-					'city',
-					'zip_base5'
-				]) 
+					'city'
+				])
+				D.zip_code = req.body.zip_base5 + '-xxxx'
 				const sqll = {
 					tbl: 'ADDRESSES',
 					data: D
