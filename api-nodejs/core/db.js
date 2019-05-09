@@ -1,11 +1,4 @@
-const {
-	PGUSER,
-	PGPASSWORD,
-	PGHOST,
-	PGPORT,
-	PGDATABASE,
-	IS_PROD
-} = process.env
+const { PGUSER, PGPASSWORD, PGHOST, PGPORT, PGDATABASE, IS_PROD } = process.env
 const { cleanArray } = require('./funcs')
 
 let pgConfig
@@ -26,7 +19,7 @@ if (!IS_PROD) {
 		port: PGPORT,
 	}
 }
-console.log(pgConfig.host)
+// console.log(pgConfig.host)
 
 const PGPool = new require('pg').Pool(pgConfig)
 
@@ -71,11 +64,55 @@ function makeMarkers(x) {
 	}
 }
 
+// V2 FUNCTIONS
+function makePlaces2(x) {
+	return [...Array(x)].map((el, i) => `\$${i+1}`).join(',')
+}
+function splitSubmitData(x) {
+	const columns = Object.keys(x)
+	return {
+		columns,
+		insertData: Object.values(x),
+		placeholders: makePlaces2(columns.length),
+	}
+}
+function makeUpdates2(updateObj = {}) {
+	const ret = []
+	for (const key in updateObj) {
+		ret.push(`${key} = '${updateObj[key]}'`)
+	}
+	return ret.join(',')
+}
+// END V2 FUNCTIONS
+
+// EXPORTED V2 FUNCTIONS
+function openQuery(sql) {
+	return pgQuery(sql)
+}
+function selectQuery(qryObj) {
+	const { tbl, columns = '*', where } = qryObj
+	const sql = `SELECT ${columns} FROM ${tbl} ${where}`
+	return pgQuery(sql)
+}
+function updateQuery(qryObj) {
+	const { dataObj, tbl, where } = qryObj
+	const sql = `UPDATE ${tbl} SET ${makeUpdates2(dataObj)} ${where} RETURN *`
+	return pgQuery(sql)
+}
+function insertQuery(qryObj) {
+	const { columns, insertData, placeholders } = splitSubmitData(qryObj.data)
+	const sql = {
+		text: `INSERT INTO ${qryObj.tbl} (${columns}) VALUES (${placeholders}) RETURNING *`,
+		values: insertData
+	}
+	return pgQuery(sql)
+}
+// END EXPORTED V2 FUNCTIONS
+
 // EXPORTED FUNCTIONS
 function query(sql) {
 	return pgQuery(sql)
 }
-
 function doSelect(qryObj) {
 	const {
 		tbl,
@@ -164,4 +201,10 @@ module.exports = {
 	// refreshToken,
 	deleteToken,
 	findTokenInfo,
+
+	// V2 Export
+	openQuery,
+	selectQuery,
+	updateQuery,
+	insertQuery,
 }

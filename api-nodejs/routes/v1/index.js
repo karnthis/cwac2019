@@ -1,5 +1,5 @@
 // IMPORTS
-const { checkToken } = require("../../middleware/tokenManager");
+const { checkToken } = require("../../middleware/v2TokenManager");
 const { passToken, readToken } = require("../../middleware/returnToken");
 // ROUTES
 const heartbeat = require("./heartbeat");

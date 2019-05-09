@@ -1,10 +1,5 @@
 
 // FUNCTIONS
-function makeTimestamp() {
-	// deprecated
-	return Math.floor(Date.now()/1000)
-}
-
 function lbtoa(x = '') {
 	return Buffer.from(x).toString('base64')
 }
@@ -16,14 +11,6 @@ function cError(msg = '', err = null) {
 	console.dir(err)
 	return new Error({err})
 }
-
-// OLD VERSION
-// function array2Object(x, key) {
-// 	return x.reduce((obj, item) => {
-// 		obj[item[key]] = item
-// 		return obj
-// 	}, {})
-// }
 
 function array2Object(x, key) {
 	return x.reduce((ret, row) => {
@@ -41,11 +28,6 @@ function sanitize(data, whitelist) {
 
 function makeUpdates(obj) {
 	return Object.keys(obj).map(key => `${key} = '${obj[key]}'`)
-	
-	
-	// return Object.keys(obj).reduce((ret, key) => {
-	// 	return (obj[key] !== undefined) ? ret.push(`${key} = ${obj[key]}`) : ret
-	// }, [])
 
 }
 

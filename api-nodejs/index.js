@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 
 // HOOK FOR ALL ROUTES //
 require('./routes/v1')(app)
+require('./routes')(app) // v2
 
 //TODO: 	TO BE REMOVED
 app.use('/dev', require('./routes/dev'))
