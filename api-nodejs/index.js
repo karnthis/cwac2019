@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 })
 
 // HOOK FOR ALL ROUTES //
-require('./routes/v1')(app)
+// require('./routes/v1')(app)
 // require('./routes')(app) 
 // const test = 
 app.use('/v2', require('./routes'))// v2

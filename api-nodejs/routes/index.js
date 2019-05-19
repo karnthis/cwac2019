@@ -9,7 +9,7 @@ const expRtr = new Router()
 const heartbeat = require(`./v2/heartbeat`);
 const cal = require(`./v2/cal`);
 const elig = require(`./v2/elig`);
-const home = require(`./v2/home`);
+// const home = require(`./v2/home`);
 const inv = require(`./v2/inv`);
 const login = require(`./v2/login`);
 const org = require(`./v2/org`);
@@ -43,7 +43,7 @@ expRtr.use([checkToken,userFromToken,orgFromUser]);
 expRtr.use(`/heartbeat`, heartbeat);
 expRtr.use(`/cal`, cal);
 expRtr.use(`/elig`, elig);
-expRtr.use(`/home`, home);
+// expRtr.use(`/home`, home);
 expRtr.use(`/inv`, inv);
 expRtr.use(`/org`, org);
 expRtr.use(`/refer`, refer);

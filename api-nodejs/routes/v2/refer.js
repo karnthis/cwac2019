@@ -1,15 +1,14 @@
 const expRtr = new require('express-promise-router')()
-const { NotSupp } = require('../../controllers/shared/')
-const {myOrgAllReferredGet,myOrgAllRefereeGet,myOrgReferPost} = require('../../controllers/v2/elig')
+const {myOrgAllReferredGet,myOrgAllRefereeGet,myOrgReferPost} = require('../../controllers/v2/refer')
 // TODO
 // ROUTING
 expRtr.route('/fromMyOrg')
-	.get(myOrgAllReferredGet)
+	.get(myOrgAllReferredGet.func)
 
 expRtr.route('/toMyOrg')
-	.get(myOrgAllRefereeGet)
+	.get(myOrgAllRefereeGet.func)
 
 expRtr.route('/addOne')
-	.post(myOrgReferPost)
+	.post(myOrgReferPost.func)
 
 	module.exports = expRtr;

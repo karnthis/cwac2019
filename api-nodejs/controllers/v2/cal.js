@@ -1,5 +1,5 @@
 const { check, param, validationResult } = require('express-validator/check')
-const DB = require('../../core/db')
+const DB = require('../../core/v2DB')
 const { sanitize, makeUpdates } = require('../../core/funcs')
 
 // TODO

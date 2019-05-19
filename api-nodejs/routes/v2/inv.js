@@ -1,15 +1,15 @@
 const expRtr = new require('express-promise-router')()
-const {userOrgInvGet,userOrgInvPut,userOrgDispPut,allOrgInvGet} = require('../../controllers/v2/elig')
+const {userOrgInvGet,userOrgInvPut,userOrgDispPut,allOrgInvGet} = require('../../controllers/v2/inv')
 // TODO
 // ROUTING
 expRtr.route('/myOrg')
-	.get(userOrgInvGet)
-	.put(userOrgInvPut)
+	.get(userOrgInvGet.func)
+	.put(userOrgInvPut.validate, userOrgInvPut.func)
 
 expRtr.route('/myOrgDispense')
-	.put(userOrgDispPut)
+	.put(userOrgDispPut.func)
 
 expRtr.route('/AllOrgs')
-	.get(allOrgInvGet)
+	.get(allOrgInvGet.func)
 
 	module.exports = expRtr;
