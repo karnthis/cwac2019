@@ -84,15 +84,14 @@ function myOrgReferPostFunc(req,res) {
 	}
 }
 
-
 // EXPORT
 module.exports = {
 	myOrgAllReferredGet: {
-		// validate: [],
+		validate: [],
 		func: myOrgAllReferredGetFunc
 	},
 	myOrgAllRefereeGet: {
-		// validate: [],
+		validate: [],
 		func: myOrgAllRefereeGetFunc
 	},
 	myOrgReferPost: {
