@@ -1,6 +1,6 @@
 const Argon2 = require('argon2')
-const { selectQuery, openQuery, insertQuery } = require('../core/db')
-const { genToken } = require('../core/crypt')
+const { selectQuery, openQuery, insertQuery } = require('../core/v2DB')
+const { genFinalToken, compareToCrypto } = require('../core/v2Crypt')
 const { makeDateStamp, latob, lbtoa } = require('../core/funcs')
 
 // INTERNAL FUNCTIONS
@@ -8,9 +8,26 @@ const { makeDateStamp, latob, lbtoa } = require('../core/funcs')
 // END INTERNAL
 
 // EXPORTED FUNCTIONS
+async function userFromToken(req, res, next) {
+	req.myId = parseInt(latob(req.signedCookies.ghSession).split('.')[0])
+	next()
+}
+async function orgFromUser(req, res, next) {
+	selectQuery({
+		columns: 'member_of',
+		tbl: `USERS`,
+		where: `WHERE user_id = '${red.myId}'`
+	})
+	.then(({rows}) => {
+		if (rows.length) {
+			req.myOrg = parseInt(rows[0].member_of)
+		}
+		next()
+	})
+}
 async function checkToken(req, res, next) {
-	console.dir(req.signedCookies.ghSession)
-	const { ghSession = '' } = req.signedCookies
+	// console.dir(req.signedCookies.ghSession)
+	const { ghSession } = req.signedCookies
 
 	if (!ghSession) {
 		return res.status(401).json({ errors: 'Authorization Required' })
@@ -19,37 +36,38 @@ async function checkToken(req, res, next) {
 	if (decodedSplitSession.length != 3) {
 		return res.status(401).json({ errors: 'Invalid Token' })
 	}
+	const [uID, refreshTkn, sessionTkn] = decodedSplitSession
 	const dateStamp = makeDateStamp()
 
+	const tokenUser = (isNaN(parseInt(uID))) ? -1 : parseInt(uID)
+	console.dir(tokenUser)
 	const tokenCheck = {
 		tbl: 'USER_SESSIONS',
-		where: 	[
-			'WHERE user_id =',
-			decodedSplitSession[0],
-			'AND refresh_expires >',
-			dateStamp
-		].join(' ')
+		where: `WHERE user_id = '${tokenUser}' AND refresh_expires > '${dateStamp}'`
 	}
-	const { rows = [] } = await selectQuery(tokenCheck)
-	.catch(err => {throw new Error(err)})
-	if (rows.length == 0) return res.status(401).json({ errors: 'Invalid Token' })
+	const { rows } = await selectQuery(tokenCheck)
+	.catch(err => {console.dir(err)})
+	// console.dir(resp)
 
-	const [uID, refreshTkn, sessionTkn] = decodedSplitSession
+	if (!rows.length) return res.status(401).json({ errors: 'Invalid Token' })
 
-	if (rows.length == 1) {
-		const { session_token, session_expires, refresh_token } = rows[0]
+
+	for (const row of rows) {
+		const { session_token, session_expires, refresh_token } = row
 		if (session_expires > dateStamp) {
-			const isGoodSession = await Argon2.verify(session_token.toString('utf8'), sessionTkn)
+			const isGoodSession = await compareToCrypto(session_token.toString('utf8'), sessionTkn)
 			.catch(err => {throw new Error(err)})
 			
-			if (isGoodSession) return next()
+			if (isGoodSession) {
+				req.myUser_id = uID
+				return next()
+			}
 		} else {
 			const isGoodRefresh = await Argon2.verify(refresh_token.toString('utf8'), refreshTkn)
 			.catch(err => {throw new Error(err)})
 
 			if (isGoodRefresh) {
-				const {refresh_token, refresh_expires, session_token,session_expires} = genToken()
-				const newToken = lbtoa(`${uID}.${refresh_token}.${session_token}`)
+				const newToken = genFinalToken(uID)
 
 				openQuery(`DELETE FROM USER_SESSIONS WHERE refresh_token = ${refreshTkn}`)
 				.catch(err => {throw new Error(err)})
@@ -67,17 +85,19 @@ async function checkToken(req, res, next) {
 				.catch(err => {throw new Error(err)})
 
 				res.cookie('ghSession', newToken, { signed: true })
+				req.myUser_id = uID
 				return next()
 			}
 		}
-	} else {
-		return res.status(403).json({
-			errors: 'Multiple Sessions Not Supported'
-		})
 	}
+	return res.status(403).json({
+		errors: 'No Match Found'
+	})
 }
 // END EXPORT
 
 module.exports = {
-	checkToken
+	checkToken,
+	userFromToken,
+	orgFromUser
 }

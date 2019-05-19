@@ -8,7 +8,7 @@ function passToken(req, res, next) {
 }
 
 function readToken(req, res, next) {
-	console.log(req.signedCookies.ghSession)
+	console.log(`v1: ${req.signedCookies.ghSession}`)
 	next()
 }
 

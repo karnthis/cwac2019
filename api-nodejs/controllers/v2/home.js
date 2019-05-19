@@ -3,30 +3,39 @@ const DB = require('../../core/db')
 const { sanitize, makeUpdates } = require('../../core/funcs')
 
 // TODO
+// FUNCTIONS
+function myOrgAllReferGetFunc(req,res) {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+
+	} else {
+		console.log('HomeError-01')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
+function myOrgReferPostFunc(req,res) {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+
+	} else {
+		console.log('HomeError-02')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
+
 
 // EXPORT
 module.exports = {
-	rootGet: {
-
+	myOrgAllReferGet: {
+		// validate: [],
+		func: myOrgAllReferGetFunc
 	},
-	rootPost: {
-
-	},
-	dispense: {
-
-	},
-	inv_idGet: {
-
-	},
-	inv_idPut: {
-
-	},
-	orgidGet: {
-
-	},
-	orgidPut: {
-
+	myOrgReferPost: {
+		// validate: [],
+		func: myOrgReferPostFunc
 	},
 }
-
-// FUNCTIONS

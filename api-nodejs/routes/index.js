@@ -1,20 +1,19 @@
-const { checkToken } = require("../../middleware/tokenManager");
-const { passToken, readToken } = require("../../middleware/returnToken");
-const { check } = require("express-validator/check");
+const { checkToken, userFromToken, orgFromUser } = require("../middleware/v2TokenManager");
+const { readToken } = require("../middleware/v2returnToken");
+// const { check } = require("express-validator/check");
 
-// API VERSION
-const Ver = 'v2'
+const Router = require('express-promise-router')
+const expRtr = new Router()
 
 // ROUTES
-const heartbeat = require(`./${Ver}/heartbeat`);
-const cal = require(`./${Ver}/cal`);
-const elig = require(`./${Ver}/elig`);
-const home = require(`./${Ver}/home`);
-const inv = require(`./${Ver}/inv`);
-const login = require(`./${Ver}/login`);
-const org = require(`./${Ver}/org`);
-const refer = require(`./${Ver}/refer`);
-// const login = require(`./${Ver}/login`);
+const heartbeat = require(`./v2/heartbeat`);
+const cal = require(`./v2/cal`);
+const elig = require(`./v2/elig`);
+const home = require(`./v2/home`);
+const inv = require(`./v2/inv`);
+const login = require(`./v2/login`);
+const org = require(`./v2/org`);
+const refer = require(`./v2/refer`);
 
 // SWAGGER //
 const options = {
@@ -27,31 +26,28 @@ const options = {
 			description: 'Swagger for the GenerateHealth CWAC2019 project API',
 		},
 	},
-	apis: [`./${Ver}/swagger.yml`],
+	apis: [`./v2/swagger.yml`],
 	docExpansion : "none"
 };
 const specs = require('swagger-jsdoc')(options)
 const swaggerUi = require('swagger-ui-express');
 // END SWAGGER //
 
+// NO TOKEN REQUIRED
+expRtr.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(specs))
+expRtr.use(`/login`, login);
+expRtr.use([readToken])
+// END NO TOKEN
+// TOKEN REQUIRED
+expRtr.use([checkToken,userFromToken,orgFromUser]);
+expRtr.use(`/heartbeat`, heartbeat);
+expRtr.use(`/cal`, cal);
+expRtr.use(`/elig`, elig);
+expRtr.use(`/home`, home);
+expRtr.use(`/inv`, inv);
+expRtr.use(`/org`, org);
+expRtr.use(`/refer`, refer);
+// END TOKEN
+
 // EXPORT
-module.exports = app => {
-	// NO TOKEN REQUIRED
-	app.use(`${Ver}/auth`, auth);
-	app.use([readToken])
-	// END NO TOKEN
-	// TOKEN REQUIRED
-	// app.use([checkToken]);
-	app.use(`${Ver}/heartbeat`, heartbeat);
-	app.use(`${Ver}/cal`, cal);
-	app.use(`${Ver}/elig`, elig);
-	app.use(`${Ver}/home`, home);
-	app.use(`${Ver}/inv`, inv);
-	app.use(`${Ver}/login`, login);
-	app.use(`${Ver}/org`, org);
-	app.use(`${Ver}/refer`, refer);
-
-	app.use(`${Ver}/swagger`, swaggerUi.serve, swaggerUi.setup(specs))
-
-	// END TOKEN
-};
+module.exports = expRtr;

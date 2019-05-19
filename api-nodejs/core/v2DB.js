@@ -49,26 +49,27 @@ function makeUpdates2(updateObj = {}) {
 // END INTERNAL V2 FUNCTIONS
 
 // EXPORTED V2 FUNCTIONS
-function openQuery(sql) {
-	return pgQuery(sql)
+async function openQuery(sql) {
+	return await pgQuery(sql)
 }
-function selectQuery(qryObj) {
-	const { tbl, columns = '*', where } = qryObj
-	const sql = `SELECT ${columns} FROM ${tbl} ${where}`
-	return pgQuery(sql)
+async function selectQuery(qryObj) {
+	const { tbl, columns = '*', joins = '', where = '' } = qryObj
+	const sql = `SELECT ${columns} FROM ${tbl} ${joins} ${where}`
+	return await pgQuery(sql)
+	.catch(err => console.dir(`selectQuery: ${err}`))
 }
-function updateQuery(qryObj) {
-	const { dataObj, tbl, where } = qryObj
-	const sql = `UPDATE ${tbl} SET ${makeUpdates2(dataObj)} ${where} RETURN *`
-	return pgQuery(sql)
+async function updateQuery(qryObj) {
+	const { data, tbl, where } = qryObj
+	const sql = `UPDATE ${tbl} SET ${makeUpdates2(data)} ${where} RETURN *`
+	return await pgQuery(sql)
 }
-function insertQuery(qryObj) {
+async function insertQuery(qryObj) {
 	const { columns, insertData, placeholders } = splitSubmitData(qryObj.data)
 	const sql = {
 		text: `INSERT INTO ${qryObj.tbl} (${columns}) VALUES (${placeholders}) RETURNING *`,
 		values: insertData
 	}
-	return pgQuery(sql)
+	return await pgQuery(sql)
 }
 // END EXPORTED V2 FUNCTIONS
 

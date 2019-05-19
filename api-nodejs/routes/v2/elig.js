@@ -1,9 +1,15 @@
 const expRtr = new require('express-promise-router')()
-const { NotSupp } = require('../../controllers/shared/')
-const {} = require('../../controllers/v2/inventory')
+const {userOrgEligGet,userOrgEligPut,allOrgEligGet} = require('../../controllers/v2/elig')
 // TODO
+userOrgEligGet
+userOrgEligPut
+allOrgEligGet
 // ROUTING
 expRtr.route('/')
-	.get(rootGet.func)
-	.post(rootPost.validate, rootPost.func)
-	.put(NotSupp)
+	.get(userOrgEligGet.func)
+	.put(userOrgEligPut.validate, userOrgEligPut.func)
+
+expRtr.route('/')
+	.get(allOrgEligGet.func)
+
+	module.exports = expRtr;

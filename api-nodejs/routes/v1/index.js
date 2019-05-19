@@ -39,7 +39,7 @@ const swaggerUi = require('swagger-ui-express');
 module.exports = app => {
 	// NO TOKEN REQUIRED
 	app.use("/auth", auth);
-	app.use([readToken])
+	// app.use([readToken])
 	// END NO TOKEN
 	// TOKEN REQUIRED
 	// app.use([checkToken]);
