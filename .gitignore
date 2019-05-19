@@ -2,6 +2,7 @@
 node_modules/
 notes/
 coverage/
+archive/
 
 # FILES
 .env

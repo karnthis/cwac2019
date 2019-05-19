@@ -3,8 +3,11 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
+// LOCAL
+const { limitRequests } = require("./middleware/limiter");
+
 // Misc ENV vars
-const { NODE_ENV, IS_PROD, COOKIE_CODE, PROD_PORT, IS_LOCAL } = process.env
+const { NODE_ENV, IS_PROD, COOKIE_CODE = 'sekrit', PROD_PORT, IS_LOCAL } = process.env
 if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
 // set up express
@@ -20,6 +23,8 @@ const corsConfig = {
 app.use(cors())
 // app.use(cors(corsConfig))
 
+app.use(limitRequests)
+
 app.get('/', (req, res) => {
 	res
 	.status(200)
@@ -27,8 +32,10 @@ app.get('/', (req, res) => {
 })
 
 // HOOK FOR ALL ROUTES //
-require('./routes/v1')(app)
-
+// require('./routes/v1')(app)
+// require('./routes')(app) 
+// const test = 
+app.use('/v2', require('./routes'))// v2
 //TODO: 	TO BE REMOVED
 app.use('/dev', require('./routes/dev'))
 

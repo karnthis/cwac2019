@@ -1,0 +1,129 @@
+tags:
+  - name: Authentication
+    description: "Authenticate and begin a session"
+
+paths:
+  /login:
+    get:
+      tags: Authentication
+      summary: 
+      description:
+      operationId:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      externalDocs:
+      responses:
+        200:
+          description: Request Successful
+      security:
+      requestBody:
+        - username
+        - password
+      callbacks:
+
+  /heartbeat:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
+
+  /cal:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
+
+  /elig:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
+
+  /home:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
+
+  /inv:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
+
+  /org:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
+
+  /refer:
+    get:
+      tags:
+      summary:
+      description:
+      operationId:
+      externalDocs:
+      parameters:
+      responses:
+      deprecated:
+      security:
+      servers:
+      requestBody:
+      callbacks:
