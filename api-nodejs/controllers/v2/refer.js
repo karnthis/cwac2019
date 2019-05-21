@@ -95,7 +95,13 @@ module.exports = {
 		func: myOrgAllRefereeGetFunc
 	},
 	myOrgReferPost: {
-		validate: [],
+		validate: [
+			check("referee_id").isInt(),
+			check("is_eligiable").isBoolean(),
+			check("date_of_referal").isInt(),
+			check("referral_notes").optional().trim().escape(),
+			check("fulfillment_status").optional().trim().escape()
+		],
 		func: myOrgReferPostFunc
 	},
 }

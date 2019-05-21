@@ -9,7 +9,7 @@ expRtr.route('/myOrg')
 expRtr.route('/myOrgDispense')
 	.put(userOrgDispPut.func)
 
-expRtr.route('/AllOrgs')
+expRtr.route('/allOrgs')
 	.get(allOrgInvGet.func)
 
 	module.exports = expRtr;

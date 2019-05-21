@@ -5,11 +5,11 @@ userOrgEligGet
 userOrgEligPut
 allOrgEligGet
 // ROUTING
-expRtr.route('/')
+expRtr.route('/myOrg')
 	.get(userOrgEligGet.func)
 	.put(userOrgEligPut.validate, userOrgEligPut.func)
 
-expRtr.route('/')
+expRtr.route('/allOrg')
 	.get(allOrgEligGet.func)
 
 	module.exports = expRtr;

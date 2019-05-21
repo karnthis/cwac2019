@@ -156,7 +156,7 @@ function targetOrgPutFunc(req,res) {
 // EXPORT
 module.exports = {
 	userOrgGet: {
-		// validate: [],
+		validate: [],
 		func: userOrgGetFunc
 	},
 	userOrgPut: {
@@ -170,11 +170,11 @@ module.exports = {
 		func: userOrgPutFunc
 	},
 	allOrgSummaryGet: {
-		// validate: [],
+		validate: [],
 		func: allOrgSummaryGetFunc
 	},
 	allOrgFullGet: {
-		// validate: [],
+		validate: [],
 		func: allOrgFullGetFunc
 	},
 	addOrgPost: {
@@ -182,7 +182,8 @@ module.exports = {
 			check("provider_name").isLength({ min: 3 }).trim().escape(),
 			check("phone").isMobilePhone().trim().escape(),
 			check("description").trim().escape(),
-			check("hours").isLength({ max: 7 }).trim().escape()
+			check("hours").isLength({ max: 7 }).trim().escape(),
+			check("days_of_operation").trim().escape()
 		],
 		func: addOrgPostFunc
 	},
