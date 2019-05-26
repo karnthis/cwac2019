@@ -214,8 +214,7 @@ paths:
                 type: integer
               class_status:
                 type: string
-          required:
-            - true
+          required: true
       responses:
         200:
           description: Request Successful
@@ -323,8 +322,7 @@ paths:
             properties:
               eligibility:
                 type: object
-            required:
-              - true
+            required: true
       responses:
         200:
           description: Request Successful
@@ -427,8 +425,7 @@ paths:
             properties:
               eligibility:
                 type: integer
-            required:
-              - true
+            required: true
       responses:
         200:
           description: Request Successful
@@ -634,8 +631,7 @@ paths:
                 type: string
               days_of_operation:
                 type: string
-            required:
-              - true
+            required: true
       responses:
         200:
           description: Request Successful
@@ -729,8 +725,7 @@ paths:
                 type: string
               fulfillment_status:
                 type: string
-            required:
-              - true
+            required: true
       responses:
         200:
           description: Request Successful
