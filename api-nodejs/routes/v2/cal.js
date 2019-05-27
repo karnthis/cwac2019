@@ -7,6 +7,12 @@ expRtr.route('/oneSummary')
 expRtr.route('/oneFull')
 	.get(oneClassFullGet.validate, oneClassFullGet.func)
 
+expRtr.route('/userOrgSummary')
+	.get(userOrgClassesSummaryGet.func)
+
+expRtr.route('/userOrgFull')
+	.get(userOrgClassesFullGet.func)
+
 expRtr.route('/allSummary')
 	.get(allClassesSummaryGet.func)
 

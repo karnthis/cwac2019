@@ -130,6 +130,56 @@ paths:
       requestBody:
       callbacks:
 
+  /cal/userOrgSummary:
+    get:
+      tags:
+        - "Calendar"
+      summary:
+      description:
+      operationId:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      externalDocs:
+      parameters:
+      responses:
+        200:
+          description: Request Successful
+        422:
+          description: Invalid/Missing Parameters
+      deprecated:
+      security:
+        - key
+      servers:
+      requestBody:
+      callbacks:
+
+  /cal/userOrgFull:
+    get:
+      tags:
+        - "Calendar"
+      summary:
+      description:
+      operationId:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      externalDocs:
+      parameters:
+      responses:
+        200:
+          description: Request Successful
+        422:
+          description: Invalid/Missing Parameters
+      deprecated:
+      security:
+        - key
+      servers:
+      requestBody:
+      callbacks:
+
   /cal/allSummary:
     get:
       tags:

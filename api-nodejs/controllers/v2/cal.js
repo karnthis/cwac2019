@@ -55,6 +55,49 @@ function oneClassFullGetFunc(req,res) {
 		})
 	}
 }
+
+function userOrgClassesSummaryGetFunc(req,res) {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		DB.selectQuery({
+			columns: 'class_name, date_of_class, time_of_class, class_status',
+			tbl: `CLASSES`,
+			where: `WHERE provider_id = ${req.myOrg}`
+		})
+		.then(({rows}) => {
+			if (rows.length) {
+				return res.status(200).json({data: rows, msg: 'Classes Found'})
+			}
+			return res.status(200).json({data: [], msg: 'No Classes Found'})
+		})
+	} else {
+		console.log('ClassError-03')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
+function userOrgClassesFullGetFunc(req,res) {
+	const errors = validationResult(req)
+	if (errors.isEmpty()) {
+		DB.selectQuery({
+			tbl: `CLASSES`,
+			where: `WHERE provider_id = ${req.myOrg}`
+		})
+		.then(({rows}) => {
+			if (rows.length) {
+				return res.status(200).json({data: rows, msg: 'Classes Found'})
+			}
+			return res.status(200).json({data: [], msg: 'No Classes Found'})
+		})
+	} else {
+		console.log('ClassError-04')
+		return res.status(422).json({
+			errors: errors.array()
+		})
+	}
+}
+
 function allClassesSummaryGetFunc(req,res) {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
@@ -170,6 +213,14 @@ module.exports = {
 			param("class_id").isInt(),
 		],
 		func: oneClassFullGetFunc
+	},
+	userOrgClassesSummaryGet: {
+		validate: [],
+		func: userOrgClassesSummaryGetFunc
+	},
+	userOrgClassesFullGet: {
+		validate: [],
+		func: userOrgClassesFullGetFunc
 	},
 	allClassesSummaryGet: {
 		validate: [],
