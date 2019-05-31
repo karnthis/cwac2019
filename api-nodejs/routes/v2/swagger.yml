@@ -4,7 +4,7 @@ tags:
 
 paths:
   # Authentication
-  /login:
+  /v2/login:
     post:
       tags: 
         - "Authentication"
@@ -44,7 +44,7 @@ paths:
       callbacks:
 
   # Heartbeat
-  /heartbeat:
+  /v2/heartbeat:
     get:
       tags: 
         - "Heartbeat"
@@ -68,7 +68,7 @@ paths:
       callbacks:
 
   # Calendar
-  /cal/oneSummary/{class_id}:
+  /v2/cal/oneSummary/{class_id}:
     get:
       tags:
         - "Calendar"
@@ -99,7 +99,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/oneFull/{class_id}:
+  /v2/cal/oneFull/{class_id}:
     get:
       tags:
         - "Calendar"
@@ -130,7 +130,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/userOrgSummary:
+  /v2/cal/userOrgSummary:
     get:
       tags:
         - "Calendar"
@@ -155,7 +155,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/userOrgFull:
+  /v2/cal/userOrgFull:
     get:
       tags:
         - "Calendar"
@@ -180,7 +180,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/allSummary:
+  /v2/cal/allSummary:
     get:
       tags:
         - "Calendar"
@@ -205,7 +205,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/allFull:
+  /v2/cal/allFull:
     get:
       tags:
         - "Calendar"
@@ -230,7 +230,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/addOne:
+  /v2/cal/addOne:
     post:
       tags:
         - "Calendar"
@@ -277,7 +277,7 @@ paths:
       requestBody:
       callbacks:
 
-  /cal/updateMyOne/{class_id}:
+  /v2/cal/updateMyOne/{class_id}:
     put:
       tags:
         - "Calendar"
@@ -330,7 +330,7 @@ paths:
       callbacks:
 
   # Eligibility
-  /elig/myOrg:
+  /v2/elig/myOrg:
     get:
       tags:
         - "Eligibility"
@@ -385,7 +385,7 @@ paths:
       requestBody:
       callbacks:
 
-  /elig/allOrg:
+  /v2/elig/allOrg:
     get:
       tags:
         - "Eligibility"
@@ -432,7 +432,7 @@ paths:
   #     callbacks:
 
   # Inventory
-  /inv/myOrg:
+  /v2/inv/myOrg:
     get:
       tags:
         - "Inventory"
@@ -488,7 +488,7 @@ paths:
       requestBody:
       callbacks:
 
-  /inv/myOrgDispense:
+  /v2/inv/myOrgDispense:
     put:
       tags:
         - "Inventory"
@@ -513,7 +513,7 @@ paths:
       requestBody:
       callbacks:
 
-  /inv/allOrgs:
+  /v2/inv/allOrgs:
     get:
       tags:
         - "Inventory"
@@ -540,7 +540,7 @@ paths:
 
 
   # Provider
-  /org/myOrg:
+  /v2/org/myOrg:
     get:
       tags:
         - "Provider"
@@ -603,7 +603,7 @@ paths:
       requestBody:
       callbacks:
 
-  /org/allSummary:
+  /v2/org/allSummary:
     get:
       tags:
         - "Provider"
@@ -628,7 +628,7 @@ paths:
       requestBody:
       callbacks:
 
-  /org/allFull:
+  /v2/org/allFull:
     get:
       tags:
         - "Provider"
@@ -653,7 +653,7 @@ paths:
       requestBody:
       callbacks:
 
-  /org/addOne:
+  /v2/org/addOne:
     post:
       tags:
         - "Provider"
@@ -697,7 +697,7 @@ paths:
 
 
   # Referral
-  /refer/fromMyOrg:
+  /v2/refer/fromMyOrg:
     get:
       tags:
         - "Referral"
@@ -722,7 +722,7 @@ paths:
       requestBody:
       callbacks:
 
-  /refer/toMyOrg:
+  /v2/refer/toMyOrg:
     get:
       tags:
         - "Referral"
@@ -747,7 +747,7 @@ paths:
       requestBody:
       callbacks:
 
-  /refer/addOne:
+  /v2/refer/addOne:
     post:
       tags:
         - "Referral"

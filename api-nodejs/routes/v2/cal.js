@@ -1,5 +1,5 @@
 const expRtr = new require('express-promise-router')()
-const {oneClassSummaryGet,oneClassFullGet,allClassesSummaryGet,allClassesFullGet,newClassPost,myOrgClassPut} = require('../../controllers/v2/cal')
+const {oneClassSummaryGet,oneClassFullGet,userOrgClassesSummaryGet,userOrgClassesFullGet,allClassesSummaryGet,allClassesFullGet,newClassPost,myOrgClassPut} = require('../../controllers/v2/cal')
 // ROUTING
 expRtr.route('/oneSummary')
 	.get(oneClassSummaryGet.validate, oneClassSummaryGet.func)
