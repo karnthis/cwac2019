@@ -40,7 +40,7 @@ async function checkToken(req, res, next) {
 	const dateStamp = makeDateStamp()
 
 	const tokenUser = (isNaN(parseInt(uID))) ? -1 : parseInt(uID)
-	console.dir(tokenUser)
+	// console.dir(tokenUser)
 	const tokenCheck = {
 		tbl: 'USER_SESSIONS',
 		where: `WHERE user_id = '${tokenUser}' AND refresh_expires > '${dateStamp}'`
@@ -68,7 +68,7 @@ async function checkToken(req, res, next) {
 
 			if (isGoodRefresh) {
 				const tokenSet = await genFinalToken(uID)
-				console.dir(tokenSet)
+				// console.dir(tokenSet)
 				openQuery(`DELETE FROM USER_SESSIONS WHERE refresh_token = ${refreshTkn}`)
 				.catch(err => {throw new Error(err)})
 
