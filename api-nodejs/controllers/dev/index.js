@@ -108,6 +108,19 @@ cmdPost.func = async (req, res) => {
 				const { rows = [] } = await DB.doInsert(sqll)
 				res.status(200).json({ data: rows })
 				break;}
+
+			case 'inventory':
+				{const D = sanitize(req.body, [
+					'provider_id',
+					'inv_count'
+				]) 
+				const sqll = {
+					tbl: 'INVENTORY',
+					data: D
+				}
+				const { rows = [] } = await DB.doInsert(sqll)
+				res.status(200).json({ data: rows })
+				break;}
 			default:
 				res.status(200).json({data: 'nothing done'})
 		}
