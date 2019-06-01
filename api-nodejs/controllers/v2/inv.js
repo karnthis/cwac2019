@@ -58,7 +58,7 @@ function userOrgInvPutFunc(req,res) {
 function userOrgDispPutFunc(req,res) {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-			DB.openQuery(`UPDATE INVENTORY SET inv_count = inv_count - 1 WHERE provider_id = ${req.myOrg} RETURN *`)
+			DB.openQuery(`UPDATE INVENTORY SET inv_count = inv_count - 1 WHERE provider_id = ${req.myOrg} RETURNING *`)
 			.then(({rows}) => {
 				if (rows.length) {
 					return res.status(200).json({data: rows[0], msg: 'Provider Inventory Updated'})
