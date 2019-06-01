@@ -35,12 +35,12 @@ function userOrgInvGetFunc(req,res) {
 function userOrgInvPutFunc(req,res) {
 	const errors = validationResult(req)
 	if (errors.isEmpty()) {
-			DB.selectQuery({
+			DB.updateQuery({
 				data: {
 					inv_count: req.body.newInvCount
 				},
 				tbl: `INVENTORY`,
-				where: `WHERE P.provider_id = '${req.myOrg}'`
+				where: `WHERE provider_id = '${req.myOrg}'`
 			})
 			.then(({rows}) => {
 				if (rows.length) {

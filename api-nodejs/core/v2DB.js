@@ -60,7 +60,7 @@ async function selectQuery(qryObj) {
 }
 async function updateQuery(qryObj) {
 	const { data, tbl, where } = qryObj
-	const sql = `UPDATE ${tbl} SET ${makeUpdates2(data)} ${where} RETURN *`
+	const sql = `UPDATE ${tbl} SET ${makeUpdates2(data)} ${where} RETURNING *`
 	return await pgQuery(sql)
 }
 async function insertQuery(qryObj) {
