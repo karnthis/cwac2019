@@ -37,7 +37,7 @@ const swaggerUi = require('swagger-ui-express');
 expRtr.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(specs))
 expRtr.use(`/login`, login);
 expRtr.use([readToken])
-// END NO TOKEN
+// END NO TOKEN REQUIRED
 // TOKEN REQUIRED
 expRtr.use([checkToken,userFromToken,orgFromUser]);
 expRtr.use(`/heartbeat`, heartbeat);
@@ -47,7 +47,7 @@ expRtr.use(`/elig`, elig);
 expRtr.use(`/inv`, inv);
 expRtr.use(`/org`, org);
 expRtr.use(`/refer`, refer);
-// END TOKEN
+// END TOKEN REQUIRED
 
 // EXPORT
 module.exports = expRtr;

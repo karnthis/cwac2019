@@ -16,7 +16,7 @@ async function orgFromUser(req, res, next) {
 	selectQuery({
 		columns: 'member_of',
 		tbl: `USERS`,
-		where: `WHERE user_id = '${red.myId}'`
+		where: `WHERE user_id = '${req.myId}'`
 	})
 	.then(({rows}) => {
 		if (rows.length) {
