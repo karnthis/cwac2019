@@ -966,3 +966,88 @@ paths:
                   example: In Progress
                   type: string
       callbacks:
+
+  # User
+  /v2/user/mySummary:
+    get:
+      tags:
+        - "User"
+      summary: Get Summary Info of Self
+      description:
+      operationId:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      externalDocs:
+      responses:
+        200:
+          description: Request Successful
+        422:
+          description: Invalid/Missing Parameters
+      deprecated:
+      security:
+        - key
+      servers:
+      requestBody:
+      callbacks:
+
+  /v2/user/myDetails:
+    get:
+      tags:
+        - "User"
+      summary: Get Detail Info of Self
+      description:
+      operationId:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      externalDocs:
+      responses:
+        200:
+          description: Request Successful
+        422:
+          description: Invalid/Missing Parameters
+      deprecated:
+      security:
+        - key
+      servers:
+      requestBody:
+      callbacks:
+
+  /v2/user/updateSelf:
+    post:
+      tags:
+        - "User"
+      summary: Update Self Info
+      description:
+      operationId:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      externalDocs:
+      responses:
+        200:
+          description: Request Successful
+        422:
+          description: Invalid/Missing Parameters
+      deprecated:
+      security:
+        - key
+      servers:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  example: Temperance Brennan
+                  type: string
+                email:
+                  example: tbrennan@example.com
+                  type: string
+      callbacks:
