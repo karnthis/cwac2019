@@ -10,8 +10,29 @@ const { limitRequests } = require("./middleware/limiter");
 const { NODE_ENV, IS_PROD, COOKIE_CODE = 'sekrit', PROD_PORT, IS_LOCAL } = process.env
 if (NODE_ENV == 'prod' || IS_PROD == 'yes') isProd = true
 
+// SWAGGER //
+const options = {
+	swaggerDefinition: {
+		openapi: '3.0.0',
+		// swagger: '2.0',
+		info: {
+			title: 'GenerateHealth',
+			version: '2.0.0',
+			description: 'Swagger for the GenerateHealth CWAC2019 project API',
+		},
+	},
+	apis: [`./routes/v2/swagger.yml`],
+	docExpansion : "none"
+};
+const specs = require('swagger-jsdoc')(options)
+const swaggerUi = require('swagger-ui-express');
+// END SWAGGER //
+
 // set up express
 const app = express();
+
+app.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(specs))
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser(COOKIE_CODE))

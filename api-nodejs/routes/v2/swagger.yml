@@ -17,19 +17,19 @@ paths:
         - application/json
       externalDocs:
       parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              username:
-                type: string
-              password:
-                type: string
-                format: password
-          required:
-            - username
-            - password
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         username:
+      #           type: string
+      #         password:
+      #           type: string
+      #           format: password
+      #     required:
+      #       - username
+      #       - password
       responses:
         200:
           description: Log In Successful
@@ -39,8 +39,21 @@ paths:
           description: Invalid/Missing Parameters
       security:
       requestBody:
-        - username
-        - password
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  example: Fluffy
+                  type: string
+                password:
+                  example: I<3mypup
+                  type: string
       callbacks:
 
   # Heartbeat
@@ -242,29 +255,29 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              class_name:
-                type: string
-              class_description:
-                type: string
-              address_id:
-                type: integer
-              date_of_class:
-                type: integer
-              time_of_class:
-                type: string
-              current_attendee_count:
-                type: integer
-              max_attendees:
-                type: integer
-              class_status:
-                type: string
-          required: true
+      # parameters:
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         class_name:
+      #           type: string
+      #         class_description:
+      #           type: string
+      #         address_id:
+      #           type: integer
+      #         date_of_class:
+      #           type: integer
+      #         time_of_class:
+      #           type: string
+      #         current_attendee_count:
+      #           type: integer
+      #         max_attendees:
+      #           type: integer
+      #         class_status:
+      #           type: string
+      #     required: true
       responses:
         200:
           description: Request Successful
@@ -275,6 +288,45 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - class_name
+                - class_description
+                - address_id
+                - date_of_class
+                - time_of_class
+                - current_attendee_count
+                - max_attendees
+                - class_status
+              properties:
+                class_name:
+                  example: Crib 101
+                  type: string
+                class_description:
+                  example: Learn to set up a crib
+                  type: string
+                address_id:
+                  example: 2
+                  type: integer
+                date_of_class:
+                  example: 1514181600000
+                  type: integer
+                time_of_class:
+                  example: 1700-1900
+                  type: string
+                current_attendee_count:
+                  example: 3
+                  type: integer
+                max_attendees:
+                  example: 42
+                  type: integer
+                class_status:
+                  example: Pending
+                  type: string
       callbacks:
 
   /v2/cal/updateMyOne/{class_id}:
@@ -296,27 +348,27 @@ paths:
             type: integer
           required: true
           description: Numeric ID of the class to update
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              class_name:
-                type: string
-              class_description:
-                type: string
-              address_id:
-                type: integer
-              date_of_class:
-                type: integer
-              time_of_class:
-                type: string
-              current_attendee_count:
-                type: integer
-              max_attendees:
-                type: integer
-              class_status:
-                type: string
+        # - name: body
+        #   in: body
+        #   schema:
+        #     type: object
+        #     properties:
+        #       class_name:
+        #         type: string
+        #       class_description:
+        #         type: string
+        #       address_id:
+        #         type: integer
+        #       date_of_class:
+        #         type: integer
+        #       time_of_class:
+        #         type: string
+        #       current_attendee_count:
+        #         type: integer
+        #       max_attendees:
+        #         type: integer
+        #       class_status:
+        #         type: string
       responses:
         200:
           description: Request Successful
@@ -327,6 +379,37 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              properties:
+                class_name:
+                  example: Crib 101
+                  type: string
+                class_description:
+                  example: Learn to set up a crib
+                  type: string
+                address_id:
+                  example: 2
+                  type: integer
+                date_of_class:
+                  example: 1514181600000
+                  type: integer
+                time_of_class:
+                  example: 1700-1900
+                  type: string
+                current_attendee_count:
+                  example: 3
+                  type: integer
+                max_attendees:
+                  example: 42
+                  type: integer
+                class_status:
+                  example: Pending
+                  type: string
       callbacks:
 
   # Eligibility
@@ -365,14 +448,14 @@ paths:
         - application/json
       externalDocs:
       parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              eligibility:
-                type: object
-          required: true
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         eligibility:
+      #           type: object
+      #     required: true
       responses:
         200:
           description: Request Successful
@@ -383,6 +466,17 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - eligibility
+              properties:
+                eligibility:
+                  example: {"isClient": [1],"momAge": true,"pubAssist": true,"zip": [12345, 12345],"isPreg": true,"infantAge": true,"allReq": true}
+                  type: object
       callbacks:
 
   /v2/elig/allOrg:
@@ -468,14 +562,14 @@ paths:
         - application/json
       externalDocs:
       parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              eligibility:
-                type: integer
-          required: true
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         newInvCount:
+      #           type: integer
+      #     required: true
       responses:
         200:
           description: Request Successful
@@ -486,6 +580,17 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - newInvCount
+              properties:
+                newInvCount:
+                  example: 42
+                  type: integer
       callbacks:
 
   /v2/inv/myOrgDispense:
@@ -575,22 +680,22 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              provider_name:
-                type: string
-              phone:
-                type: string
-              description:
-                type: string
-              hours:
-                type: string
-              days_of_operation:
-                type: string
+      # parameters:
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         provider_name:
+      #           type: string
+      #         phone:
+      #           type: string
+      #         description:
+      #           type: string
+      #         hours:
+      #           type: string
+      #         days_of_operation:
+      #           type: string
       responses:
         200:
           description: Request Successful
@@ -601,6 +706,28 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              properties:
+                provider_name:
+                  example: GenerateHealth
+                  type: string
+                phone:
+                  example: 123-456-7890
+                  type: string
+                hours:
+                  example: 0800-1700
+                  type: string
+                description:
+                  example: Local Non-profit
+                  type: string
+                days_of_operation:
+                  example: UMTWRFS
+                  type: string
       callbacks:
 
   /v2/org/allSummary:
@@ -666,22 +793,22 @@ paths:
         - application/json
       externalDocs:
       parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              provider_name:
-                type: string
-              phone:
-                type: string
-              description:
-                type: string
-              hours:
-                type: string
-              days_of_operation:
-                type: string
-          required: true
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         provider_name:
+      #           type: string
+      #         phone:
+      #           type: string
+      #         description:
+      #           type: string
+      #         hours:
+      #           type: string
+      #         days_of_operation:
+      #           type: string
+      #     required: true
       responses:
         200:
           description: Request Successful
@@ -692,6 +819,31 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_name
+                - phone
+                - hours
+              properties:
+                provider_name:
+                  example: GenerateHealth
+                  type: string
+                phone:
+                  example: 123-456-7890
+                  type: string
+                hours:
+                  example: 0800-1700
+                  type: string
+                description:
+                  example: Local Non-profit
+                  type: string
+                days_of_operation:
+                  example: UMTWRFS
+                  type: string
       callbacks:
 
 
@@ -760,22 +912,22 @@ paths:
         - application/json
       externalDocs:
       parameters:
-        - name: body
-          in: body
-          schema:
-            type: object
-            properties:
-              referee_id:
-                type: integer
-              is_eligiable:
-                type: boolean
-              date_of_referal:
-                type: integer
-              referral_notes:
-                type: string
-              fulfillment_status:
-                type: string
-          required: true
+      #   - name: body
+      #     in: body
+      #     schema:
+      #       type: object
+      #       properties:
+      #         referee_id:
+      #           type: integer
+      #         is_eligiable:
+      #           type: boolean
+      #         date_of_referal:
+      #           type: integer
+      #         referral_notes:
+      #           type: string
+      #         fulfillment_status:
+      #           type: string
+      #     required: true
       responses:
         200:
           description: Request Successful
@@ -786,4 +938,31 @@ paths:
         - key
       servers:
       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - referee_id
+                - is_eligiable
+                - date_of_referal
+                - referral_notes
+                - fulfillment_status
+              properties:
+                referee_id:
+                  example: 5
+                  type: integer
+                is_eligiable:
+                  example: true
+                  type: boolean
+                date_of_referal:
+                  example: 1514181600000
+                  type: integer
+                referral_notes:
+                  example: This client needs a crib
+                  type: string
+                fulfillment_status:
+                  example: In Progress
+                  type: string
       callbacks:
