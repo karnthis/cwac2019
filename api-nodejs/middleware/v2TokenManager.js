@@ -53,7 +53,7 @@ async function checkToken(req, res, next) {
 
 
 	for (const row of rows) {
-		const { session_token, session_expires, refresh_token } = row
+		const { session_token, session_expires, refresh_token, refresh_expires } = row
 		if (session_expires > dateStamp) {
 			const isGoodSession = await compareToCrypto(session_token.toString('utf8'), sessionTkn)
 			.catch(err => {throw new Error(err)})
@@ -67,24 +67,17 @@ async function checkToken(req, res, next) {
 			.catch(err => {throw new Error(err)})
 
 			if (isGoodRefresh) {
-				const newToken = genFinalToken(uID)
-
+				const tokenSet = genFinalToken(uID)
 				openQuery(`DELETE FROM USER_SESSIONS WHERE refresh_token = ${refreshTkn}`)
 				.catch(err => {throw new Error(err)})
 
 				const _ = await insertQuery({
 					tbl: 'USER_SESSIONS',
-					data: {
-						user_id: uID,
-						refresh_token,
-						refresh_expires,
-						session_token,
-						session_expires,
-					}
+					data: tokenSet.forDB
 				})
 				.catch(err => {throw new Error(err)})
 
-				res.cookie('ghSession', newToken, { signed: true })
+				res.cookie('ghSession', tokenSet.token, { signed: true })
 				req.myUser_id = uID
 				return next()
 			}
