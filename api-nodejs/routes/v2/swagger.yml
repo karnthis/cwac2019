@@ -1017,7 +1017,7 @@ paths:
       callbacks:
 
   /v2/user/updateSelf:
-    post:
+    put:
       tags:
         - "User"
       summary: Update Self Info

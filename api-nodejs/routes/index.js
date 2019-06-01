@@ -14,6 +14,7 @@ const inv = require(`./v2/inv`);
 const login = require(`./v2/login`);
 const org = require(`./v2/org`);
 const refer = require(`./v2/refer`);
+const user = require(`./v2/user`);
 
 // SWAGGER //
 const options = {
@@ -47,6 +48,7 @@ expRtr.use(`/elig`, elig);
 expRtr.use(`/inv`, inv);
 expRtr.use(`/org`, org);
 expRtr.use(`/refer`, refer);
+expRtr.use(`/user`, user);
 // END TOKEN REQUIRED
 
 // EXPORT
