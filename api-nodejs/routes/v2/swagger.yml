@@ -16,7 +16,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+      # parameters:
       #   - name: body
       #     in: body
       #     schema:
@@ -69,7 +69,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+      # parameters:
       responses:
         200:
           description: Heartbeat Detected
@@ -155,7 +155,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -180,7 +180,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -205,7 +205,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -230,7 +230,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -425,7 +425,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -447,7 +447,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+      # parameters:
       #   - name: body
       #     in: body
       #     schema:
@@ -491,7 +491,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -538,7 +538,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -561,7 +561,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+      # parameters:
       #   - name: body
       #     in: body
       #     schema:
@@ -605,7 +605,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -630,7 +630,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -657,7 +657,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -742,7 +742,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -767,7 +767,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -792,7 +792,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+      # parameters:
       #   - name: body
       #     in: body
       #     schema:
@@ -861,7 +861,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -886,7 +886,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+  #       parameters:
       responses:
         200:
           description: Request Successful
@@ -911,7 +911,7 @@ paths:
       produces:
         - application/json
       externalDocs:
-      parameters:
+      # parameters:
       #   - name: body
       #     in: body
       #     schema:

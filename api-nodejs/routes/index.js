@@ -15,8 +15,27 @@ const login = require(`./v2/login`);
 const org = require(`./v2/org`);
 const refer = require(`./v2/refer`);
 
+// SWAGGER //
+const options = {
+	swaggerDefinition: {
+		openapi: '3.0.0',
+		// swagger: '2.0',
+		info: {
+			title: 'GenerateHealth',
+			version: '2.0.0',
+			description: 'Swagger for the GenerateHealth CWAC2019 project API',
+		},
+	},
+	apis: [`./routes/v2/swagger.yml`],
+	docExpansion : "none"
+};
+const specs = require('swagger-jsdoc')(options)
+const swaggerUi = require('swagger-ui-express');
+// END SWAGGER //
+
 // NO TOKEN REQUIRED
 expRtr.use([readToken])
+expRtr.use(`/swagger`, swaggerUi.serve, swaggerUi.setup(specs))
 expRtr.use(`/login`, login);
 // END NO TOKEN REQUIRED
 // TOKEN REQUIRED
