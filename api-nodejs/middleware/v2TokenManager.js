@@ -68,6 +68,7 @@ async function checkToken(req, res, next) {
 
 			if (isGoodRefresh) {
 				const tokenSet = genFinalToken(uID)
+				console.dir(tokenSet)
 				openQuery(`DELETE FROM USER_SESSIONS WHERE refresh_token = ${refreshTkn}`)
 				.catch(err => {throw new Error(err)})
 
