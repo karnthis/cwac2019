@@ -1,5 +1,5 @@
 const expRtr = new require('express-promise-router')()
-const {userSummaryGet,userDetailsGet,userSelfPut} = require('../../controllers/v2/org')
+const {userSummaryGet,userDetailsGet,userSelfPut} = require('../../controllers/v2/user')
 
 // ROUTING
 expRtr.route('/mySummary')
