@@ -18,10 +18,11 @@ app.use(cookieParser(COOKIE_CODE))
 
 // CORS
 const corsConfig = {
+	credentials: true,
 	origin: /.*/
 }
-app.use(cors())
-// app.use(cors(corsConfig))
+// app.use(cors())
+app.use(cors(corsConfig))
 
 app.use(limitRequests)
 
