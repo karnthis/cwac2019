@@ -82,7 +82,7 @@ function allOrgInvGetFunc(req,res) {
 		})
 		.then(({rows}) => {
 			if (rows.length) {
-				return res.status(200).json({data: rows[0], msg: 'Provider Inventories Found'})
+				return res.status(200).json({data: rows, msg: 'Provider Inventories Found'})
 			}
 			return res.status(200).json({data: [], msg: 'No Provider Inventories Found'})
 		})
